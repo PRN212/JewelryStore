@@ -1,0 +1,14 @@
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.GeneratedMSBuildEditorConfig.editorconfig
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.AssemblyInfoInputs.cache
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.AssemblyInfo.cs
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.csproj.CoreCompileInputs.cache
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\bin\Debug\net8.0\Repositories.deps.json
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\bin\Debug\net8.0\Repositories.runtimeconfig.json
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\bin\Debug\net8.0\Repositories.dll
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\bin\Debug\net8.0\Repositories.pdb
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.csproj.AssemblyReference.cache
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.dll
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\refint\Repositories.dll
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.pdb
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\Repositories.genruntimeconfig.cache
+D:\SUMMER24\CSharp\Project\JewelryStore\Repositories\obj\Debug\net8.0\ref\Repositories.dll
