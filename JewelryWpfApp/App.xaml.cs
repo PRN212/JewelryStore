@@ -4,10 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Repositories;
-using Services;
-using Services.Helpers;
-using System.CodeDom;
-using System.Configuration;
 using System.IO;
 using System.Windows;
 using System.Windows.Navigation;
@@ -37,10 +33,6 @@ namespace JewelryWpfApp
             var dataContext = serviceProvider.GetRequiredService<DataContext>();
             dataContext.Database.Migrate();
             DataContextSeed.SeedData(dataContext);
-
-            var navigationWindow = new NavigationWindow();
-            navigationWindow.Content = serviceProvider.GetRequiredService<Login>();
-            navigationWindow.Show();
             
         }
     }
