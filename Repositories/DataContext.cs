@@ -1,7 +1,6 @@
 ﻿
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Repositories.Entities;
 
 namespace Repositories
@@ -17,16 +16,6 @@ namespace Repositories
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //var builder = new ConfigurationBuilder()
-            //    .SetBasePath(Directory.GetCurrentDirectory())
-            //    .AddJsonFile(@"appsettings.json", optional: true, reloadOnChange: true);
-            //IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=JewelryStore;User ID=sa;Password=12345;Trusted_Connection=True;Trust Server Certificate=True");
-
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,7 +1,8 @@
-﻿using System.Reflection;
+﻿
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Repositories.Entities;
+using System.Reflection;
 
 namespace Repositories
 {
@@ -10,6 +11,7 @@ namespace Repositories
         public static void SeedData(DataContext context)
         {
             var path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+            //var path = Path.GetDirectoryName(Directory.GetCurrentDirectory());
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             options.Converters.Add(new JsonStringEnumConverter());
