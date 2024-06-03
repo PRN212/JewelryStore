@@ -7,18 +7,16 @@ namespace Repositories.Entities
     public class GoldPrice
     {
         public int Id { get; set; }
-        [Required]
         public int GoldId { get; set; }
-        public Gold Gold {  get; set; }
-        [Required]
+        public Gold Gold { get; set; }
         public DateTime DateTime { get; set; }
-        [Column(TypeName = "decimal(18,2)"), Required]
+        [Column(TypeName = "decimal(18,2)")]
         public float AskPrice { get; set; }
-        [Column(TypeName = "decimal(18,2)"), Required]
+        [Column(TypeName = "decimal(18,2)")]
         public float BidPrice { get; set; }
-        [Column(TypeName = "decimal(5,2)"), Required]
+        [Column(TypeName = "decimal(5,2)")]
         public float AskRate { get; set; }
-        [Column(TypeName = "decimal(5,2)"), Required]
-        public float BidRate { get; set;}
+        [Column(TypeName = "decimal(5,2)")]
+        public float BidRate { get; set; }
     }
 }

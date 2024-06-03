@@ -7,7 +7,7 @@ namespace Repositories.Entities
     public class Customer
     {
         public int Id { get; set; }
-        [Column(TypeName = "nvarchar(200)"), Required]
+        [Column(TypeName = "nvarchar(200)")]
         public string Name { get; set; }
         [Column(TypeName = "varchar(10)")]
         public string Phone { get; set; }

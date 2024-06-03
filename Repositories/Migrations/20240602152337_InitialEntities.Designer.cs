@@ -12,7 +12,7 @@ using Repositories;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240531060014_InitialEntities")]
+    [Migration("20240602152337_InitialEntities")]
     partial class InitialEntities
     {
         /// <inheritdoc />
@@ -138,13 +138,16 @@ namespace Repositories.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId1")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Orders");
                 });
@@ -179,11 +182,9 @@ namespace Repositories.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("GemName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<decimal>("GemPrice")
@@ -192,14 +193,13 @@ namespace Repositories.Migrations
                     b.Property<decimal>("GemWeight")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("GoldId")
+                    b.Property<int?>("GoldId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("GoldWeight")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("varchar(200)");
 
                     b.Property<decimal>("Labour")
@@ -224,8 +224,11 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("Repositories.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateOnly>("Dob")
                         .HasColumnType("date");
@@ -239,7 +242,6 @@ namespace Repositories.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("varchar(200)");
 
                     b.Property<string>("Name")
@@ -291,7 +293,7 @@ namespace Repositories.Migrations
 
                     b.HasOne("Repositories.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -323,9 +325,7 @@ namespace Repositories.Migrations
                 {
                     b.HasOne("Repositories.Entities.Gold", "Gold")
                         .WithMany()
-                        .HasForeignKey("GoldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GoldId");
 
                     b.Navigation("Gold");
                 });

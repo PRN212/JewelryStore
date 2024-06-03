@@ -45,7 +45,8 @@ namespace Repositories.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", nullable: false),
                     Username = table.Column<string>(type: "varchar(200)", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(50)", nullable: false),
@@ -53,7 +54,7 @@ namespace Repositories.Migrations
                     Dob = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     Password = table.Column<string>(type: "varchar(200)", nullable: false),
-                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Email = table.Column<string>(type: "varchar(200)", nullable: false)
                 },
@@ -93,16 +94,16 @@ namespace Repositories.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     GoldId = table.Column<int>(type: "int", nullable: false),
                     GoldWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TotalWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    GemName = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    GemName = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     GemWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     GemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Labour = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: false)
+                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,8 +112,7 @@ namespace Repositories.Migrations
                         name: "FK_Products_Golds_GoldId",
                         column: x => x.GoldId,
                         principalTable: "Golds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -127,7 +127,8 @@ namespace Repositories.Migrations
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,8 +140,8 @@ namespace Repositories.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Orders_Users_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -188,9 +189,9 @@ namespace Repositories.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserId",
+                name: "IX_Orders_UserId1",
                 table: "Orders",
-                column: "UserId");
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_GoldId",

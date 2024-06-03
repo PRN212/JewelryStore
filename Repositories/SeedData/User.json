@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Lam My",
+    "Username": "my123",
+    "Gender": "female",
+    "Phone": "123456789",
+    "Dob": "1999-06-29",
+    "status": true,
+    "Password": "123",
+    "Role": "Manager",
+    "ImageUrl": "https://randomuser.me/api/portraits/women/1.jpg",
+    "Email": "my@gmail.com",
+    "Address": "Q9, HCM"
+  }
+]
