@@ -18,6 +18,9 @@ namespace JewelryWpfApp.Extensions
             });
             // Services and ViewModels
             services.AddScoped<ProductService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<UserRepository>();
+            services.AddScoped<ProductRepository>();
             services.AddTransient<Login>();
 
             // AutoMapper

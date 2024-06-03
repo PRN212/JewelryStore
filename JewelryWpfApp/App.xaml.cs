@@ -41,7 +41,7 @@ namespace JewelryWpfApp
             var navigationWindow = new NavigationWindow();
             navigationWindow.Content = serviceProvider.GetRequiredService<Login>();
             navigationWindow.Show();
-            
+
         }
     }
 
