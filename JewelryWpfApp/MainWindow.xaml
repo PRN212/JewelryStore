@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Frame x:Name="frMain" NavigationUIVisibility="Visible" Grid.Column="1"/>
+        <StackPanel Background="#FFC7A882" Grid.Column="0">
+            <TextBlock TextWrapping="Wrap" Height="95"/>
+            <Button x:Name="btnNavOrder" Content="Manage Order" Height="40" Background="#FFC7A882" Foreground="White" FontSize="16" BorderThickness="0,0,0,0" Click="btnNavOrder_Click"/>
+            <Button x:Name="btnNavReceipt" Content="Manage Receipt" Height="40" Background="#FFC7A882" Foreground="White" FontSize="16" BorderThickness="0,0,0,0" Click="btnNavReceipt_Click"/>
+            
 
+            <TextBlock TextWrapping="Wrap" Height="200" />
+            <Button x:Name="btnLogout" Content="Logout" Height="35" Background="#FFC7A882" Foreground="White" FontSize="16" BorderThickness="0,0,0,0" Click="btnLogout_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
