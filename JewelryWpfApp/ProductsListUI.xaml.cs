@@ -59,21 +59,16 @@ namespace JewelryWpfApp
             }
         }
 
-        private async void btnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var searchValue = txtSearch.Text;
-            if (!searchValue.IsNullOrEmpty())
-            {
-                IEnumerable<ProductDto> products = await _productService.GeProductByName(searchValue);
-                dgvProductsList.ItemsSource = products;
-            }                           
-        }
-
-        private async void btnSearch_Click_1(object sender, RoutedEventArgs e)
+        private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             var searchValue = txtSearch.Text;
 
             dgvProductsList.ItemsSource = await _productService.GeProductByName(searchValue);
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

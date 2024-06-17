@@ -21,6 +21,7 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<UserService>();
             services.AddScoped<UserRepository>();
             services.AddScoped<ProductRepository>();
+            services.AddScoped<GoldPriceRepository>();
 
             services.AddTransient<Login>();
             services.AddTransient<ManagerMainUI>();
