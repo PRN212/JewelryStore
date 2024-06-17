@@ -19,6 +19,7 @@ namespace JewelryWpfApp
     /// </summary>
     public partial class App : Application
     {
+        public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -31,16 +32,15 @@ namespace JewelryWpfApp
             var config = builder.Build();
 
             serviceCollection.AddApplicationServices(config);
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            ServiceProvider = serviceCollection.BuildServiceProvider();
 
             // update db and add seed data to db
-            var dataContext = serviceProvider.GetRequiredService<DataContext>();
+            var dataContext = ServiceProvider.GetRequiredService<DataContext>();
             dataContext.Database.Migrate();
             DataContextSeed.SeedData(dataContext);
 
-            var navigationWindow = new NavigationWindow();
-            navigationWindow.Content = serviceProvider.GetRequiredService<Login>();
-            navigationWindow.Show();
+            var loginWindow = ServiceProvider.GetRequiredService<Login>();
+            loginWindow.Show();
 
         }
     }

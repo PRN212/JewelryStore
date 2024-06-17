@@ -1,6 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Repositories.Entities;
 using Services;
 using Services.Dto;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace JewelryWpfApp
@@ -10,23 +12,51 @@ namespace JewelryWpfApp
     /// </summary>
     public partial class ProductsListUI : Page
     {
-        ProductService _productService;
+        private readonly ProductService _productService;
+        private ProductDto _selected;
+
         public ProductsListUI(ProductService productService)
         {
             _productService = productService;
             InitializeComponent();
-            LoadProductsData();
-        }
-        private async void LoadProductsData()
-        {
-            IEnumerable<ProductDto> products = await _productService.GetProducts();
-            grdProductsList.ItemsSource = products;
         }
 
-        private async void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void PageLoaded(object sender, RoutedEventArgs e)
+        {
+            await FillDataGridView();
+        }
+
+        private async Task FillDataGridView()
         {
             IEnumerable<ProductDto> products = await _productService.GetProducts();
-            grdProductsList.ItemsSource = products;
+            dgvProductsList.ItemsSource = products;
+        }
+
+        private async void dgvProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgvProductsList.SelectedItems.Count > 0)
+            {
+                try
+                {
+                    _selected = (ProductDto) dgvProductsList.SelectedItems[0];
+                    ProductDetail productDetailUI = new ProductDetail(_productService);
+                    productDetailUI._productDto = _selected;
+                    productDetailUI.ShowDialog();
+
+                    await FillDataGridView();
+                }
+                catch
+                {
+                    MessageBox.Show("Please select a valid row!",
+                    "Warning",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+            }
+            else
+            {
+                _selected = null;
+            }
         }
 
         private async void btnSearch_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -35,8 +65,15 @@ namespace JewelryWpfApp
             if (!searchValue.IsNullOrEmpty())
             {
                 IEnumerable<ProductDto> products = await _productService.GeProductByName(searchValue);
-                grdProductsList.ItemsSource = products;
+                dgvProductsList.ItemsSource = products;
             }                           
+        }
+
+        private async void btnSearch_Click_1(object sender, RoutedEventArgs e)
+        {
+            var searchValue = txtSearch.Text;
+
+            dgvProductsList.ItemsSource = await _productService.GeProductByName(searchValue);
         }
     }
 }

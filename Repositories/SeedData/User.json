@@ -1,15 +1,54 @@
 [
   {
-    "Name": "Lam My",
-    "Username": "my123",
+    "Name": "Lâm Tiểu My",
+    "Username": "mylt",
     "Gender": "female",
     "Phone": "123456789",
-    "Dob": "1999-06-29",
+    "Dob": "2000-01-01",
     "status": true,
     "Password": "123",
     "Role": "Manager",
     "ImageUrl": "https://randomuser.me/api/portraits/women/1.jpg",
-    "Email": "my@gmail.com",
+    "Email": "mylt@gmail.com",
+    "Address": "Q9, HCM"
+  },
+  {
+    "Name": "Phan Quang Anh",
+    "Username": "anhpq",
+    "Gender": "male",
+    "Phone": "123456789",
+    "Dob": "2000-01-01",
+    "status": true,
+    "Password": "123",
+    "Role": "Staff",
+    "ImageUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+    "Email": "anhpq@gmail.com",
+    "Address": "Q9, HCM"
+  },
+  {
+    "Name": "Vũ Đức Lương",
+    "Username": "luongvd",
+    "Gender": "male",
+    "Phone": "123456789",
+    "Dob": "2000-01-01",
+    "status": true,
+    "Password": "123",
+    "Role": "Manager",
+    "ImageUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+    "Email": "luongvd@gmail.com",
+    "Address": "Q9, HCM"
+  },
+  {
+    "Name": "Lương Quang Huy",
+    "Username": "huylq",
+    "Gender": "male",
+    "Phone": "123456789",
+    "Dob": "2000-01-01",
+    "status": true,
+    "Password": "123",
+    "Role": "Staff",
+    "ImageUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+    "Email": "huylq@gmail.com",
     "Address": "Q9, HCM"
   }
 ]

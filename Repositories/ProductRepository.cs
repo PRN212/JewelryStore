@@ -50,5 +50,12 @@ namespace Repositories
                 _context.Remove(product);
                 return _context.SaveChanges() > 0;
             }
+
+        public async Task<IEnumerable<Product>> SearchProducts(string searchValue)
+        {
+            return await _context.Products
+                .Where(p => p.Name.Contains(searchValue)) 
+                .ToListAsync();
         }
+    }
 }

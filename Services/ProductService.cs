@@ -37,14 +37,26 @@ namespace Services
             return _productRepository.AddProduct(product);
         }
 
-        public bool UpdateProduct(Product roomInformation)
+        public bool UpdateProduct(ProductDto productDto)
         {
-            return _productRepository.UpdateProduct(roomInformation);
+            Product product = _productRepository.GetProductById(productDto.Id);
+            if (product == null) { return false; }
+            _mapper.Map(productDto, product);
+            return _productRepository.UpdateProduct(product);
         }
          
-        public bool DeleteProduct(Product roomInformation)
+        public bool DeleteProduct(ProductDto productDto)
         {
-            return _productRepository.DeleteProduct(roomInformation);
+            Product product = _productRepository.GetProductById(productDto.Id);
+            if (product == null) { return false; }
+            _mapper.Map(productDto, product);
+            product.Status = false;
+            return _productRepository.UpdateProduct(product);
+        }
+
+        public async Task<IEnumerable<Product>> SearchProducts (string searchValue)
+        {
+            return await _productRepository.SearchProducts(searchValue);
         }
 
     }
