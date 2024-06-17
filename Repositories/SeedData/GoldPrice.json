@@ -1,0 +1,92 @@
+[
+  {
+    "GoldId": 1,
+    "AskPrice": 4510,
+    "BidPrice": 4320,
+    "DateTime": "2024-05-21T11:00:00Z"
+  },
+  {
+    "GoldId": 2,
+    "AskPrice": 7640,
+    "BidPrice": 7420,
+    "DateTime": "2024-05-21T11:00:00Z"
+  },
+  {
+    "GoldId": 3,
+    "AskPrice": 7130,
+    "BidPrice": 7350,
+    "DateTime": "2024-05-21T11:00:00Z"
+  },
+  {
+    "GoldId": 4,
+    "AskPrice": 5100,
+    "BidPrice": 5350,
+    "DateTime": "2024-05-21T11:00:00Z"
+  },
+  {
+    "GoldId": 5,
+    "AskPrice": 8910,
+    "BidPrice": 9140,
+    "DateTime": "2024-05-21T11:00:00Z"
+  },
+  {
+    "GoldId": 1,
+    "AskPrice": 4590,
+    "BidPrice": 4410,
+    "DateTime": "2024-05-21T09:00:00Z"
+  },
+  {
+    "GoldId": 2,
+    "AskPrice": 7730,
+    "BidPrice": 7550,
+    "DateTime": "2024-05-21T09:00:00Z"
+  },
+  {
+    "GoldId": 3,
+    "AskPrice": 7230,
+    "BidPrice": 7400,
+    "DateTime": "2024-05-21T09:00:00Z"
+  },
+  {
+    "GoldId": 4,
+    "AskPrice": 5040,
+    "BidPrice": 5220,
+    "DateTime": "2024-05-21T09:00:00Z"
+  },
+  {
+    "GoldId": 5,
+    "AskPrice": 8840,
+    "BidPrice": 9040,
+    "DateTime": "2024-05-21T09:00:00Z"
+  },
+  {
+    "GoldId": 1,
+    "AskPrice": 4595,
+    "BidPrice": 4420,
+    "DateTime": "2024-05-20T09:00:00Z"
+  },
+  {
+    "GoldId": 2,
+    "AskPrice": 7740,
+    "BidPrice": 7650,
+    "DateTime": "2024-05-20T09:00:00Z"
+  },
+  {
+    "GoldId": 3,
+    "AskPrice": 7320,
+    "BidPrice": 7440,
+    "DateTime": "2024-05-20T09:00:00Z"
+  },
+  {
+    "GoldId": 4,
+    "AskPrice": 5000,
+    "BidPrice": 5120,
+    "DateTime": "2024-05-20T09:00:00Z"
+  },
+  {
+    "GoldId": 5,
+    "AskPrice": 8750,
+    "BidPrice": 9010,
+    "DateTime": "2024-05-20T09:00:00Z"
+  }
+]

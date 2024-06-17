@@ -9,27 +9,49 @@ namespace Services
     {
         private readonly IMapper _mapper;
         private readonly ProductRepository _productRepository;
-        public ProductService (IMapper mapper, ProductRepository productRepository)
+        private readonly GoldPriceRepository _goldPriceRepository;
+        public ProductService (IMapper mapper, ProductRepository productRepository, 
+            GoldPriceRepository goldPriceRepository)
         {
             _productRepository = productRepository;
+            _goldPriceRepository = goldPriceRepository;
             _mapper = mapper;
         }
          public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             var products = await _productRepository.GetProducts();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            var productsDto = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products); 
+
+            foreach (var p in productsDto)
+            {
+                // calculate total gold price
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.Id).BidPrice * p.GoldWeight;
+            }
+
+            return productsDto;
         }
 
         public ProductDto GeProductById(int id)
         {
             var product = _productRepository.GetProductById(id);
-            return _mapper.Map<ProductDto>(product);
+            var productDto = _mapper.Map<ProductDto>(product);
+            // calculate total gold price
+            productDto.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(productDto.Id).BidPrice * productDto.GoldWeight;
+            return productDto;
         }
 
         public async Task<IEnumerable<ProductDto>> GeProductByName(string name)
         {
             var products = await _productRepository.GetProductByName(name);
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            var productsDto = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+
+            foreach (var p in productsDto)
+            {
+                // calculate total gold price
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.Id).BidPrice * p.GoldWeight;
+            }
+
+            return productsDto;
         }
 
         public bool AddProduct(Product product)

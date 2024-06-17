@@ -16,6 +16,12 @@ namespace Services.Dto
         public float Labour { get; set; }
         public int Quantity { get; set; }
         public string ImgUrl { get; set; }
-        public float ProductPrice { get; set; }
+        public float ProductPrice 
+        { 
+            get
+            {
+                return GoldPrice + Labour + GemPrice;
+            }
+        }
     }
 }

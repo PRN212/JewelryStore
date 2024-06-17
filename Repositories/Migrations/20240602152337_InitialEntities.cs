@@ -72,9 +72,7 @@ namespace Repositories.Migrations
                     GoldId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AskPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BidPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AskRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    BidRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
+                    BidPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
