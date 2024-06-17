@@ -29,6 +29,7 @@ namespace Repositories.Entities
         public int Quantity { get; set; }
         [Column(TypeName = "varchar(200)")]
         public string? ImgUrl { get; set; }
+        public bool Status { get; set; }
 
     }
 }

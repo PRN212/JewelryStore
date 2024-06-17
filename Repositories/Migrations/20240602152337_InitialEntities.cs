@@ -103,7 +103,8 @@ namespace Repositories.Migrations
                     GemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Labour = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true)
+                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {

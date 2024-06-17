@@ -16,6 +16,16 @@ namespace JewelryWpfApp.Extensions
                 opt.UseSqlServer(config.GetConnectionString("DBDefault"),
                     sqlOptions => sqlOptions.EnableRetryOnFailure());
             });
+            // Register Services and ViewModels
+            services.AddScoped<ProductService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<UserRepository>();
+            services.AddScoped<ProductRepository>();
+
+            services.AddTransient<Login>();
+            services.AddTransient<ManagerMainUI>();
+            services.AddTransient<StaffMainUI>();
+            services.AddTransient<ProductsListUI>();
 
             // AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
