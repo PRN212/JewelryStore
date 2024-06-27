@@ -25,7 +25,7 @@ namespace Services
             foreach (var p in productsDto)
             {
                 // calculate total gold price
-                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.Id).BidPrice * p.GoldWeight;
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
             }
 
             return productsDto;
@@ -36,7 +36,7 @@ namespace Services
             var product = _productRepository.GetProductById(id);
             var productDto = _mapper.Map<ProductDto>(product);
             // calculate total gold price
-            productDto.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(productDto.Id).BidPrice * productDto.GoldWeight;
+            productDto.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(productDto.Id).BidPrice;
             return productDto;
         }
 
@@ -48,20 +48,21 @@ namespace Services
             foreach (var p in productsDto)
             {
                 // calculate total gold price
-                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.Id).BidPrice * p.GoldWeight;
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
             }
 
             return productsDto;
         }
 
-        public bool AddProduct(Product product)
+        public bool AddProduct(ProductToAddDto productDto)
         {
+            var product = _mapper.Map<Product>(productDto); 
             return _productRepository.AddProduct(product);
         }
 
         public bool UpdateProduct(ProductDto productDto)
         {
-            Product product = _productRepository.GetProductById(productDto.Id);
+            Product? product = _productRepository.GetProductById(productDto.Id);
             if (product == null) { return false; }
             _mapper.Map(productDto, product);
             return _productRepository.UpdateProduct(product);

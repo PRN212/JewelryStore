@@ -8,7 +8,7 @@
     "Labour": 350,
     "Status": true,
     "Quantity": 3,
-    "ImgUrl": "images/products/fugiat.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn trang sức đính đá ECZ",
@@ -19,7 +19,7 @@
     "Labour": 400,
     "Status": true,
     "Quantity": 2,
-    "ImgUrl": "images/products/irure.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 1,
     "GemPrice": 400
@@ -33,7 +33,7 @@
     "Labour": 1290,
     "Status": true,
     "Quantity": 7,
-    "ImgUrl": "images/products/exercitation.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "Diamond",
     "GemWeight": 1.2,
     "GemPrice": 1000
@@ -47,7 +47,7 @@
     "Labour": 1201,
     "Status": true,
     "Quantity": 1,
-    "ImgUrl": "images/products/esse.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "Ruby",
     "GemWeight": 1.5,
     "GemPrice": 2000
@@ -61,7 +61,7 @@
     "Labour": 1172,
     "Status": true,
     "Quantity": 5,
-    "ImgUrl": "images/products/magna.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Dây chuyền vàng 610 Foreverone đính đá ECZ",
@@ -72,7 +72,7 @@
     "Labour": 1372,
     "Status": true,
     "Quantity": 6,
-    "ImgUrl": "images/products/eiusmod.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 1.5,
     "GemPrice": 450
@@ -86,7 +86,7 @@
     "Labour": 1524,
     "Status": true,
     "Quantity": 7,
-    "ImgUrl": "images/products/non.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Lắc tay vàng Ý 18K đính đá ECZ",
@@ -97,7 +97,7 @@
     "Labour": 1906,
     "Status": true,
     "Quantity": 4,
-    "ImgUrl": "images/products/ex.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 0.9,
     "GemPrice": 250
@@ -111,7 +111,7 @@
     "Labour": 1023,
     "Status": true,
     "Quantity": 5,
-    "ImgUrl": "images/products/laborum.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn SJC 1 chỉ",
@@ -122,7 +122,7 @@
     "Labour": 200,
     "Status": true,
     "Quantity": 11,
-    "ImgUrl": "images/products/sint.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn SJC 2 chỉ",
@@ -133,7 +133,7 @@
     "Labour": 200,
     "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/eiusmod.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn trơn vàng 24K 1 chỉ",
@@ -144,7 +144,7 @@
     "Labour": 0,
     "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/non.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn trơn vàng 24K 2 chỉ",
@@ -155,7 +155,7 @@
     "Labour": 0,
     "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/tempor.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Vàng miếng thần tài SJC 1 chỉ",
@@ -166,7 +166,7 @@
     "Labour": 300,
     "Status": true,
     "Quantity": 12,
-    "ImgUrl": "images/products/veniam.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Vàng miếng thần tài SJC 2 chỉ",
@@ -177,6 +177,6 @@
     "Labour": 300,
     "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/sit.png"
+    "ImgUrl": "/img/nhan-18K.png"
   }
 ]

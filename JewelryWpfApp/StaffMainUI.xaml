@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelryWpfApp"
         mc:Ignorable="d"
-        Title="StaffMainUI" Height="450" Width="800">
+        Title="StaffMainUI" Height="600" Width="1000" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

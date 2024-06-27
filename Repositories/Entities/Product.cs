@@ -13,21 +13,21 @@ namespace Repositories.Entities
         public int GoldId { get; set; }
         public Gold Gold { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float GoldWeight { get; set; }
+        public decimal GoldWeight { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float TotalWeight { get; set; }
+        public decimal TotalWeight { get; set; }
         [Column(TypeName = "nvarchar(200)")]
         public string? GemName { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float GemWeight { get; set; }
+        public decimal GemWeight { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float GemPrice { get; set; }
+        public decimal GemPrice { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float Labour { get; set; }
+        public decimal Labour { get; set; }
         public int Quantity { get; set; }
         [Column(TypeName = "varchar(200)")]
         public string? ImgUrl { get; set; }
-        public bool Status { get; set; } 
+        public bool Status { get; set; } = true;
 
     }
 }

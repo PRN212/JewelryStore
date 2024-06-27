@@ -15,13 +15,15 @@ namespace Repositories
             public async Task<IEnumerable<Product>> GetProducts()
             {
                 return await _context.Products
+                .Where(p => p.Status)
                 .Include(p => p.Gold)
                 .ToListAsync();
             }
 
-            public Product GetProductById(int id)
+            public Product? GetProductById(int id)
             {
                 return _context.Products
+                .Where(p => p.Status)
                 .Include (p => p.Gold)
                 .FirstOrDefault(p =>p.Id == id);
             }
@@ -42,12 +44,6 @@ namespace Repositories
             public bool UpdateProduct(Product product)
             {
                 _context.Update(product);
-                return _context.SaveChanges() > 0;
-            }
-
-            public bool DeleteProduct(Product product)
-            {
-                _context.Remove(product);
                 return _context.SaveChanges() > 0;
             }
 

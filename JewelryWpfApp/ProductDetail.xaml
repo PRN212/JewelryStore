@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelryWpfApp"
         mc:Ignorable="d"
-        Title="ProductDetail" Height="450" Width="800"
+        Title="ProductDetail" Height="550" Width="800"
         Loaded="PageLoaded">
     <Grid Margin="20">
         <StackPanel>
@@ -27,20 +27,22 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <!--Label-->
-                <Label x:Name="lblName" Content="Product Name" Grid.Column="0" Grid.Row="0"/>
-                <Label x:Name="lblDescription" Content="Description" Grid.Column="0" Grid.Row="1"/>
-                <Label x:Name="lblGoldType" Content="Gold Type" Grid.Column="0" Grid.Row="2"/>
-                <Label x:Name="lblGoldWeight" Content="Gold Weight" Grid.Column="2" Grid.Row="2" Margin="40 0 0 0"/>
-                <Label x:Name="lblGoldPrice" Content="Gold Price" Grid.Column="4" Grid.Row="2" Margin="40 0 0 0"/>
-                <Label x:Name="lblGemType" Content="Gem Type" Grid.Column="0" Grid.Row="3"/>
-                <Label x:Name="lblGemWeight" Content="Gem Weight" Grid.Column="2" Grid.Row="3" Margin="40 0 0 0"/>
-                <Label x:Name="lblGemPrice" Content="Gem Price" Grid.Column="4" Grid.Row="3" Margin="40 0 0 0"/>
-                <Label x:Name="lblLabour" Content="Labour" Grid.Column="0" Grid.Row="4"/>
-                <Label x:Name="lblQuantity" Content="Quantity" Grid.Column="2" Grid.Row="4" Margin="40 0 0 0"/>
-                <Label x:Name="lblProductPrice" Content="Total price" Grid.Column="4" Grid.Row="4" Margin="40 0 0 0"/>
+                <Label x:Name="lblName" Content="Product Name" Grid.Column="0" Grid.Row="0" Margin="0 10"/>
+                <Label x:Name="lblDescription" Content="Description" Grid.Column="0" Grid.Row="1" Margin="0 10"/>
+                <Label x:Name="lblGoldType" Content="Gold Type" Grid.Column="0" Grid.Row="2" Margin="0 10"/>
+                <Label x:Name="lblGoldWeight" Content="Gold Weight" Grid.Column="2" Grid.Row="2" Margin="40 10 0 10"/>
+                <Label x:Name="lblGoldPrice" Content="Gold Price" Grid.Column="4" Grid.Row="2" Margin="40 10 0 10"/>
+                <Label x:Name="lblGemType" Content="Gem Type" Grid.Column="0" Grid.Row="3" Margin="0 10"/>
+                <Label x:Name="lblGemWeight" Content="Gem Weight" Grid.Column="2" Grid.Row="3" Margin="40 10 0 10"/>
+                <Label x:Name="lblGemPrice" Content="Gem Price" Grid.Column="4" Grid.Row="3" Margin="40 10 0 10"/>
+                <Label x:Name="lblLabour" Content="Labour" Grid.Column="0" Grid.Row="4" Margin="0 10"/>
+                <Label x:Name="lblQuantity" Content="Quantity" Grid.Column="2" Grid.Row="4" Margin="40 10 0 10"/>
+                <Label x:Name="lblProductPrice" Content="Total price" Grid.Column="4" Grid.Row="4" Margin="40 10 0 10"/>
 
                 <!--TextBox-->
-                <TextBox x:Name="txtName" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="5"/>
+                <TextBox x:Name="txtName" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3"/>
+                <Button x:Name="chooseImg" Content="Choose Image" Height="30" Grid.Column="4" Grid.Row="0" Margin="10" Click="chooseImg_Click"/>
+                <Image x:Name="selectedImg"  Grid.Column="5" Grid.Row="0" />
                 <TextBox x:Name="txtDescription" TextWrapping="Wrap" Height="50" Margin="0,10" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5"/>
                 <ComboBox x:Name="cbGoldType" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="2"/>
                 <TextBox x:Name="txtGoldWeight" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="3" Grid.Row="2"

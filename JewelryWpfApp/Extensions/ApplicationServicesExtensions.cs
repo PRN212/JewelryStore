@@ -19,9 +19,12 @@ namespace JewelryWpfApp.Extensions
             // Register Services and ViewModels
             services.AddScoped<ProductService>();
             services.AddScoped<UserService>();
+            services.AddScoped<GoldService>();
+
             services.AddScoped<UserRepository>();
             services.AddScoped<ProductRepository>();
             services.AddScoped<GoldPriceRepository>();
+            services.AddScoped<GoldRepository>();
 
             services.AddTransient<Login>();
             services.AddTransient<ManagerMainUI>();

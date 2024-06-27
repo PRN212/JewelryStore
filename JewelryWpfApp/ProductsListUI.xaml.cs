@@ -13,11 +13,13 @@ namespace JewelryWpfApp
     public partial class ProductsListUI : Page
     {
         private readonly ProductService _productService;
-        private ProductDto _selected;
+        private readonly GoldService _goldService;
+        private ProductDto? _selected = null;
 
-        public ProductsListUI(ProductService productService)
+        public ProductsListUI(ProductService productService, GoldService goldService)
         {
             _productService = productService;
+            _goldService = goldService;
             InitializeComponent();
         }
 
@@ -38,9 +40,9 @@ namespace JewelryWpfApp
             {
                 try
                 {
-                    _selected = (ProductDto) dgvProductsList.SelectedItems[0];
-                    ProductDetail productDetailUI = new ProductDetail(_productService);
-                    productDetailUI._productDto = _selected;
+                    _selected = (ProductDto)dgvProductsList.SelectedItems[0];
+                    ProductDetail productDetailUI = new ProductDetail(_productService, _goldService);
+                    productDetailUI.ProductDto = _selected;
                     productDetailUI.ShowDialog();
 
                     await FillDataGridView();
@@ -66,9 +68,11 @@ namespace JewelryWpfApp
             dgvProductsList.ItemsSource = await _productService.GeProductByName(searchValue);
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            ProductDetail productDetailUI = new ProductDetail(_productService, _goldService);
+            productDetailUI.ShowDialog();
+            await FillDataGridView();
         }
     }
 }
