@@ -72,9 +72,7 @@ namespace Repositories.Migrations
                     GoldId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AskPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BidPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AskRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    BidRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
+                    BidPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,7 +101,8 @@ namespace Repositories.Migrations
                     GemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Labour = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true)
+                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {

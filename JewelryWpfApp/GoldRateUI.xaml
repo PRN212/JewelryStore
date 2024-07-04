@@ -18,16 +18,32 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" x:Name="lblHeader" Content="_____SJC Gold Rate____" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Height="42" Width="Auto"/>
-        <Label Grid.Row="1" x:Name="lblUpdateTime" Content="Update time: " HorizontalAlignment="Right" Margin="0,0,40,0"/>
+        <Label Grid.Row="1" x:Name="lblUpdateTime" Content="Update time: " HorizontalAlignment="Right" Margin="0,0,40,0" FontSize="18"/>
         <Button Grid.Row="2" x:Name="btnGetPrice" Content="Get Price" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" Height="33" Width="100" RenderTransformOrigin="0.5,0.5" Click="btnGetPrice_Click" Margin="20,10,20,0"/>
         <Label Grid.Row="3" x:Name="lblUnit" Content="Unit: 1000 VND/Tael (37.5g)" HorizontalAlignment="Right" Margin="0,0,40,0" FontWeight="Bold" FontSize="14"/>
-        <DataGrid Grid.Row="4" x:Name="grdGoldRate" AutoGenerateColumns="False" IsReadOnly="True" Margin="30,0,30,20">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Gold Name" Binding="{Binding GoldName}"/>
-                <DataGridTextColumn Header="Ask Price" Binding="{Binding BuyingPrice}" />
-                <DataGridTextColumn Header="Bid Price" Binding="{Binding SellingPrice}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="650"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" x:Name="grdGoldRate" AutoGenerateColumns="False" IsReadOnly="True" Margin="30,0,50,20" SelectionChanged="grdGoldRate_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Gold ID" Binding="{Binding GoldId}"/>
+                    <DataGridTextColumn Header="Gold Name" Binding="{Binding GoldName}"/>
+                    <DataGridTextColumn  Header="Ask Price" Binding="{Binding BuyingPrice}" />
+                    <DataGridTextColumn Header="Bid Price" Binding="{Binding SellingPrice}" />
+                    <DataGridTextColumn Header="Ask Rate" Binding="{Binding BuyingRate}" />
+                    <DataGridTextColumn Header="Bid Rate" Binding="{Binding SellingRate}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Column="1">
+                <Label Content="Charge Rate" HorizontalAlignment="Center" FontSize="16"/>
+                <TextBox x:Name="tbChargeRate" Height="30"/>
+                <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="100" Click="btnUpdate_Click" Margin="0,20,0,0"/>
+                <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Height="30" Width="100" Click="btnSave_Click" Margin="0,70,0,0"/>
+            </StackPanel>
+        </Grid>
 
     </Grid>
 </Page>

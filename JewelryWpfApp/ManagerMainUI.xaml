@@ -1,0 +1,33 @@
+﻿<Window x:Class="JewelryWpfApp.ManagerMainUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JewelryWpfApp"
+        mc:Ignorable="d"
+        Title="ManagerMainUI" Height="600" Width="1000" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3.5*"/>
+        </Grid.ColumnDefinitions>
+        <Frame x:Name="frMain" NavigationUIVisibility="Visible" Grid.Column="1"/>
+        <StackPanel Background="#FFC7A882" Grid.Column="0">
+
+            <Button x:Name="btnNavGold" Content="Manage Gold Type" Height="40" Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,1" VerticalAlignment="Top" Margin="0,100,0,0" HorizontalContentAlignment="Left" Click="btnNavGold_Click"/>
+            <Button x:Name="btnNavProduct" Content="Manage Product" Height="40" Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,1" HorizontalContentAlignment="Left" Click="btnNavProduct_Click"/>
+            <Button x:Name="btnNavSalesOrder" Content="Manage Sales Order" Height="40" Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,1" HorizontalContentAlignment="Left" Click="btnNavSalesOrder_Click"/>
+            <Button x:Name="btnNavPurchaseOrder" Content="Manage Purchase Order" Height="40"  Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,1" HorizontalContentAlignment="Left" Click="btnNavPurchaseOrder_Click"/>
+            <Button x:Name="btnNavStaff" Content="Manage Staff" Height="40"  Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,1" HorizontalContentAlignment="Left" Click="btnNavStaff_Click"/>
+            <Button x:Name="btnNavProfile" Content="My Profile" Height="40"  Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,1" HorizontalContentAlignment="Left" Click="btnNavProfile_Click"/>
+            <Button x:Name="btnLogout" Content="Logout" Height="35" Background="#FFC7A882" Foreground="White" FontSize="16" 
+                    BorderThickness="0,0,0,0" VerticalAlignment="Bottom" Margin="0,0,0,20" HorizontalContentAlignment="Left" Click="btnLogout_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -11,12 +11,8 @@ namespace Repositories.Entities
         public Gold Gold { get; set; }
         public DateTime DateTime { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float AskPrice { get; set; }
+        public decimal AskPrice { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float BidPrice { get; set; }
-        [Column(TypeName = "decimal(5,2)")]
-        public float AskRate { get; set; }
-        [Column(TypeName = "decimal(5,2)")]
-        public float BidRate { get; set; }
+        public decimal BidPrice { get; set; }
     }
 }

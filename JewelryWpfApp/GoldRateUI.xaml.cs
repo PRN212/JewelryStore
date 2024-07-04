@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Repositories.Entities;
+using Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -25,64 +28,54 @@ namespace JewelryWpfApp
     /// </summary>
     public partial class GoldRateUI : Page
     {
-        public GoldRateUI()
+        private readonly GoldPriceService _goldPriceService;
+        public GoldRateUI(GoldPriceService goldPriceService)
         {
+            _goldPriceService = goldPriceService;
             InitializeComponent();
         }
 
+        private GoldPriceFromAPI _selected = null;
+        List<GoldPriceFromAPI> goldPriceData = new List<GoldPriceFromAPI>();
+        DateTime dateTime;
+
+
         private void btnGetPrice_Click(object sender, RoutedEventArgs e)
         {
-            //var API_URL = @"https://sjc.com.vn/xml/tygiavang.xml";
-            //XmlDocument xml = new XmlDocument();
-            //xml.LoadXml(API_URL);
-            //var updated = DateTime.Parse(xml.SelectSingleNode("/root/ratelist").Attributes["updated"].InnerText).ToString("dd/MM/yyyy HH:mm:ss");
-            //lblUpdateTime.Content = $"Update time: {updated}";
-
-            //var listNode = xml.SelectNodes("/root/ratelist/city");
-            //foreach (XmlNode node in listNode)
-            //{
-            //    var nameCity = node.Attributes["name"].InnerText;
-            //    var childNodeItem = node.ChildNodes;
-            //    if (childNodeItem.Count > 0)
-            //    {
-            //        foreach (XmlNode childNode in childNodeItem)
-            //        {
-            //            var buy = childNode.Attributes["buy"].InnerText;
-            //            var sell = childNode.Attributes["sell"].InnerText;
-            //            var type = childNode.Attributes["type"].InnerText;
-            //            tableRate.Rows.Add(nameCity, type, double.Parse(buy), double.Parse(sell));
-            //        }
-            //    }
-            //}
-
-            List<GoldPriceData> goldPriceData = new List<GoldPriceData>();
+            CultureInfo provider = CultureInfo.InvariantCulture;
 
             try
             {
-                // Fetch the XML data from the API
+                // Fetch dữ liệu từ API
                 string apiUrl = "https://sjc.com.vn/xml/tygiavang.xml";
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 StreamReader reader = new StreamReader(response.GetResponseStream());
                 string xml = reader.ReadToEnd();
 
-                // Load the XML data into an XmlDocument
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xml);
 
-                var updated = doc.SelectSingleNode("/root/ratelist").Attributes["updated"].InnerText;
-                lblUpdateTime.Content = $"Update time: {updated}";
+                // Lấy từng trường dữ liệu 
+                string getUpdatedTime = doc.SelectSingleNode("/root/ratelist").Attributes["updated"].InnerText;
+                string[] splitTime = getUpdatedTime.Split(' ');
+                string updatedTime = splitTime[2] + " " + splitTime[0];
+                dateTime = DateTime.ParseExact(updatedTime, "dd/MM/yyyy HH:mm:ss", provider);
 
-                // Extract the data from the XmlDocument and populate the GoldPriceData list
+                lblUpdateTime.Content = $"Update time: {dateTime}";
+
                 var nodes = doc.SelectNodes("/root/ratelist/city");
                 var childNote = nodes[0];
+                int index = 1;
                 foreach (XmlNode node in childNote)
                 {
-                    GoldPriceData data = new GoldPriceData();
+                    GoldPriceFromAPI data = new GoldPriceFromAPI();
+                    data.GoldId = index;
                     data.GoldName = node.Attributes["type"].InnerText;
-                    data.BuyingPrice = node.Attributes["buy"].InnerText;
-                    data.SellingPrice = node.Attributes["sell"].InnerText;
+                    data.BuyingPrice = decimal.Parse(node.Attributes["buy"].InnerText);
+                    data.SellingPrice = decimal.Parse(node.Attributes["sell"].InnerText);
                     goldPriceData.Add(data);
+                    index++;
                 }
             }
             catch (Exception ex)
@@ -91,15 +84,83 @@ namespace JewelryWpfApp
                 return;
             }
 
-            // Bind the data to the DataGrid
             grdGoldRate.ItemsSource = goldPriceData;
         }
 
-        public class GoldPriceData
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            if (_selected != null)
+            {
+                if (string.IsNullOrEmpty(tbChargeRate.Text))
+                {
+                    MessageBox.Show("Please fill in all the required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (decimal.TryParse(tbChargeRate.Text, out decimal chargeRate) && chargeRate >=0)
+                {
+                    foreach (GoldPriceFromAPI gold in goldPriceData)
+                    {
+                        if (gold.GoldId.Equals(_selected.GoldId))
+                        {
+                            gold.BuyingRate = gold.BuyingPrice * chargeRate;
+                            gold.SellingRate = gold.SellingPrice * chargeRate;
+                            ReloadDataGrid();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter valid numeric values.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("You must choose an item to Update!", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (GoldPriceFromAPI gold in goldPriceData)
+            {
+                GoldPrice goldPrice = new GoldPrice()
+                {
+                    GoldId = gold.GoldId,
+                    DateTime = dateTime,
+                    AskPrice = gold.BuyingRate,
+                    BidPrice = gold.SellingRate
+                };
+                _goldPriceService.SaveNewGoldPrice(goldPrice);
+            }
+        }
+
+        private void grdGoldRate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (grdGoldRate.SelectedItems.Count > 0 ) 
+            {
+                _selected = (GoldPriceFromAPI)grdGoldRate.SelectedItems[0];
+            }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ReloadDataGrid()
+        {
+            grdGoldRate.ItemsSource = null;
+            grdGoldRate.ItemsSource = goldPriceData;
+        }
+
+        private class GoldPriceFromAPI
+        {
+            public int GoldId { get; set; }
             public string GoldName { get; set; }
-            public string BuyingPrice { get; set; }
-            public string SellingPrice { get; set; }
+            public decimal BuyingPrice { get; set; }
+            public decimal SellingPrice { get; set; }
+            public decimal BuyingRate { get; set; }
+            public decimal SellingRate { get; set; }
         }
     }
 }
