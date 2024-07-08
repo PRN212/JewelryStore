@@ -17,5 +17,11 @@ namespace Repositories
                 .OrderByDescending(g => g.DateTime)
                 .Take(1).FirstOrDefault();
         }
+
+        public void AddGoldPrice(GoldPrice goldPrice)
+        {
+            _context.Add(goldPrice);
+            _context.SaveChanges();
+        }
     }
 }
