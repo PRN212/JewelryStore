@@ -19,7 +19,7 @@ namespace Repositories.Entities
         public string PaymentMethod { get; set; }
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
