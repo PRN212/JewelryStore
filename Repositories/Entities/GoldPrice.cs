@@ -10,9 +10,9 @@ namespace Repositories.Entities
         public int GoldId { get; set; }
         public Gold Gold { get; set; }
         public DateTime DateTime { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,0)")]
         public decimal AskPrice { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,0)")]
         public decimal BidPrice { get; set; }
     }
 }

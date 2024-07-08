@@ -5,7 +5,7 @@
     "GoldId": 3,
     "GoldWeight": 1.34,
     "TotalWeight": 1.34,
-    "Labour": 350,
+    "Labour": 350000,
     "Status": true,
     "Quantity": 3,
     "ImgUrl": "/img/nhan-18K.png"
@@ -16,13 +16,13 @@
     "GoldId": 1,
     "GoldWeight": 0.98,
     "TotalWeight": 1.54,
-    "Labour": 400,
+    "Labour": 400000,
     "Status": true,
     "Quantity": 2,
     "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 1,
-    "GemPrice": 400
+    "GemPrice": 400000
   },
   {
     "Name": "Vỏ nhẫn kim cương vàng trắng 14K",
@@ -30,13 +30,13 @@
     "GoldId": 4,
     "GoldWeight": 3.37,
     "TotalWeight": 6.14,
-    "Labour": 1290,
+    "Labour": 1290000,
     "Status": true,
     "Quantity": 7,
     "ImgUrl": "/img/nhan-18K.png",
     "GemName": "Diamond",
     "GemWeight": 1.2,
-    "GemPrice": 1000
+    "GemPrice": 1000000
   },
   {
     "Name": "Nhẫn kim cương vàng trắng 14K",
@@ -44,21 +44,21 @@
     "GoldId": 4,
     "GoldWeight": 18.6,
     "TotalWeight": 41.6,
-    "Labour": 1201,
+    "Labour": 1201000,
     "Status": true,
     "Quantity": 1,
     "ImgUrl": "/img/nhan-18K.png",
     "GemName": "Ruby",
     "GemWeight": 1.5,
-    "GemPrice": 2000
+    "GemPrice": 2000000
   },
   {
     "Name": "Dây chuyền vàng Ý 18K",
     "Description": "Velit nulla nisi id magna aliquip incididunt incididunt ipsum proident deserunt minim incididunt dolor. In ex.\r\n",
     "GoldId": 3,
-    "GoldWeight": 16.66,
-    "TotalWeight": 16.66,
-    "Labour": 1172,
+    "GoldWeight": 1.6,
+    "TotalWeight": 1.6,
+    "Labour": 1172000,
     "Status": true,
     "Quantity": 5,
     "ImgUrl": "/img/nhan-18K.png"
@@ -75,7 +75,7 @@
     "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 1.5,
-    "GemPrice": 450
+    "GemPrice": 450000
   },
   {
     "Name": "Dây chuyền vàng trắng 14K",
@@ -83,7 +83,7 @@
     "GoldId": 4,
     "GoldWeight": 1.7,
     "TotalWeight": 1.7,
-    "Labour": 1524,
+    "Labour": 1524000,
     "Status": true,
     "Quantity": 7,
     "ImgUrl": "/img/nhan-18K.png"
@@ -94,13 +94,13 @@
     "GoldId": 3,
     "GoldWeight": 3.4,
     "TotalWeight": 4.5,
-    "Labour": 1906,
+    "Labour": 1906000,
     "Status": true,
     "Quantity": 4,
     "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 0.9,
-    "GemPrice": 250
+    "GemPrice": 250000
   },
   {
     "Name": "Lắc tay kim tiền vàng 610",
@@ -108,7 +108,7 @@
     "GoldId": 1,
     "GoldWeight": 4.76,
     "TotalWeight": 4.76,
-    "Labour": 1023,
+    "Labour": 1023000,
     "Status": true,
     "Quantity": 5,
     "ImgUrl": "/img/nhan-18K.png"
@@ -119,7 +119,7 @@
     "GoldId": 5,
     "GoldWeight": 1,
     "TotalWeight": 1,
-    "Labour": 200,
+    "Labour": 200000,
     "Status": true,
     "Quantity": 11,
     "ImgUrl": "/img/nhan-18K.png"
@@ -130,7 +130,7 @@
     "GoldId": 5,
     "GoldWeight": 2,
     "TotalWeight": 2,
-    "Labour": 200,
+    "Labour": 200000,
     "Status": true,
     "Quantity": 10,
     "ImgUrl": "/img/nhan-18K.png"
@@ -163,7 +163,7 @@
     "GoldId": 5,
     "GoldWeight": 1,
     "TotalWeight": 1,
-    "Labour": 300,
+    "Labour": 300000,
     "Status": true,
     "Quantity": 12,
     "ImgUrl": "/img/nhan-18K.png"
@@ -174,7 +174,7 @@
     "GoldId": 4,
     "GoldWeight": 2,
     "TotalWeight": 2,
-    "Labour": 300,
+    "Labour": 300000,
     "Status": true,
     "Quantity": 10,
     "ImgUrl": "/img/nhan-18K.png"

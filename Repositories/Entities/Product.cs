@@ -20,9 +20,9 @@ namespace Repositories.Entities
         public string? GemName { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal GemWeight { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,0)")]
         public decimal GemPrice { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,0)")]
         public decimal Labour { get; set; }
         public int Quantity { get; set; }
         [Column(TypeName = "varchar(200)")]

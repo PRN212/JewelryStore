@@ -21,7 +21,7 @@ namespace Services.Dto
         { 
             get
             {
-                return GoldPrice*GoldWeight + Labour + GemPrice;
+                return Math.Floor(GoldPrice*GoldWeight*100 + Labour + GemPrice);
             }
         }
     }
