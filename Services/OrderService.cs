@@ -18,7 +18,7 @@ namespace Services
             return _orderRepo.GetAll().ToList();
 		}
 
-        public List<Order> GetAllSellOrders()
+        public List<Order> GetSellOrders()
         {
             return _orderRepo.GetAll(o => o.Type == SD.TypeSell, includeProperties: "OrderDetails").ToList();
         }
