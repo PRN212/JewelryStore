@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Repositories.Entities;
 
 namespace Repositories
@@ -21,6 +22,19 @@ namespace Repositories
         {
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(k => new { k.OrderId, k.ProductId });
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("DBDefault");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
     }
 }

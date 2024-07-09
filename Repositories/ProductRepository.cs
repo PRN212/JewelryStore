@@ -6,27 +6,27 @@ namespace Repositories
 {
     public class ProductRepository
     {
-            private DataContext _context;
-            public ProductRepository(DataContext context) 
-            {
-                _context = context;
-            }
+        private DataContext _context;
+        public ProductRepository(DataContext context) 
+        {
+            _context = context;
+        }
 
-            public async Task<IEnumerable<Product>> GetProducts()
-            {
-                return await _context.Products
-                .Where(p => p.Status)
-                .Include(p => p.Gold)
-                .ToListAsync();
-            }
+        public async Task<IEnumerable<Product>> GetProducts()
+        {
+            return await _context.Products
+            .Where(p => p.Status)
+            .Include(p => p.Gold)
+            .ToListAsync();
+        }
 
-            public Product? GetProductById(int id)
-            {
-                return _context.Products
-                .Where(p => p.Status)
-                .Include (p => p.Gold)
-                .FirstOrDefault(p =>p.Id == id);
-            }
+        public Product? GetProductById(int id)
+        {
+            return _context.Products
+            .Where(p => p.Status)
+            .Include (p => p.Gold)
+            .FirstOrDefault(p =>p.Id == id);
+        }
 
         public async Task<IEnumerable<Product>> GetProductByName(string name)
         {
@@ -35,17 +35,25 @@ namespace Repositories
             .Where(p => p.Name.Contains(name))
             .ToListAsync();
         }
-        public bool AddProduct(Product product)
-            {
-                _context.Add(product);
-                return _context.SaveChanges() > 0;
-            }
 
-            public bool UpdateProduct(Product product)
-            {
-                _context.Update(product);
-                return _context.SaveChanges() > 0;
-            }
+        public bool AddProduct(Product product)
+        {
+            _context.Add(product);
+            return _context.SaveChanges() > 0;
+        }
+
+        public int AddProductV2(Product product)
+        {
+            _context.Add(product);
+            _context.SaveChanges();
+            return product.Id;
+        }
+
+        public bool UpdateProduct(Product product)
+        {
+            _context.Update(product);
+            return _context.SaveChanges() > 0;
+        }
 
         public async Task<IEnumerable<Product>> SearchProducts(string searchValue)
         {
