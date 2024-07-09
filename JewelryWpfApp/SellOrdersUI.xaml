@@ -11,7 +11,7 @@
     <Grid x:Name="grdPurchaseOrderManagement" Background="White">
         <StackPanel Margin="30">
             <!--Label-->
-            <Label Grid.Row="0" Grid.Column="0" Content="PURCHASE ORDER MANAGEMENT"  FontSize="22"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="SELL ORDER MANAGEMENT"  FontSize="22"/>
 
             <!---Search-->
             <Grid Grid.Row="0" Grid.Column="1" Margin="0 20">
@@ -24,12 +24,20 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBox x:Name="txtSearch" Grid.Column="0" Height="30"/>
-                <Button x:Name="btnSearch" Grid.Column="1" Content="Search" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="20 0" Click="btnSearch_Click"/>
-                <Button x:Name="btnAdd" Grid.Column="2" Content="Add" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="40 0 0 0" Click="btnAdd_Click"/>
+                <!--<Button x:Name="btnSearch" Grid.Column="1" Content="Search" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="20 0" Click="btnSearch_Click"/>
+                <Button x:Name="btnAdd" Grid.Column="2" Content="Add" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="40 0 0 0" Click="btnAdd_Click"/>-->
             </Grid>
 
             <!---Data List-->
-            <DataGrid Grid.Column="1" Grid.Row="1" x:Name="dgvPurchaseOrders" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0 10" SelectionChanged="dgvPurchaseOrders_SelectionChanged" Height="350"/>
+            <DataGrid x:Name="dgSellOrders" AutoGenerateColumns="True" />
+            <!--<DataGrid.Columns>
+                -->
+            <!--<DataGridTextColumn Header="Order Date" Binding="{Binding Order.OrderDate}" />
+                    <DataGridTextColumn Header="Product Name" Binding="{Binding OrderDetails[0].ProductName}" />
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding OrderDetails[0].Quantity}" />
+                    <DataGridTextColumn Header="Price" Binding="{Binding OrderDetails[0].Price}" />-->
+            <!--
+            </DataGrid.Columns>-->
 
         </StackPanel>
     </Grid>

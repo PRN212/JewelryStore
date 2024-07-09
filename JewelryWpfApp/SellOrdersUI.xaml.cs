@@ -29,32 +29,30 @@ namespace JewelryWpfApp
         private readonly OrderService _orderService; 
         private readonly OrderDetailService _orderDetailService;
 
-        public ObservableCollection<Order> OrderList { get; set; }
+        //public ObservableCollection<Order> OrderList { get; set; }
 
 
         public SellOrdersUI(ProductService productService, GoldService goldService,
-            OrderDetailService orderDetailService)
+            OrderDetailService orderDetailService, OrderService orderService)
         {
             _productService = productService;
             _goldService = goldService;
             _orderDetailService = orderDetailService;
+            _orderService = orderService;
             InitializeComponent();
-            OrderList = new ObservableCollection<Order>();
+            //OrderList = new ObservableCollection<Order>();
         }
 
-        private async void PageLoaded(object sender, RoutedEventArgs e)
+        private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            await FillDataGridView();
+            var orders = GetOrders(); 
+            dgSellOrders.ItemsSource = orders;
         }
 
-        private async Task FillDataGridView()
+        private List<Order> GetOrders()
         {
-            IEnumerable<Order> orders = _orderService.GetSellOrders(); 
-            OrderList.Clear(); 
-            foreach (var order in orders)
-            {
-                OrderList.Add(order); 
-            }
+            List<Order> orders = _orderService.GetSellOrders();
+            return orders;
         }
 
     }
