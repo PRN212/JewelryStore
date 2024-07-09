@@ -13,6 +13,11 @@ namespace Services.Helpers
 
             CreateMap<ProductToAddDto, Product>();
             CreateMap<ProductDto, Product>();
+
+            CreateMap<PurchaseOrderDto, Order>();
+            CreateMap<Order, PurchaseOrderDto>();
+
+            CreateMap<OrderDetailDto, OrderDetail>();
         }
     }
 }

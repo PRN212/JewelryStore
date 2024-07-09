@@ -9,11 +9,14 @@ namespace JewelryWpfApp
     public partial class ManagerMainUI : Window
     {
         private readonly ProductsListUI _productsListUI;
+        private readonly PurchaseOrdersUI _purchaseOrdersUI;
         IServiceProvider _serviceProvider;
-        public ManagerMainUI(ProductsListUI productListUI, IServiceProvider serviceProvider)
+        public ManagerMainUI(ProductsListUI productListUI,
+            PurchaseOrdersUI purchaseOrdersUI, IServiceProvider serviceProvider)
         {
             _productsListUI = productListUI;
             _serviceProvider = serviceProvider;
+            _purchaseOrdersUI = purchaseOrdersUI;
             InitializeComponent();
         }
 
@@ -44,7 +47,7 @@ namespace JewelryWpfApp
         /* Navigate to purchase_order management page*/
         private void btnNavPurchaseOrder_Click(object sender, RoutedEventArgs e)
         {
-
+            frMain.Content = _purchaseOrdersUI;
         }
 
         /* Navigate to staff management page*/

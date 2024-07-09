@@ -16,10 +16,12 @@ namespace JewelryWpfApp
     {
         UserService _userService;
         private readonly IServiceProvider _serviceProvider;
-        public Login(UserService userService, IServiceProvider serviceProvider)
+        private readonly UserSessionService _userSessionService;
+        public Login(UserService userService, IServiceProvider serviceProvider, UserSessionService userSessionService)
         {
             _userService = userService;
             _serviceProvider = serviceProvider;
+            _userSessionService = userSessionService;
             InitializeComponent();          
         }
 
@@ -39,6 +41,9 @@ namespace JewelryWpfApp
                 return;
             }
 
+            // Store the logged-in user in the session service
+            _userSessionService.CurrentUser = acc;
+
             // role manager
             if (acc.Role == "Manager")
             {
@@ -54,7 +59,6 @@ namespace JewelryWpfApp
                 mainWindow.Show();
                 Close();
             }
-                  
         }
     }
 }

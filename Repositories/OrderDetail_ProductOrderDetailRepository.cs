@@ -1,13 +1,17 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Repositories.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class OrderDetailRepository
+    public class OrderDetail_ProductOrderDetailRepository
     {
         private DataContext _context;
-        public OrderDetailRepository(DataContext context)
+        public OrderDetail_ProductOrderDetailRepository(DataContext context)
         {
             _context = context;
         }
@@ -19,17 +23,10 @@ namespace Repositories
             .ToListAsync();
         }
 
-        public bool AddOrderDetail(OrderDetail orderDetail)
+        public bool AddOrderDetail_ProductOrderDetail(OrderDetail orderDetail)
         {
             _context.OrderDetail.Add(orderDetail);
             return _context.SaveChanges() > 0;
-        }
-
-        public async Task<OrderDetail> GetOrderDetailByProductId(int productId)
-        {
-            return await _context.OrderDetail
-                .Where (p => p.ProductId == productId) 
-                .FirstAsync();
         }
     }
 }
