@@ -1,27 +1,83 @@
-﻿
-namespace Services.Dto
+﻿using Repositories.Entities;
+using Static;
+using System.Collections.ObjectModel;
+
+namespace DTOs
 {
-    public class ProductDto
+    public class SellOrderDto : PropChanged
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = "";
-        public string? Description { get; set; }
-        public int GoldId { get; set; }
-        public string? GoldType { get; set; }
-        public decimal GoldWeight { get; set; }
-        public decimal GoldPrice { get; set; }
-        public decimal TotalWeight { get; set; }
-        public string? GemName { get; set; }
-        public decimal GemWeight { get; set; }
-        public decimal GemPrice { get; set; }
-        public decimal Labour { get; set; }
-        public int Quantity { get; set; }
-        public string? ImgUrl { get; set; }
-        public decimal ProductPrice 
-        { 
-            get
+        private Order _order;
+        public Order Order
+        {
+            get => _order;
+            set
             {
-                return GoldPrice*GoldWeight + Labour + GemPrice;
+                _order = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<OrderDetailDto> _orderDetails;
+        public ObservableCollection<OrderDetailDto> OrderDetails
+        {
+            get => _orderDetails;
+            set
+            {
+                _orderDetails = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public SellOrderDto()
+        {
+            OrderDetails = new ObservableCollection<OrderDetailDto>();
+        }
+    }
+
+    public class OrderDetailDto : PropChanged
+    {
+        private int _productId;
+        public int ProductId
+        {
+            get => _productId;
+            set
+            {
+                _productId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _quantity;
+        public int Quantity
+        {
+            get => _quantity;
+            set
+            {
+                _quantity = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private float _price;
+        public float Price
+        {
+            get => _price;
+            set
+            {
+                _price = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Assuming you might also want to include Product details in the DTO
+        private string _productName;
+        public string ProductName
+        {
+            get => _productName;
+            set
+            {
+                _productName = value;
+                OnPropertyChanged();
             }
         }
     }
