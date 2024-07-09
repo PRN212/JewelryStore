@@ -15,7 +15,7 @@ namespace Repositories
         public virtual DbSet<GoldPrice> GoldPrices { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
