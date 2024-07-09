@@ -14,4 +14,7 @@
     <ProjectReference Include="..\Repositories\Repositories.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Static\Static.csproj" />
+	</ItemGroup>
 </Project>
