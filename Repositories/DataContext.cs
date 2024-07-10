@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Repositories.Entities;
 using Static;
 
@@ -18,16 +19,32 @@ namespace Repositories
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("DBDefault");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(k => new { k.OrderId, k.ProductId });
 
-            // Seed Orders
+            //Seed Orders
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer { Id = 1, Name = "John Doe", Phone = "0123456789", Address = "3 Nam Ky Khoi Nghia" }
+            );
+
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000f, CreatedDate = DateTime.Now, Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = "1" },
-                new Order { Id = 2, CustomerId = 2, TotalPrice = 2000f, CreatedDate = DateTime.Now, Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = "1" },
-                new Order { Id = 3, CustomerId = 3, TotalPrice = 3000f, CreatedDate = DateTime.Now, Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = "1" }
+                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000f, CreatedDate = DateTime.Now, Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = 1 },
+                new Order { Id = 2, CustomerId = 1, TotalPrice = 2000f, CreatedDate = DateTime.Now, Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 },
+                new Order { Id = 3, CustomerId = 1, TotalPrice = 3000f, CreatedDate = DateTime.Now, Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 }
             );
 
             modelBuilder.Entity<OrderDetail>().HasData(

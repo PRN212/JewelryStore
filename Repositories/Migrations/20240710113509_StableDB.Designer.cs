@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories;
 
@@ -11,9 +12,11 @@ using Repositories;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240710113509_StableDB")]
+    partial class StableDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,15 +48,6 @@ namespace Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "3 Nam Ky Khoi Nghia",
-                            Name = "John Doe",
-                            Phone = "0123456789"
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Gold", b =>
@@ -146,41 +140,6 @@ namespace Repositories.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2024, 7, 10, 18, 38, 55, 940, DateTimeKind.Local).AddTicks(6462),
-                            CustomerId = 1,
-                            PaymentMethod = "CreditCard",
-                            Status = "Pending",
-                            TotalPrice = 1000m,
-                            Type = "Sell",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = new DateTime(2024, 7, 10, 18, 38, 55, 940, DateTimeKind.Local).AddTicks(6474),
-                            CustomerId = 1,
-                            PaymentMethod = "Cash",
-                            Status = "Completed",
-                            TotalPrice = 2000m,
-                            Type = "Sell",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = new DateTime(2024, 7, 10, 18, 38, 55, 940, DateTimeKind.Local).AddTicks(6476),
-                            CustomerId = 1,
-                            PaymentMethod = "Cash",
-                            Status = "Shipped",
-                            TotalPrice = 3000m,
-                            Type = "Sell",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.OrderDetail", b =>
@@ -202,29 +161,6 @@ namespace Repositories.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 1,
-                            Price = 500m,
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 2,
-                            Price = 700m,
-                            Quantity = 3
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            ProductId = 3,
-                            Price = 900m,
-                            Quantity = 4
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Product", b =>
