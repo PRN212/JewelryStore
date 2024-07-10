@@ -29,20 +29,6 @@ namespace Repositories
 
                 context.SaveChanges();
             }
-            // Seed GoldPrice
-            if (!context.GoldPrices.Any())
-            {
-                var data = File.ReadAllText(path + @"/Repositories/SeedData/GoldPrice.json");
-
-                var list = JsonSerializer.Deserialize<List<GoldPrice>>(data, options);
-
-                foreach (var item in list)
-                {
-                    context.GoldPrices.Add(item);
-                }
-
-                context.SaveChanges();
-            }
             //Seed Product Data
             if (!context.Products.Any())
             {

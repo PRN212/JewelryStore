@@ -71,8 +71,8 @@ namespace Repositories.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GoldId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AskPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BidPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    AskPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    BidPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,8 +98,8 @@ namespace Repositories.Migrations
                     TotalWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     GemName = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     GemWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    GemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Labour = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GemPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    Labour = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: false)

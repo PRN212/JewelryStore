@@ -9,10 +9,12 @@ namespace JewelryWpfApp
     public partial class ManagerMainUI : Window
     {
         private readonly ProductsListUI _productsListUI;
+        private readonly GoldRateUI _goldRateUI;
         IServiceProvider _serviceProvider;
-        public ManagerMainUI(ProductsListUI productListUI, IServiceProvider serviceProvider)
+        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider)
         {
             _productsListUI = productListUI;
+            _goldRateUI = goldRateUI;
             _serviceProvider = serviceProvider;
             InitializeComponent();
         }
@@ -26,7 +28,7 @@ namespace JewelryWpfApp
         /* Navigate to gold price management page*/
         private void btnNavGold_Click(object sender, RoutedEventArgs e)
         {
-            
+            frMain.Content = _goldRateUI;
         }
 
         /* Navigate to product management page*/
