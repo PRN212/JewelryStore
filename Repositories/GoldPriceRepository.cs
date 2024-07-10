@@ -23,5 +23,12 @@ namespace Repositories
             _context.Add(goldPrice);
             _context.SaveChanges();
         }
+
+        public GoldPrice? GetLatestGoldPriceByGoldId(int goldId)
+        {
+            return _context.GoldPrices.Where(g => g.GoldId == goldId)
+                .OrderByDescending(g => g.DateTime)
+                .Take(1).FirstOrDefault();
+        }
     }
 }

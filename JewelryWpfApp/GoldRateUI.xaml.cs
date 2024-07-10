@@ -100,15 +100,6 @@ namespace JewelryWpfApp
                 }
                 if (decimal.TryParse(tbChargeRate.Text, out decimal chargeRate) && chargeRate >=0)
                 {
-                    //foreach (GoldPriceFromAPI gold in goldPriceData)
-                    //{
-                    //    if (gold.GoldId.Equals(_selected.GoldId))
-                    //    {
-                    //        gold.BuyingRate = gold.BuyingPrice * chargeRate;
-                    //        gold.SellingRate = gold.SellingPrice * chargeRate;
-                    //        ReloadDataGrid();
-                    //    }
-                    //}
                     _selected.BuyingRate = _selected.BuyingPrice * chargeRate;
                     _selected.SellingRate = _selected.SellingPrice * chargeRate;
                     ReloadDataGrid();

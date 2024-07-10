@@ -24,5 +24,16 @@ namespace Services
         {
             _goldPriceRepo.AddGoldPrice(goldPrice);
         }
+
+        public List<GoldPrice> GetLatestGoldPrices()
+        {
+            List<GoldPrice> goldPrices = new List<GoldPrice>();
+            for (int i = 1; i < 9; i++)
+            {
+                GoldPrice goldPrice =  _goldPriceRepo.GetLatestGoldPriceByGoldId(i);
+                goldPrices.Add(goldPrice);
+            }
+            return goldPrices;
+        }
     }
 }

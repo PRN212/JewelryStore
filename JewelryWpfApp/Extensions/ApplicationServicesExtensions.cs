@@ -38,6 +38,7 @@ namespace JewelryWpfApp.Extensions
             services.AddTransient<StaffMainUI>();
             services.AddTransient<ProductsListUI>();
             services.AddTransient<GoldRateUI>();
+            services.AddTransient<GoldPriceUI>();
             services.AddTransient<PurchaseOrdersUI>();
             services.AddTransient<PurchaseOrderDetail_ProductDetail>();
 
