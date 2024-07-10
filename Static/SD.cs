@@ -10,7 +10,7 @@ namespace Static
     {
         public const string TypeSell = "Sell";
 
-        public const string TypeCredit = "CreditCard";
+        public const string TypeCredit = "Credit Card";
         public const string TypeCash = "Cash";
 
     }

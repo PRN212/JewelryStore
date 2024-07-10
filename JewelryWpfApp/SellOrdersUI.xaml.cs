@@ -49,9 +49,9 @@ namespace JewelryWpfApp
             dgSellOrders.ItemsSource = orders;
         }
 
-        private List<Order> GetOrders()
+        private List<SellOrderDto> GetOrders()
         {
-            List<Order> orders = _orderService.GetSellOrders();
+            List<SellOrderDto> orders = _orderService.GetSellOrders();
             return orders;
         }
 
