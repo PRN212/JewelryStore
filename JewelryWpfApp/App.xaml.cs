@@ -28,14 +28,26 @@ namespace JewelryWpfApp
 
             serviceCollection.AddApplicationServices(config);
             ServiceProvider = serviceCollection.BuildServiceProvider();
-
             // update db and add seed data to db
             var dataContext = ServiceProvider.GetRequiredService<DataContext>();
-            dataContext.Database.Migrate();
-            //DataContextSeed.SeedData(dataContext);
+            SeedDataAndMigrate(dataContext);
+
 
             var loginWindow = ServiceProvider.GetRequiredService<Login>();
             loginWindow.Show();
+        }
+
+        private void SeedDataAndMigrate(DataContext dataContext)
+        {
+            try
+            {
+                if (dataContext.Database.GetPendingMigrations().Count() > 0)
+                {
+                    dataContext.Database.Migrate();
+                }
+            }
+            catch (Exception ex) { }
+            DataContextSeed.SeedData(dataContext);
         }
     }
 
