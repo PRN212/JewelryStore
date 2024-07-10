@@ -21,14 +21,20 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<UserService>();
             services.AddScoped<GoldService>();
             services.AddScoped<GoldPriceService>();
+            services.AddScoped<OrderDetailService>();
+            services.AddScoped<OrderService>();
 
             services.AddScoped<UserRepository>();
             services.AddScoped<ProductRepository>();
             services.AddScoped<GoldPriceRepository>();
             services.AddScoped<GoldRepository>();
+            services.AddScoped<OrderRepository>();
+            services.AddScoped<OrderDetailRepository>();
             services.AddScoped<GoldPriceRepository>();
 
+
             services.AddTransient<Login>();
+            services.AddScoped<SellOrdersUI>();
             services.AddTransient<ManagerMainUI>();
             services.AddTransient<StaffMainUI>();
             services.AddTransient<ProductsListUI>();

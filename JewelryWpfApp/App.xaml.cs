@@ -32,7 +32,7 @@ namespace JewelryWpfApp
             // update db and add seed data to db
             var dataContext = ServiceProvider.GetRequiredService<DataContext>();
             dataContext.Database.Migrate();
-            DataContextSeed.SeedData(dataContext);
+            //DataContextSeed.SeedData(dataContext);
 
             var loginWindow = ServiceProvider.GetRequiredService<Login>();
             loginWindow.Show();

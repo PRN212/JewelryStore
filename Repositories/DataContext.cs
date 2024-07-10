@@ -25,7 +25,7 @@ namespace Repositories
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                    .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json")
+                   .AddJsonFile("appsettings.json", true, true)
                    .Build();
                 var connectionString = configuration.GetConnectionString("DBDefault");
                 optionsBuilder.UseSqlServer(connectionString);
@@ -36,15 +36,19 @@ namespace Repositories
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(k => new { k.OrderId, k.ProductId });
 
-            //Seed Orders
+            // Short username
+            modelBuilder.Entity<User>().HasData(
+                new User() { Id=-1, Username = "1", Password = "1", Name = "<name>", Email = "<email>", Role = "Manager", Status = true, Gender = "M", Dob = DateOnly.Parse("2000-01-01"), Phone = "1" });
+
+            // Seed Orders
             modelBuilder.Entity<Customer>().HasData(
                 new Customer { Id = 1, Name = "John Doe", Phone = "0123456789", Address = "3 Nam Ky Khoi Nghia" }
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000f, CreatedDate = DateTime.Now, Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = 1 },
-                new Order { Id = 2, CustomerId = 1, TotalPrice = 2000f, CreatedDate = DateTime.Now, Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 },
-                new Order { Id = 3, CustomerId = 1, TotalPrice = 3000f, CreatedDate = DateTime.Now, Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 }
+                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = 1 },
+                new Order { Id = 2, CustomerId = 1, TotalPrice = 2000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 },
+                new Order { Id = 3, CustomerId = 1, TotalPrice = 3000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 }
             );
 
             modelBuilder.Entity<OrderDetail>().HasData(

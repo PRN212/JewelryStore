@@ -20,7 +20,8 @@ namespace Services
 
         public List<Order> GetSellOrders()
         {
-            return _orderRepo.GetAll(o => o.Type == SD.TypeSell, includeProperties: "OrderDetails").ToList();
+            // TODO: includeProp again
+            return _orderRepo.GetAll(o => o.Type == SD.TypeSell).ToList();
         }
         public Order Get(Expression<Func<Order, bool>> filter, string? includeProperties = null, bool tracked = false)
         {

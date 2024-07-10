@@ -10,13 +10,15 @@ namespace JewelryWpfApp
     {
         private readonly ProductsListUI _productsListUI;
         private readonly GoldRateUI _goldRateUI;
+        private readonly SellOrdersUI _sellOrdersUI;
         IServiceProvider _serviceProvider;
-        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider)
+        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider, SellOrdersUI sellOrdersUI)
         {
             _productsListUI = productListUI;
             _goldRateUI = goldRateUI;
             _serviceProvider = serviceProvider;
             InitializeComponent();
+            _sellOrdersUI = sellOrdersUI;
         }
 
         /* Gold Page is shown first*/
@@ -40,7 +42,7 @@ namespace JewelryWpfApp
         /* Navigate to sales_order management page*/
         private void btnNavSalesOrder_Click(object sender, RoutedEventArgs e)
         {
-
+            frMain.Content =_sellOrdersUI;
         }
        
         /* Navigate to purchase_order management page*/
