@@ -31,5 +31,10 @@ namespace Services
         {
             return await _customerRepo.SearchCustomerByPhoneNumber(phoneNumber);
         }
+
+        public Customer searchCustomerById(int customerId)
+        {
+            return _customerRepo.SearchCustomerById(customerId);
+        }
     }
 }
