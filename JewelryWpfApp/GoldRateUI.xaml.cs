@@ -72,8 +72,10 @@ namespace JewelryWpfApp
                     GoldPriceFromAPI data = new GoldPriceFromAPI();
                     data.GoldId = index;
                     data.GoldName = node.Attributes["type"].InnerText;
-                    data.BuyingPrice = decimal.Parse(node.Attributes["buy"].InnerText);
-                    data.SellingPrice = decimal.Parse(node.Attributes["sell"].InnerText);
+                    data.BuyingPrice = decimal.Parse(node.Attributes["buy"].InnerText) * 1000;
+                    data.SellingPrice = decimal.Parse(node.Attributes["sell"].InnerText) * 1000;
+                    data.BuyingRate = data.BuyingPrice;
+                    data.SellingRate = data.SellingPrice;
                     goldPriceData.Add(data);
                     index++;
                 }
@@ -98,15 +100,9 @@ namespace JewelryWpfApp
                 }
                 if (decimal.TryParse(tbChargeRate.Text, out decimal chargeRate) && chargeRate >=0)
                 {
-                    foreach (GoldPriceFromAPI gold in goldPriceData)
-                    {
-                        if (gold.GoldId.Equals(_selected.GoldId))
-                        {
-                            gold.BuyingRate = gold.BuyingPrice * chargeRate;
-                            gold.SellingRate = gold.SellingPrice * chargeRate;
-                            ReloadDataGrid();
-                        }
-                    }
+                    _selected.BuyingRate = _selected.BuyingPrice * chargeRate;
+                    _selected.SellingRate = _selected.SellingPrice * chargeRate;
+                    ReloadDataGrid();
                 }
                 else
                 {
@@ -122,16 +118,21 @@ namespace JewelryWpfApp
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            foreach (GoldPriceFromAPI gold in goldPriceData)
+            if (_selected != null)
             {
                 GoldPrice goldPrice = new GoldPrice()
                 {
-                    GoldId = gold.GoldId,
+                    GoldId = _selected.GoldId,
                     DateTime = dateTime,
-                    AskPrice = gold.BuyingRate,
-                    BidPrice = gold.SellingRate
+                    AskPrice = _selected.BuyingRate,
+                    BidPrice = _selected.SellingRate
                 };
                 _goldPriceService.SaveNewGoldPrice(goldPrice);
+                MessageBox.Show("Save successfully!", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("You must choose an item to Update!", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -153,6 +154,22 @@ namespace JewelryWpfApp
             grdGoldRate.ItemsSource = goldPriceData;
         }
 
+        private void btnSaveAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (GoldPriceFromAPI gold in goldPriceData)
+            {
+                GoldPrice goldPrice = new GoldPrice()
+                {
+                    GoldId = gold.GoldId,
+                    DateTime = dateTime,
+                    AskPrice = gold.BuyingRate,
+                    BidPrice = gold.SellingRate
+                };
+                _goldPriceService.SaveNewGoldPrice(goldPrice);
+            }
+            MessageBox.Show("Save successfully!", "Save All", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private class GoldPriceFromAPI
         {
             public int GoldId { get; set; }
@@ -161,6 +178,30 @@ namespace JewelryWpfApp
             public decimal SellingPrice { get; set; }
             public decimal BuyingRate { get; set; }
             public decimal SellingRate { get; set; }
+        }
+    }
+
+    public class DecimalToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is decimal)
+            {
+                return ((decimal)value).ToString("0");
+            }
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string)
+            {
+                if (decimal.TryParse((string)value, out decimal result))
+                {
+                    return result;
+                }
+            }
+            return value;
         }
     }
 }

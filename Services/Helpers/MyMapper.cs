@@ -35,6 +35,11 @@ namespace Services.Helpers
                 //.ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPrice))
                 .ForMember(dest => dest.ImgUrl, opt => opt.MapFrom(src => src.Product.ImgUrl));
 
+
+            CreateMap<PurchaseOrderDto, Order>();
+            CreateMap<Order, PurchaseOrderDto>();
+
+            CreateMap<OrderDetailDto, OrderDetail>();
         }
     }
 }

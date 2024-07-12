@@ -19,7 +19,10 @@ namespace JewelryWpfApp.Extensions
             // Register Services and ViewModels
             services.AddScoped<ProductService>();
             services.AddScoped<UserService>();
-            services.AddScoped<GoldService>();
+            services.AddScoped<GoldService>(); 
+            services.AddScoped<PurchaseOrderService>(); 
+            services.AddScoped<OrderDetailService>(); 
+            services.AddScoped<OrderDetail_ProductOrderDetailService>();
             services.AddScoped<GoldPriceService>();
             services.AddScoped<OrderDetailService>();
             services.AddScoped<SellOrderService>();
@@ -28,6 +31,9 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<ProductRepository>();
             services.AddScoped<GoldPriceRepository>();
             services.AddScoped<GoldRepository>();
+            services.AddScoped<OrderRepository>();
+            services.AddScoped<OrderDetailRepository>();
+            services.AddScoped<OrderDetail_ProductOrderDetailRepository>();
             services.AddScoped<OrderRepository>();
             services.AddScoped<OrderDetailRepository>();
             services.AddScoped<GoldPriceRepository>();
@@ -39,6 +45,11 @@ namespace JewelryWpfApp.Extensions
             services.AddTransient<StaffMainUI>();
             services.AddTransient<ProductsListUI>();
             services.AddTransient<GoldRateUI>();
+            services.AddTransient<GoldPriceUI>();
+            services.AddTransient<PurchaseOrdersUI>();
+            services.AddTransient<PurchaseOrderDetail_ProductDetail>();
+
+            services.AddSingleton<UserSessionService>();
 
             // AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -27,5 +27,26 @@ namespace Repositories
             var details = _context.OrderDetails.Where(o => o.OrderId == id).Include(d => d.Product).ThenInclude(p => p.Gold).ToList();
             return details;
         }
+    
+
+        public async Task<IEnumerable<OrderDetail>> GetOrderDetails(int orderId)
+        {
+            return await _context.OrderDetail
+            .Where(p => p.OrderId == orderId)
+            .ToListAsync();
+        }
+
+        public bool AddOrderDetail(OrderDetail orderDetail)
+        {
+            _context.OrderDetail.Add(orderDetail);
+            return _context.SaveChanges() > 0;
+        }
+
+        public async Task<OrderDetail> GetOrderDetailByProductId(int productId)
+        {
+            return await _context.OrderDetail
+                .Where (p => p.ProductId == productId) 
+                .FirstAsync();
+        }
     }
 }

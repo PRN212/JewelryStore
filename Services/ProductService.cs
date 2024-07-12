@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Repositories.Entities;
 using Services.Dto;
@@ -17,7 +18,7 @@ namespace Services
             _goldPriceRepository = goldPriceRepository;
             _mapper = mapper;
         }
-         public async Task<IEnumerable<ProductDto>> GetProducts()
+        public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             var products = await _productRepository.GetProducts();
             var productsDto = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products); 
@@ -25,18 +26,18 @@ namespace Services
             foreach (var p in productsDto)
             {
                 // calculate total gold price
-                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId)?.BidPrice ?? 0;
             }
 
             return productsDto;
         }
 
-        public ProductDto GeProductById(int id)
+        public ProductDto GetProductById(int id)
         {
             var product = _productRepository.GetProductById(id);
             var productDto = _mapper.Map<ProductDto>(product);
             // calculate total gold price
-            productDto.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(productDto.Id).BidPrice;
+            productDto.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(productDto.GoldId)?.BidPrice ?? 0;
             return productDto;
         }
 
@@ -48,7 +49,7 @@ namespace Services
             foreach (var p in productsDto)
             {
                 // calculate total gold price
-                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId)?.BidPrice ?? 0;
             }
 
             return productsDto;
@@ -58,6 +59,12 @@ namespace Services
         {
             var product = _mapper.Map<Product>(productDto); 
             return _productRepository.AddProduct(product);
+        }
+
+        public int AddProductV2(ProductToAddDto productDto)
+        {
+            var product = _mapper.Map<Product>(productDto);
+            return _productRepository.AddProductV2(product);
         }
 
         public bool UpdateProduct(ProductDto productDto)
@@ -70,7 +77,7 @@ namespace Services
          
         public bool DeleteProduct(ProductDto productDto)
         {
-            Product product = _productRepository.GetProductById(productDto.Id);
+            Product? product = _productRepository.GetProductById(productDto.Id);
             if (product == null) { return false; }
             _mapper.Map(productDto, product);
             product.Status = false;
@@ -81,6 +88,7 @@ namespace Services
         {
             return await _productRepository.SearchProducts(searchValue);
         }
+
 
     }
 }

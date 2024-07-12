@@ -22,10 +22,17 @@ namespace JewelryWpfApp
     {
         IServiceProvider _serviceProvider;
         private readonly ProductsListUI _productsListUI;
-        
-        public StaffMainUI(ProductsListUI productListUI, IServiceProvider serviceProvider)
+        private readonly PurchaseOrdersUI _purchaseOrdersUI;
+        private readonly GoldPriceUI _goldPriceUI;
+
+        public StaffMainUI(ProductsListUI productListUI,
+             PurchaseOrdersUI purchaseOrdersUI,
+             GoldPriceUI goldPriceUI,
+             IServiceProvider serviceProvider)
         {
-            _productsListUI = productListUI;           
+            _productsListUI = productListUI;     
+            _purchaseOrdersUI = purchaseOrdersUI;
+            _goldPriceUI = goldPriceUI;
             _serviceProvider = serviceProvider;
             InitializeComponent();
         }
@@ -39,7 +46,7 @@ namespace JewelryWpfApp
         /* Navigate to gold price page*/
         private void btnNavGold_Click(object sender, RoutedEventArgs e)
         {
-
+            frMain.Content = _goldPriceUI;
         }
 
         /* Navigate to product list page*/ 
@@ -57,7 +64,7 @@ namespace JewelryWpfApp
         /* Navigate to purchase_order management page*/
         private void btnNavPurchaseOrder_Click(object sender, RoutedEventArgs e)
         {
-
+            frMain.Content = _purchaseOrdersUI;
         }
 
         /* Navigate to profile page*/
