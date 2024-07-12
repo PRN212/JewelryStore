@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Repositories.Entities;
 using System.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JewelryWpfApp
 {
@@ -29,6 +30,7 @@ namespace JewelryWpfApp
         private readonly OrderDetailService _orderDetailService;
         private readonly PurchaseOrderService _purchaseOrderService;
         private readonly UserSessionService _userSessionService;
+        private readonly CustomerService _customerService;
         private ProductDto? _selectedProduct = null;
         internal PurchaseOrderDto? purchaseOrderDto;
 
@@ -36,13 +38,15 @@ namespace JewelryWpfApp
             , GoldService goldService
             , OrderDetailService orderDetailService
             , PurchaseOrderService purchaseOrderService
-            , UserSessionService userSessionService)
+            , UserSessionService userSessionService
+            , CustomerService customerService)
         {
             _productService = productService;
             _goldService = goldService;
             _orderDetailService = orderDetailService;
             _purchaseOrderService = purchaseOrderService;
             _userSessionService = userSessionService;
+            _customerService = customerService;
             InitializeComponent();
         }
 
@@ -104,9 +108,29 @@ namespace JewelryWpfApp
                 purchaseOrderDto.TotalPrice = totalPrice;
                 purchaseOrderDto.OrderDetails = new List<OrderDetail>();
                 purchaseOrderDto.PaymentMethod = "cash";
-                //purchaseOrderDto.UserId = int.TryParse(txtUser.Text, out var userId) ? userId : 0;
-                purchaseOrderDto.UserId = _userSessionService.CurrentUser.Id;   
+                purchaseOrderDto.UserId = _userSessionService.CurrentUser.Id;
                 //purchaseOrderDto.CustomerId = int.TryParse(txtCustomer.Text, out var customerId) ? customerId : 0;
+
+                if (!txtCustomerPhone.Text.IsNullOrEmpty())
+                {
+                    Customer customer = new Customer();
+                    customer = _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
+
+                    if (customer != null)
+                    {
+                        txtCustomerAddress.Text = customer.Address;
+                        txtCustomerName.Text = customer.Name;
+                        purchaseOrderDto.CustomerId = customer.Id;
+                    }
+                }
+                Customer cus = new Customer();
+                cus.Name = txtCustomerName.Text;
+                cus.Address = txtCustomerAddress.Text;
+                cus.Phone = txtCustomerPhone.Text;
+
+                _customerService.AddCustomer(cus);
+
+                purchaseOrderDto.CustomerId = cus.Id;
 
                 if (_purchaseOrderService.AddPurchaseOrder(purchaseOrderDto))
                 {
@@ -119,6 +143,22 @@ namespace JewelryWpfApp
             else
             {
                 btnSave.IsEnabled = false;
+            }
+        }
+
+        private async void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            Customer customer = new Customer();
+
+            if (!txtCustomerPhone.Text.IsNullOrEmpty())
+            {
+                customer = _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
+
+                if(customer != null)
+                {
+                    txtCustomerAddress.Text = customer.Address;
+                    txtCustomerName.Text = customer.Name;
+                }
             }
         }
 
