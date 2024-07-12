@@ -74,6 +74,11 @@ namespace JewelryWpfApp
                 //txtCustomer.Text = purchaseOrderDto.CustomerId.ToString();
 
                 txtTotalPrice.Text = totalPrice.ToString();
+                Customer customer = _customerService.searchCustomerById(purchaseOrderDto.CustomerId);
+
+                txtCustomerAddress.Text = customer.Address;
+                txtCustomerName.Text = customer.Name;
+                txtCustomerPhone.Text = customer.Phone;
 
                 dgvPurchaseOrder_ProductsList.ItemsSource = products;
             }

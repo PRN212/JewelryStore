@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Repositories.Entities;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JewelryWpfApp
 {
@@ -92,8 +93,14 @@ namespace JewelryWpfApp
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             var searchValue = txtSearch.Text;
-
-            dgvPurchaseOrders.ItemsSource = await _purchaseOrderService.GetPurchaseOrdersByDate(searchValue);
+            if (searchValue.IsNullOrEmpty()) 
+            {
+                dgvPurchaseOrders.ItemsSource = await _purchaseOrderService.GetPurchaseOrders();
+            }
+            else
+            {
+                dgvPurchaseOrders.ItemsSource = await _purchaseOrderService.GetPurchaseOrdersByDate(searchValue);
+            }
         }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)

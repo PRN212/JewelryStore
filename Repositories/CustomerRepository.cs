@@ -28,5 +28,12 @@ namespace Repositories
                 .Where(c => c.Phone.Contains(phoneNumber))
                 .FirstOrDefault();
         }
+
+        public Customer SearchCustomerById(int customerId)
+        {
+            return _context.Customers
+                .Where(c => c.Id == customerId)
+                .FirstOrDefault();
+        }
     }
 }
