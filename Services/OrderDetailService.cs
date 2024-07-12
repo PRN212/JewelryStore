@@ -18,7 +18,7 @@ namespace Services
     {
         private readonly OrderDetailRepository _orderRepo;
         private readonly GoldPriceRepository _goldPriceRepository;
-
+        private readonly OrderDetailRepository _orderDetailRepository;
         private readonly IMapper _mapper;
 
         public OrderDetailService(OrderDetailRepository orderRepo, IMapper mapper,
@@ -36,11 +36,23 @@ namespace Services
 		}
         public OrderDetail Get(Expression<Func<OrderDetail, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            var orders = await _orderDetailRepository.GetOrderDetails(orderId);
             return _orderRepo.Get(filter, includeProperties, tracked);
 		}
+
+        public List<SellOrderDetailDto> GetDetailsFromOrder(int id)
+        {
+            var details = _orderRepo.GetDetailsFromOrder(id);
+            List<SellOrderDetailDto> detailDtos = _mapper.Map<List<SellOrderDetailDto>>(details);
+            foreach (var p in detailDtos)
+            {
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
+            }
+            return detailDtos;
+        }
+
         public async Task<IEnumerable<int>> GetPurchaseOrdersInOrderDetail(int orderId) { 
 
+            var orders = await _orderDetailRepository.GetOrderDetails(orderId);
 
             List<int> productIds = new List<int>();
 
