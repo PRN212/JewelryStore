@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
+
 namespace JewelryWpfApp
 {
     /// <summary>
@@ -11,15 +12,16 @@ namespace JewelryWpfApp
         private readonly ProductsListUI _productsListUI;
         private readonly PurchaseOrdersUI _purchaseOrdersUI;
         private readonly GoldRateUI _goldRateUI;
+        private readonly SellOrdersUI _sellOrdersUI;
         IServiceProvider _serviceProvider;
-        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI,
-            PurchaseOrdersUI purchaseOrdersUI, IServiceProvider serviceProvider)
+        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider, SellOrdersUI sellOrdersUI, PurchaseOrdersUI purchaseOrdersUI)
         {
             _productsListUI = productListUI;
             _goldRateUI = goldRateUI;
             _serviceProvider = serviceProvider;
             _purchaseOrdersUI = purchaseOrdersUI;
             InitializeComponent();
+            _sellOrdersUI = sellOrdersUI;
         }
 
         /* Gold Page is shown first*/
@@ -43,7 +45,7 @@ namespace JewelryWpfApp
         /* Navigate to sales_order management page*/
         private void btnNavSalesOrder_Click(object sender, RoutedEventArgs e)
         {
-
+            frMain.Content =_sellOrdersUI;
         }
        
         /* Navigate to purchase_order management page*/

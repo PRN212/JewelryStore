@@ -1,16 +1,28 @@
 ﻿
-using Microsoft.EntityFrameworkCore;
 using Repositories.Entities;
-
+using Repositories.IRepositories;
+using Microsoft.EntityFrameworkCore;
 namespace Repositories
 {
-    public class OrderRepository
-    {
-        private DataContext _context;
-        public OrderRepository(DataContext context)
-        {
-            _context = context;
-        }
+	public class OrderRepository : Repository<Order>, IOrderRepository
+	{
+		private DataContext _context;
+		public OrderRepository(DataContext db) : base(db)
+		{
+			_context = db;
+		}
+
+		public void Save()
+		{
+			_context.SaveChanges();
+		}
+
+		public void Update(Order obj)
+		{
+			_context.Orders.Update(obj);
+		}
+	
+
 
         public async Task<IEnumerable<Order>> GetPurchaseOrders()
         {
