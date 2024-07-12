@@ -27,9 +27,9 @@ namespace Services
             return _customerRepo.AddCustomer(customer);
         }
 
-        public Customer searchCustomerByPhoneNumber(string phoneNumber)
+        public async Task<Customer?> searchCustomerByPhoneNumber(string phoneNumber)
         {
-            return _customerRepo.SearchCustomerByPhoneNumber(phoneNumber);
+            return await _customerRepo.SearchCustomerByPhoneNumber(phoneNumber);
         }
     }
 }

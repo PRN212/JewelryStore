@@ -22,11 +22,11 @@ namespace Repositories
             return _context.SaveChanges() > 0;
         }
 
-        public Customer SearchCustomerByPhoneNumber(string phoneNumber)
+        public async Task<Customer?> SearchCustomerByPhoneNumber(string phoneNumber)
         {
-            return _context.Customers
-                .Where(c => c.Phone.Contains(phoneNumber))
-                .FirstOrDefault();
+            return await _context.Customers
+                .Where(c => !string.IsNullOrEmpty(phoneNumber) && c.Phone.Contains(phoneNumber))
+                .FirstOrDefaultAsync();
         }
     }
 }

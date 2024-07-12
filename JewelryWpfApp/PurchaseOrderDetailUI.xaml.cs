@@ -82,6 +82,7 @@ namespace JewelryWpfApp
         private async void PageLoaded(object sender, RoutedEventArgs e)
         {
             await FillData();
+            SetupButton();
         }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -113,8 +114,8 @@ namespace JewelryWpfApp
 
                 if (!txtCustomerPhone.Text.IsNullOrEmpty())
                 {
-                    Customer customer = new Customer();
-                    customer = _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
+                    Customer? customer;
+                    customer = await _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
 
                     if (customer != null)
                     {
@@ -148,17 +149,20 @@ namespace JewelryWpfApp
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            Customer customer = new Customer();
+            var customer = await _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
 
-            if (!txtCustomerPhone.Text.IsNullOrEmpty())
+            if(customer != null)
             {
-                customer = _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
-
-                if(customer != null)
-                {
-                    txtCustomerAddress.Text = customer.Address;
-                    txtCustomerName.Text = customer.Name;
-                }
+                txtCustomerAddress.Text = customer.Address;
+                txtCustomerName.Text = customer.Name;
+                txtCustomerPhone.Text = customer.Phone;
+            }
+            else
+            {
+               txtCustomerAddress.Text = null;
+               txtCustomerName.Text = null;
+               MessageBox.Show("This phone number does not exist!", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -213,5 +217,29 @@ namespace JewelryWpfApp
             }
         }
 
+        private void SetupButton()
+        {
+            if (purchaseOrderDto != null && purchaseOrderDto.Status != "Pending")
+            {
+                btnSave.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                btnPaid.IsEnabled = false;
+                btnAdd.IsEnabled = false;
+
+                btnSave.Foreground = new SolidColorBrush(Colors.Black);
+                btnDelete.Foreground = new SolidColorBrush(Colors.Black);
+                btnPaid.Foreground = new SolidColorBrush(Colors.Black);
+                btnAdd.Foreground = new SolidColorBrush(Colors.Black) ;
+            }
+            else if (purchaseOrderDto == null)
+            {
+                btnDelete.IsEnabled = false;
+                btnPaid.IsEnabled = false;
+                btnDelete.Foreground = new SolidColorBrush(Colors.Black);
+                btnPaid.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
     }
 }
+ 
