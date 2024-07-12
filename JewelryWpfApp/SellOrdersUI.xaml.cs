@@ -26,14 +26,14 @@ namespace JewelryWpfApp
     {
         private readonly ProductService _productService;
         private readonly GoldService _goldService;
-        private readonly OrderService _orderService; 
+        private readonly SellOrderService _orderService; 
         private readonly OrderDetailService _orderDetailService;
 
         //public ObservableCollection<Order> OrderList { get; set; }
 
 
         public SellOrdersUI(ProductService productService, GoldService goldService,
-            OrderDetailService orderDetailService, OrderService orderService)
+            OrderDetailService orderDetailService, SellOrderService orderService)
         {
             _productService = productService;
             _goldService = goldService;

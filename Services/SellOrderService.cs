@@ -9,14 +9,20 @@ using System.Linq.Expressions;
 
 namespace Services
 {
-    public class OrderService
+    public class SellOrderService
     {
         private readonly OrderRepository _orderRepo;
+        //private readonly SellProductRepository _productRepository;
+        //private readonly OrderDetailRepository _orderDetailRepository;
         private readonly IMapper _mapper;
-        public OrderService(OrderRepository orderRepo, IMapper mapper) 
+        public SellOrderService(OrderRepository orderRepo, IMapper mapper
+            //, SellProductRepository productRepository, OrderDetailRepository orderDetailRepository
+            ) 
         {
             _orderRepo = orderRepo;
             _mapper = mapper;
+            //_productRepository = productRepository;
+            //_orderDetailRepository = orderDetailRepository;
         }
         public List<Order> GetAll(Expression<Func<Order, bool>>? filter = null, string? includeProperties = null) { 
             return _orderRepo.GetAll().ToList();
@@ -34,6 +40,12 @@ namespace Services
         {
             return _orderRepo.Get(filter, includeProperties, tracked);
 		}
+
+        //public List<OrderDetail> GetDetailsFromOrder(int id)
+        //{
+
+        //    var orde _orderDetailRepository.GetDetailsFromOrder(id);
+        //}
 
 		public void Save()
 		{

@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Repositories.Entities;
 using System.Collections.ObjectModel;
+using DTOs;
 
 namespace JewelryWpfApp
 {
@@ -25,26 +26,20 @@ namespace JewelryWpfApp
     public partial class SellOrderDetailsUI : Page
     {
         //private Order _sellOrder;
-        public Order SellOrder;
+        public List<SellOrderDetailDto> Details;
 
-
-        public SellOrderDetailsUI(Order order)
+        public SellOrderDetailsUI(List<SellOrderDetailDto> details)
         {
-            SellOrder = order;
+            Details = details;
             InitializeComponent();
         }
 
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            var orders = GetOrders(); 
-            dgSellOrders.ItemsSource = orders;
+            //var orders = GetOrders(); 
+            dgSellOrders.ItemsSource = Details;
         }
 
-        private List<SellOrderDto> GetOrders()
-        {
-            List<SellOrderDto> orders = _orderService.GetSellOrders();
-            return orders;
-        }
 
     }
 }
