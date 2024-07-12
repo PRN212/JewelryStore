@@ -28,17 +28,19 @@ namespace JewelryWpfApp
         private readonly PurchaseOrderService _purchaseOrderService; 
         private readonly OrderDetailService _orderDetailService;
         private readonly UserSessionService _userSessionService;
+        private readonly CustomerService _customerService;
         private PurchaseOrderDto? _selected = null;
 
         public PurchaseOrdersUI(ProductService productService, GoldService goldService,
             PurchaseOrderService purchaseOrderService, OrderDetailService orderDetailService,
-            UserSessionService userSessionService)
+            UserSessionService userSessionService, CustomerService customerService)
         {
             _productService = productService;
             _goldService = goldService;
             _purchaseOrderService = purchaseOrderService;
             _orderDetailService = orderDetailService;
             _userSessionService = userSessionService;
+            _customerService = customerService;
             InitializeComponent();
         }
 
@@ -66,7 +68,8 @@ namespace JewelryWpfApp
                             , _goldService
                             , _orderDetailService
                             , _purchaseOrderService
-                            , _userSessionService);
+                            , _userSessionService
+                            , _customerService);
                     purchaseOrderDetailUI.purchaseOrderDto = _selected;
                     purchaseOrderDetailUI.ShowDialog();
 
@@ -101,7 +104,8 @@ namespace JewelryWpfApp
                     , _goldService
                     , _orderDetailService
                     , _purchaseOrderService
-                    , _userSessionService);
+                    , _userSessionService
+                    , _customerService);
             purchaseOrderDetailUI.ShowDialog();
             await FillDataGridView();
         }
