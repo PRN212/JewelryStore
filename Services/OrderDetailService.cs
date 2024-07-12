@@ -11,11 +11,16 @@ namespace Services
     public class OrderDetailService
     {
         private readonly OrderDetailRepository _orderRepo;
+        private readonly GoldPriceRepository _goldPriceRepository;
+
         private readonly IMapper _mapper;
 
-        public OrderDetailService(OrderDetailRepository orderRepo, IMapper mapper) 
+        public OrderDetailService(OrderDetailRepository orderRepo, IMapper mapper,
+            GoldPriceRepository goldPriceRepository) 
         {
             _orderRepo = orderRepo;
+            _goldPriceRepository = goldPriceRepository;
+
             _mapper = mapper;
 
         }
@@ -33,6 +38,10 @@ namespace Services
         {
             var details = _orderRepo.GetDetailsFromOrder(id);
             List<SellOrderDetailDto> detailDtos = _mapper.Map<List<SellOrderDetailDto>>(details);
+            foreach (var p in detailDtos)
+            {
+                p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
+            }
             return detailDtos;
         }
 

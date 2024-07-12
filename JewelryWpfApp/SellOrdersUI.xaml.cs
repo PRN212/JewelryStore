@@ -28,6 +28,8 @@ namespace JewelryWpfApp
         private readonly GoldService _goldService;
         private readonly SellOrderService _orderService; 
         private readonly OrderDetailService _orderDetailService;
+        private SellOrderDto? _selected = null;
+
 
         //public ObservableCollection<Order> OrderList { get; set; }
 
@@ -53,6 +55,37 @@ namespace JewelryWpfApp
         {
             List<SellOrderDto> orders = _orderService.GetSellOrders();
             return orders;
+        }
+
+        private async void dgvProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgSellOrders.SelectedItems.Count > 0)
+            {
+                try
+                {
+                    _selected = (SellOrderDto)dgSellOrders.SelectedItems[0];
+                    var details = _orderDetailService.GetDetailsFromOrder(_selected.Id);
+                    SellOrderDetailsUI sellOrderDetailsUI = new SellOrderDetailsUI(details);
+                    sellOrderDetailsUI.ShowDialog();
+                }
+                catch
+                {
+                    MessageBox.Show("Please select a valid row!",
+                    "Warning",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                _selected = null;
+            }
+        }
+
+        private async void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            var searchValue = txtSearch.Text;
+
+            dgSellOrders.ItemsSource = await _orderService.GeProductByName(searchValue);
         }
 
     }

@@ -23,7 +23,7 @@ namespace JewelryWpfApp
     /// <summary>
     /// Interaction logic for SellOrdersUI.xaml
     /// </summary>
-    public partial class SellOrderDetailsUI : Page
+    public partial class SellOrderDetailsUI : Window
     {
         //private Order _sellOrder;
         public List<SellOrderDetailDto> Details;
@@ -39,6 +39,7 @@ namespace JewelryWpfApp
             //var orders = GetOrders(); 
             dgSellOrders.ItemsSource = Details;
         }
+
 
 
     }
