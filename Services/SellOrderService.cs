@@ -5,6 +5,7 @@ using Repositories;
 using Repositories.Entities;
 using Services.Dto;
 using Static;
+using System.Buffers;
 using System.Linq.Expressions;
 
 namespace Services
@@ -46,6 +47,13 @@ namespace Services
 
         //    var orde _orderDetailRepository.GetDetailsFromOrder(id);
         //}
+
+        public List<SellOrderDto> GetByCustomerName(string text)
+        {
+            var orders = _orderRepo.GetAll(includeProperties: "Customer").Where(o => o.Customer.Name.Contains(text)).ToList();
+            List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
+            return orderDtos;
+        }
 
 		public void Save()
 		{

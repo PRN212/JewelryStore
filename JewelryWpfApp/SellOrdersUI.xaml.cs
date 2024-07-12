@@ -57,7 +57,7 @@ namespace JewelryWpfApp
             return orders;
         }
 
-        private async void dgvProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void dgSellOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dgSellOrders.SelectedItems.Count > 0)
             {
@@ -85,7 +85,7 @@ namespace JewelryWpfApp
         {
             var searchValue = txtSearch.Text;
 
-            dgSellOrders.ItemsSource = await _orderService.GeProductByName(searchValue);
+            dgSellOrders.ItemsSource = _orderService.GetByCustomerName(searchValue);
         }
 
     }

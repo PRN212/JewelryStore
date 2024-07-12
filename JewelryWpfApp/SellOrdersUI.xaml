@@ -29,7 +29,7 @@
             </Grid>
 
             <!---Data List-->
-            <DataGrid x:Name="dgSellOrders" AutoGenerateColumns="True" />
+            <DataGrid x:Name="dgSellOrders" AutoGenerateColumns="True" SelectionChanged="dgSellOrders_SelectionChanged" />
             <!--<DataGrid.Columns>
                 -->
             <!--<DataGridTextColumn Header="Order Date" Binding="{Binding Order.OrderDate}" />
