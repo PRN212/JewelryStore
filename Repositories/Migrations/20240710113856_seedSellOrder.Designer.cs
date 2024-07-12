@@ -12,8 +12,8 @@ using Repositories;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240602152337_InitialEntities")]
-    partial class InitialEntities
+    [Migration("20240710113856_seedSellOrder")]
+    partial class seedSellOrder
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,15 @@ namespace Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "3 Nam Ky Khoi Nghia",
+                            Name = "John Doe",
+                            Phone = "0123456789"
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Gold", b =>
@@ -85,14 +94,8 @@ namespace Repositories.Migrations
                     b.Property<decimal>("AskPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("AskRate")
-                        .HasColumnType("decimal(5,2)");
-
                     b.Property<decimal>("BidPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("BidRate")
-                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
@@ -136,20 +139,51 @@ namespace Repositories.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId1")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 7, 10, 18, 38, 55, 940, DateTimeKind.Local).AddTicks(6462),
+                            CustomerId = 1,
+                            PaymentMethod = "CreditCard",
+                            Status = "Pending",
+                            TotalPrice = 1000m,
+                            Type = "Sell",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 7, 10, 18, 38, 55, 940, DateTimeKind.Local).AddTicks(6474),
+                            CustomerId = 1,
+                            PaymentMethod = "Cash",
+                            Status = "Completed",
+                            TotalPrice = 2000m,
+                            Type = "Sell",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2024, 7, 10, 18, 38, 55, 940, DateTimeKind.Local).AddTicks(6476),
+                            CustomerId = 1,
+                            PaymentMethod = "Cash",
+                            Status = "Shipped",
+                            TotalPrice = 3000m,
+                            Type = "Sell",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.OrderDetail", b =>
@@ -170,7 +204,30 @@ namespace Repositories.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 1,
+                            Price = 500m,
+                            Quantity = 2
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 2,
+                            Price = 700m,
+                            Quantity = 3
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            ProductId = 3,
+                            Price = 900m,
+                            Quantity = 4
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Product", b =>
@@ -193,7 +250,7 @@ namespace Repositories.Migrations
                     b.Property<decimal>("GemWeight")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("GoldId")
+                    b.Property<int>("GoldId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("GoldWeight")
@@ -211,6 +268,9 @@ namespace Repositories.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("TotalWeight")
                         .HasColumnType("decimal(18,2)");
@@ -293,7 +353,7 @@ namespace Repositories.Migrations
 
                     b.HasOne("Repositories.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -325,7 +385,9 @@ namespace Repositories.Migrations
                 {
                     b.HasOne("Repositories.Entities.Gold", "Gold")
                         .WithMany()
-                        .HasForeignKey("GoldId");
+                        .HasForeignKey("GoldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Gold");
                 });

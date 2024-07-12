@@ -25,6 +25,8 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<OrderDetail_ProductOrderDetailService>();
             services.AddScoped<GoldPriceService>();
             services.AddScoped<CustomerService>();
+            services.AddScoped<OrderDetailService>();
+            services.AddScoped<SellOrderService>();
 
             services.AddScoped<UserRepository>();
             services.AddScoped<ProductRepository>();
@@ -34,8 +36,12 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<OrderDetailRepository>();
             services.AddScoped<OrderDetail_ProductOrderDetailRepository>();
             services.AddScoped<CustomerRepository>();
+            services.AddScoped<OrderRepository>();
+            services.AddScoped<OrderDetailRepository>();
+            services.AddScoped<GoldPriceRepository>();
 
             services.AddTransient<Login>();
+            services.AddScoped<SellOrdersUI>();
             services.AddTransient<ManagerMainUI>();
             services.AddTransient<StaffMainUI>();
             services.AddTransient<ProductsListUI>();

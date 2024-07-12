@@ -20,6 +20,7 @@ namespace Repositories.Entities
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
         public int UserId { get; set; }
+        [ForeignKey("UserId")]
         public User User { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }

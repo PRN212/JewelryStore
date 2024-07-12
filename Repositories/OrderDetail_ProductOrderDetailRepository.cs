@@ -18,14 +18,14 @@ namespace Repositories
 
         public async Task<IEnumerable<OrderDetail>> GetOrderDetails(int orderId)
         {
-            return await _context.OrderDetail
+            return await _context.OrderDetails
             .Where(p => p.OrderId == orderId)
             .ToListAsync();
         }
 
         public bool AddOrderDetail_ProductOrderDetail(OrderDetail orderDetail)
         {
-            _context.OrderDetail.Add(orderDetail);
+            _context.OrderDetails.Add(orderDetail);
             return _context.SaveChanges() > 0;
         }
     }

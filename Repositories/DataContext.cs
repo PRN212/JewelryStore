@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Repositories.Entities;
+using Static;
 
 namespace Repositories
 {
@@ -16,12 +17,33 @@ namespace Repositories
         public virtual DbSet<GoldPrice> GoldPrices { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(k => new { k.OrderId, k.ProductId });
+
+            // Short username
+            modelBuilder.Entity<User>().HasData(
+                new User() { Id=-1, Username = "1", Password = "1", Name = "<name>", Email = "<email>", Role = "Manager", Status = true, Gender = "M", Dob = DateOnly.Parse("2000-01-01"), Phone = "1" });
+
+            // Seed Orders
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer { Id = 1, Name = "John Doe", Phone = "0123456789", Address = "3 Nam Ky Khoi Nghia" }
+            );
+
+            modelBuilder.Entity<Order>().HasData(
+                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = 1 },
+                new Order { Id = 2, CustomerId = 1, TotalPrice = 2000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 },
+                new Order { Id = 3, CustomerId = 1, TotalPrice = 3000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 }
+            );
+
+            modelBuilder.Entity<OrderDetail>().HasData(
+                new OrderDetail { OrderId = 1, ProductId = 1, Quantity = 2, Price = 500f },
+                new OrderDetail { OrderId = 2, ProductId = 2, Quantity = 3, Price = 700f },
+                new OrderDetail { OrderId = 3, ProductId = 3, Quantity = 4, Price = 900f }
+            );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
