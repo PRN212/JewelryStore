@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\nhan-18K.png" />
+    <None Remove="img\nhan-kim-cuong-vang.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +22,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Services\Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\nhan-18K.png" />
+    <Resource Include="img\nhan-kim-cuong-vang.png" />
   </ItemGroup>
 
 </Project>

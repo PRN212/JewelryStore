@@ -1,0 +1,50 @@
+﻿<Page x:Class="JewelryWpfApp.GoldRateUI"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:JewelryWpfApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="GoldRateUI">
+    
+    <Grid x:Name="grGoldRate" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" x:Name="lblHeader" Content="_____SJC Gold Rate____" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Height="42" Width="Auto"/>
+        <Label Grid.Row="1" x:Name="lblUpdateTime" Content="Update time: " HorizontalAlignment="Right" Margin="0,0,40,0" FontSize="18"/>
+        <Button Grid.Row="2" x:Name="btnGetPrice" Content="Get Price" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" Height="33" Width="100" RenderTransformOrigin="0.5,0.5" Click="btnGetPrice_Click" Margin="20,10,20,0"/>
+        <Label Grid.Row="3" x:Name="lblUnit" Content="Unit: 1000 VND/Tael (37.5g)" HorizontalAlignment="Right" Margin="0,0,40,0" FontWeight="Bold" FontSize="14"/>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="650"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" x:Name="grdGoldRate" AutoGenerateColumns="False" IsReadOnly="True" Margin="30,0,50,20" SelectionChanged="grdGoldRate_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Gold ID" Binding="{Binding GoldId}"/>
+                    <DataGridTextColumn Header="Gold Name" Binding="{Binding GoldName}"/>
+                    <DataGridTextColumn  Header="Ask Price" Binding="{Binding BuyingPrice, StringFormat='{}{0:0}'}"/>
+                    <DataGridTextColumn Header="Bid Price" Binding="{Binding SellingPrice, StringFormat='{}{0:0}'}"/>
+                    <DataGridTextColumn Header="Updated Ask Rate" Binding="{Binding BuyingRate, StringFormat='{}{0:0}'}"/>
+                    <DataGridTextColumn Header="Updated Bid Rate" Binding="{Binding SellingRate, StringFormat='{}{0:0}'}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Column="1">
+                <Label Content="Charge Rate" HorizontalAlignment="Center" FontSize="16"/>
+                <TextBox x:Name="tbChargeRate" Height="30"/>
+                <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="100" Click="btnUpdate_Click" Margin="0,20,0,0"/>
+                <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Height="30" Width="100" Click="btnSave_Click" Margin="0,30,0,0"/>
+                <Button x:Name="btnSaveAll" Content="Save All" Height="30" Width="100" Click="btnSaveAll_Click" Margin="0,30,0,0"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Page>

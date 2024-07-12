@@ -1,0 +1,92 @@
+﻿<Page x:Class="JewelryWpfApp.OrderManagementUI"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:JewelryWpfApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="OrderManagementUI">
+
+    <Grid x:Name="grdOrderManagement" Background="White" Margin="10">
+
+        <Grid Margin="0,0,0,30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="ORDER MANAGEMENT"  FontSize="22"/>
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <!--Label-->
+                <Label x:Name="lblCreatedDate" Content="Created Date" Grid.Column="0" Grid.Row="0"/>
+                <Label x:Name="lblType" Content="Type" Grid.Column="0" Grid.Row="1"/>
+                <Label x:Name="lblPaymentMethod" Content="Payment Method" Grid.Column="0" Grid.Row="2"/>
+                <Label x:Name="lblCustomer" Content="Customer" Grid.Column="0" Grid.Row="3"/>
+                <Label x:Name="lblUser" Content="User" Grid.Column="0" Grid.Row="4"/>
+
+                <!--TextBox-->
+                <TextBox x:Name="txtOrderId" Text="{Binding Path=RoomId, Mode=OneWay}" Visibility="Hidden"
+                    DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItem}"  TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0"/>
+                <TextBox x:Name="txtCreatedDate" Text="{Binding Path=CreatedDate, Mode=OneWay}" 
+                    DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItem}"  TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0"/>
+                <TextBox x:Name="txtType" Text="{Binding Path=Type, Mode=OneWay}"
+                     DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItem}"  TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0"/>
+                <TextBox x:Name="txtPaymentMethod" Text="{Binding Path=RoomDetailDescription, Mode=OneWay}"
+                     DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItem}" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="1"/>
+                <TextBox x:Name="txtCustomer" Text="{Binding Path=CustomerId, Mode=OneWay}"
+                     DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItem}" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="2"/>
+                <TextBox x:Name="txtUser" Text="{Binding Path=UserId, Mode=OneWay}"
+                     DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItem}" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="3"/>
+                <ComboBox x:Name="cbPaymentMethod" SelectedValuePath="PaymentMethod" SelectedValue="{Binding Path=PaymentMethod, Mode=OneWay}"
+                     DataContext="{Binding ElementName=dgvOrdersList, Path=SelectedItems}" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="4"/>
+                <!--Button-->
+
+
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="0" Margin="0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="btnAdd" Grid.Column="0" Content="Add" FontSize="18" Height="30" Width="86" Background="#FFC7A882" Foreground="White" Click="btnAdd_Click"/>
+                <Button x:Name="btnUpdate" Grid.Column="1" Content="Update" FontSize="18" Height="30" Width="86" Background="White" Foreground="#FFC7A882" FontWeight="Bold" Click="btnUpdate_Click" />
+                <Button x:Name="btnDelete" Grid.Column="2" Content="Delete" FontSize="18" Height="30" Width="86" Background="#FF902626" Foreground="White" />
+            </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="1" Margin="20 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtSearch" Grid.Column="0" Height="30" />
+                <Button x:Name="btnSearch" Click="btnSearch_Click" Grid.Column="1" Content="Search" FontSize="18" Background="#FFC7A882" Foreground="White" />
+
+            </Grid>
+            <DataGrid Grid.Column="1" Grid.Row="1" x:Name="dgvOrdersList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20 10" SelectionChanged="dgvOrdersList_SelectionChanged"/>
+        </Grid>
+    </Grid>
+</Page>

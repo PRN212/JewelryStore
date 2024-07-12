@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialEntities : Migration
+    public partial class StableDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,10 +71,8 @@ namespace Repositories.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GoldId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AskPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BidPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AskRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    BidRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
+                    AskPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    BidPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,10 +98,11 @@ namespace Repositories.Migrations
                     TotalWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     GemName = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     GemWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    GemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Labour = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GemPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    Labour = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true)
+                    ImgUrl = table.Column<string>(type: "varchar(200)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,7 +111,8 @@ namespace Repositories.Migrations
                         name: "FK_Products_Golds_GoldId",
                         column: x => x.GoldId,
                         principalTable: "Golds",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,8 +127,7 @@ namespace Repositories.Migrations
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId1 = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,15 +139,15 @@ namespace Repositories.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Orders_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetail",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false),
@@ -158,15 +157,15 @@ namespace Repositories.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetail", x => new { x.OrderId, x.ProductId });
+                    table.PrimaryKey("PK_OrderDetails", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Orders_OrderId",
+                        name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Products_ProductId",
+                        name: "FK_OrderDetails_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -179,8 +178,8 @@ namespace Repositories.Migrations
                 column: "GoldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_ProductId",
-                table: "OrderDetail",
+                name: "IX_OrderDetails_ProductId",
+                table: "OrderDetails",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -189,9 +188,9 @@ namespace Repositories.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserId1",
+                name: "IX_Orders_UserId",
                 table: "Orders",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_GoldId",
@@ -206,7 +205,7 @@ namespace Repositories.Migrations
                 name: "GoldPrices");
 
             migrationBuilder.DropTable(
-                name: "OrderDetail");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "Orders");

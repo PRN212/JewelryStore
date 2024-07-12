@@ -1,0 +1,28 @@
+﻿<Window x:Class="JewelryWpfApp.Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:JewelryWpfApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800" ResizeMode="NoResize"
+      Title="Login">
+
+    <Grid Background="#FF92857A">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Width="500" Background="White">
+            <Label x:Name="lblHeader" Content="JEWELRY STORE" Margin="20 30 20 20" 
+                   HorizontalAlignment="Center" FontSize="36"/>
+            <!--Username-->
+            <Label x:Name="lblUsername" Content="Username" FontSize="16" Margin="30"/>
+            <TextBox x:Name="txtUsername" TextWrapping="Wrap" FontSize="16" 
+                     Margin="30 0" Height="30" BorderThickness="0 0 0 1"/>
+            <!--Password-->
+            <Label x:Name="lblPassword" Content="Password" FontSize="16" Margin="30"/>
+            <PasswordBox x:Name="txtPassword" FontSize="16" Margin="30 0" 
+                         Height="30" BorderThickness="0 0 0 1"/>
+            <Button x:Name="btnLogin" Content="LOGIN" FontSize="24" HorizontalAlignment="Center" Height="46" 
+                    Margin="0 60" Width="120" Click="btnLogin_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

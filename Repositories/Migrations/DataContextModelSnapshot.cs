@@ -23,314 +23,395 @@ namespace Repositories.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Repositories.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
+                b.Property<string>("Address")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)");
+                b.Property<string>("Phone")
+                    .IsRequired()
+                    .HasColumnType("varchar(10)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "3 Nam Ky Khoi Nghia",
+                            Name = "John Doe",
+                            Phone = "0123456789"
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Gold", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Content")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("Content")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                b.Property<string>("Unit")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Golds");
-                });
+                b.ToTable("Golds");
+            });
 
             modelBuilder.Entity("Repositories.Entities.GoldPrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("AskPrice")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("AskPrice")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("AskRate")
-                        .HasColumnType("decimal(5,2)");
+                b.Property<decimal>("AskRate")
+                    .HasColumnType("decimal(5,2)");
 
-                    b.Property<decimal>("BidPrice")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("BidPrice")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("BidRate")
-                        .HasColumnType("decimal(5,2)");
+                b.Property<decimal>("BidRate")
+                    .HasColumnType("decimal(5,2)");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("DateTime")
+                    .HasColumnType("datetime2");
 
-                    b.Property<int>("GoldId")
-                        .HasColumnType("int");
+                b.Property<int>("GoldId")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("GoldId");
+                b.HasIndex("GoldId");
 
-                    b.ToTable("GoldPrices");
-                });
+                b.ToTable("GoldPrices");
+            });
 
             modelBuilder.Entity("Repositories.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2");
+
+                b.Property<int>("CustomerId")
+                    .HasColumnType("int");
+
+                b.Property<string>("PaymentMethod")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
+
+                b.Property<decimal>("TotalPrice")
+                    .HasColumnType("decimal(18,2)");
+
+                b.Property<string>("Type")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                b.HasKey("Id");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                b.HasIndex("CustomerId");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
+                            CustomerId = 1,
+                            PaymentMethod = "CreditCard",
+                            Status = "Pending",
+                            TotalPrice = 1000m,
+                            Type = "Sell",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
+                            CustomerId = 1,
+                            PaymentMethod = "Cash",
+                            Status = "Completed",
+                            TotalPrice = 2000m,
+                            Type = "Sell",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
+                            CustomerId = 1,
+                            PaymentMethod = "Cash",
+                            Status = "Shipped",
+                            TotalPrice = 3000m,
+                            Type = "Sell",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.OrderDetail", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+            {
+                b.Property<int>("OrderId")
+                    .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                b.Property<int>("ProductId")
+                    .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("Price")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                b.Property<int>("Quantity")
+                    .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ProductId");
+                b.HasKey("OrderId", "ProductId");
 
-                    b.HasIndex("ProductId");
+                b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 1,
+                            Price = 500m,
+                            Quantity = 2
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 2,
+                            Price = 700m,
+                            Quantity = 3
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            ProductId = 3,
+                            Price = 900m,
+                            Quantity = 4
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(500)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("GemName")
-                        .HasColumnType("nvarchar(200)");
+                b.Property<string>("GemName")
+                    .HasColumnType("nvarchar(200)");
 
                     b.Property<decimal>("GemPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
-                    b.Property<decimal>("GemWeight")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("GemWeight")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("GoldId")
-                        .HasColumnType("int");
+                b.Property<int?>("GoldId")
+                    .HasColumnType("int");
 
-                    b.Property<decimal>("GoldWeight")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("GoldWeight")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("varchar(200)");
+                b.Property<string>("ImgUrl")
+                    .HasColumnType("varchar(200)");
 
-                    b.Property<decimal>("Labour")
-                        .HasColumnType("decimal(18,2)");
+                b.Property<decimal>("Labour")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalWeight")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GoldId");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Repositories.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("Dob")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                b.Property<int>("Quantity")
+                    .HasColumnType("int");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
+                    b.Property<decimal>("TotalWeight")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
+
+                b.HasIndex("GoldId");
+
+                b.ToTable("Products");
+            });
+
+            modelBuilder.Entity("Repositories.Entities.User", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<DateOnly>("Dob")
+                    .HasColumnType("date");
+
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+
+                b.Property<string>("Gender")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
+
+                b.Property<string>("ImgUrl")
+                    .HasColumnType("varchar(200)");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(200)");
+
+                b.Property<string>("Password")
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+
+                b.Property<string>("Phone")
+                    .IsRequired()
+                    .HasColumnType("varchar(10)");
+
+                b.Property<string>("Role")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(50)");
+
+                b.Property<bool>("Status")
+                    .HasColumnType("bit");
+
+                b.Property<string>("Username")
+                    .IsRequired()
+                    .HasColumnType("varchar(200)");
+
+                b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Dob = new DateOnly(2000, 1, 1),
+                            Email = "<email>",
+                            Gender = "M",
+                            Name = "<name>",
+                            Password = "1",
+                            Phone = "1",
+                            Role = "Manager",
+                            Status = true,
+                            Username = "1"
+                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.GoldPrice", b =>
-                {
-                    b.HasOne("Repositories.Entities.Gold", "Gold")
-                        .WithMany()
-                        .HasForeignKey("GoldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Repositories.Entities.Gold", "Gold")
+                    .WithMany()
+                    .HasForeignKey("GoldId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Gold");
-                });
+                b.Navigation("Gold");
+            });
 
             modelBuilder.Entity("Repositories.Entities.Order", b =>
-                {
-                    b.HasOne("Repositories.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Repositories.Entities.Customer", "Customer")
+                    .WithMany()
+                    .HasForeignKey("CustomerId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
                     b.HasOne("Repositories.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                b.Navigation("Customer");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("Repositories.Entities.OrderDetail", b =>
-                {
-                    b.HasOne("Repositories.Entities.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Repositories.Entities.Order", "Order")
+                    .WithMany("OrderDetails")
+                    .HasForeignKey("OrderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("Repositories.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("Repositories.Entities.Product", "Product")
+                    .WithMany()
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Order");
+                b.Navigation("Order");
 
-                    b.Navigation("Product");
-                });
+                b.Navigation("Product");
+            });
 
             modelBuilder.Entity("Repositories.Entities.Product", b =>
-                {
-                    b.HasOne("Repositories.Entities.Gold", "Gold")
-                        .WithMany()
-                        .HasForeignKey("GoldId");
+            {
+                b.HasOne("Repositories.Entities.Gold", "Gold")
+                    .WithMany()
+                    .HasForeignKey("GoldId");
 
-                    b.Navigation("Gold");
-                });
+                b.Navigation("Gold");
+            });
 
             modelBuilder.Entity("Repositories.Entities.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
+            {
+                b.Navigation("OrderDetails");
+            });
 #pragma warning restore 612, 618
         }
     }

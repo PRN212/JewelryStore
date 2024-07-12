@@ -5,10 +5,10 @@
     "GoldId": 3,
     "GoldWeight": 1.34,
     "TotalWeight": 1.34,
-    "Labour": 350,
-    "Status": "New",
+    "Labour": 350000,
+    "Status": true,
     "Quantity": 3,
-    "ImgUrl": "images/products/fugiat.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn trang sức đính đá ECZ",
@@ -16,13 +16,13 @@
     "GoldId": 1,
     "GoldWeight": 0.98,
     "TotalWeight": 1.54,
-    "Labour": 400,
-    "Status": "New",
+    "Labour": 400000,
+    "Status": true,
     "Quantity": 2,
-    "ImgUrl": "images/products/irure.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 1,
-    "GemPrice": 400
+    "GemPrice": 400000
   },
   {
     "Name": "Vỏ nhẫn kim cương vàng trắng 14K",
@@ -30,13 +30,13 @@
     "GoldId": 4,
     "GoldWeight": 3.37,
     "TotalWeight": 6.14,
-    "Labour": 1290,
-    "Status": "New",
+    "Labour": 1290000,
+    "Status": true,
     "Quantity": 7,
-    "ImgUrl": "images/products/exercitation.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "Diamond",
     "GemWeight": 1.2,
-    "GemPrice": 1000
+    "GemPrice": 1000000
   },
   {
     "Name": "Nhẫn kim cương vàng trắng 14K",
@@ -44,24 +44,24 @@
     "GoldId": 4,
     "GoldWeight": 18.6,
     "TotalWeight": 41.6,
-    "Labour": 1201,
-    "Status": "New",
+    "Labour": 1201000,
+    "Status": true,
     "Quantity": 1,
-    "ImgUrl": "images/products/esse.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "Ruby",
     "GemWeight": 1.5,
-    "GemPrice": 2000
+    "GemPrice": 2000000
   },
   {
     "Name": "Dây chuyền vàng Ý 18K",
     "Description": "Velit nulla nisi id magna aliquip incididunt incididunt ipsum proident deserunt minim incididunt dolor. In ex.\r\n",
     "GoldId": 3,
-    "GoldWeight": 16.66,
-    "TotalWeight": 16.66,
-    "Labour": 1172,
-    "Status": "New",
+    "GoldWeight": 1.6,
+    "TotalWeight": 1.6,
+    "Labour": 1172000,
+    "Status": true,
     "Quantity": 5,
-    "ImgUrl": "images/products/magna.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Dây chuyền vàng 610 Foreverone đính đá ECZ",
@@ -70,12 +70,12 @@
     "GoldWeight": 2.1,
     "TotalWeight": 3,
     "Labour": 1372,
-    "Status": "New",
+    "Status": true,
     "Quantity": 6,
-    "ImgUrl": "images/products/eiusmod.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 1.5,
-    "GemPrice": 450
+    "GemPrice": 450000
   },
   {
     "Name": "Dây chuyền vàng trắng 14K",
@@ -83,10 +83,10 @@
     "GoldId": 4,
     "GoldWeight": 1.7,
     "TotalWeight": 1.7,
-    "Labour": 1524,
-    "Status": "New",
+    "Labour": 1524000,
+    "Status": true,
     "Quantity": 7,
-    "ImgUrl": "images/products/non.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Lắc tay vàng Ý 18K đính đá ECZ",
@@ -94,13 +94,13 @@
     "GoldId": 3,
     "GoldWeight": 3.4,
     "TotalWeight": 4.5,
-    "Labour": 1906,
-    "Status": "New",
+    "Labour": 1906000,
+    "Status": true,
     "Quantity": 4,
-    "ImgUrl": "images/products/ex.png",
+    "ImgUrl": "/img/nhan-18K.png",
     "GemName": "ECZ",
     "GemWeight": 0.9,
-    "GemPrice": 250
+    "GemPrice": 250000
   },
   {
     "Name": "Lắc tay kim tiền vàng 610",
@@ -108,10 +108,10 @@
     "GoldId": 1,
     "GoldWeight": 4.76,
     "TotalWeight": 4.76,
-    "Labour": 1023,
-    "Status": "New",
+    "Labour": 1023000,
+    "Status": true,
     "Quantity": 5,
-    "ImgUrl": "images/products/laborum.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn SJC 1 chỉ",
@@ -119,10 +119,10 @@
     "GoldId": 5,
     "GoldWeight": 1,
     "TotalWeight": 1,
-    "Labour": 200,
-    "Status": "New",
+    "Labour": 200000,
+    "Status": true,
     "Quantity": 11,
-    "ImgUrl": "images/products/sint.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn SJC 2 chỉ",
@@ -130,10 +130,10 @@
     "GoldId": 5,
     "GoldWeight": 2,
     "TotalWeight": 2,
-    "Labour": 200,
-    "Status": "New",
+    "Labour": 200000,
+    "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/eiusmod.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn trơn vàng 24K 1 chỉ",
@@ -142,9 +142,9 @@
     "GoldWeight": 1,
     "TotalWeight": 1,
     "Labour": 0,
-    "Status": "New",
+    "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/non.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Nhẫn trơn vàng 24K 2 chỉ",
@@ -153,9 +153,9 @@
     "GoldWeight": 5,
     "TotalWeight": 5,
     "Labour": 0,
-    "Status": "New",
+    "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/tempor.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Vàng miếng thần tài SJC 1 chỉ",
@@ -163,10 +163,10 @@
     "GoldId": 5,
     "GoldWeight": 1,
     "TotalWeight": 1,
-    "Labour": 300,
-    "Status": "New",
+    "Labour": 300000,
+    "Status": true,
     "Quantity": 12,
-    "ImgUrl": "images/products/veniam.png"
+    "ImgUrl": "/img/nhan-18K.png"
   },
   {
     "Name": "Vàng miếng thần tài SJC 2 chỉ",
@@ -174,9 +174,9 @@
     "GoldId": 4,
     "GoldWeight": 2,
     "TotalWeight": 2,
-    "Labour": 300,
-    "Status": "New",
+    "Labour": 300000,
+    "Status": true,
     "Quantity": 10,
-    "ImgUrl": "images/products/sit.png"
+    "ImgUrl": "/img/nhan-18K.png"
   }
 ]
