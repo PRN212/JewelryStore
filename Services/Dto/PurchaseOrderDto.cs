@@ -14,10 +14,12 @@ namespace Services.Dto
         public string? CreatedDate { get; set; }
         public string? Status { get; set; }
         public string? Type { get; set; }
-        public float TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public string? PaymentMethod { get; set; }
-        public int CustomerId { get; set; }
         public int UserId { get; set; }
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string UserName { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

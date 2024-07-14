@@ -35,6 +35,10 @@ namespace Services
         public ProductDto GetProductById(int id)
         {
             var product = _productRepository.GetProductById(id);
+            if (product == null)
+            {
+                return null;
+            }
             var productDto = _mapper.Map<ProductDto>(product);
             // calculate total gold price
             productDto.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(productDto.GoldId)?.BidPrice ?? 0;

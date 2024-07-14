@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Repositories.Entities;
 using Microsoft.IdentityModel.Tokens;
+using Repositories;
 
 namespace JewelryWpfApp
 {
@@ -30,11 +31,12 @@ namespace JewelryWpfApp
         private readonly OrderDetailService _orderDetailService;
         private readonly UserSessionService _userSessionService;
         private readonly CustomerService _customerService;
+        private DataContext _dataContext;
         private PurchaseOrderDto? _selected = null;
 
         public PurchaseOrdersUI(ProductService productService, GoldService goldService,
             PurchaseOrderService purchaseOrderService, OrderDetailService orderDetailService,
-            UserSessionService userSessionService, CustomerService customerService)
+            UserSessionService userSessionService, CustomerService customerService, DataContext dataContext)
         {
             _productService = productService;
             _goldService = goldService;
@@ -42,6 +44,7 @@ namespace JewelryWpfApp
             _orderDetailService = orderDetailService;
             _userSessionService = userSessionService;
             _customerService = customerService;
+            _dataContext = dataContext;
             InitializeComponent();
         }
 
@@ -52,8 +55,8 @@ namespace JewelryWpfApp
 
         private async Task FillDataGridView()
         {
-            IEnumerable<PurchaseOrderDto> products = await _purchaseOrderService.GetPurchaseOrders();
-            dgvPurchaseOrders.ItemsSource = products;
+            IEnumerable<PurchaseOrderDto> purchaseOrders = await _purchaseOrderService.GetPurchaseOrders();
+            dgvPurchaseOrders.ItemsSource = purchaseOrders;
         }
 
         private async void dgvPurchaseOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -70,8 +73,10 @@ namespace JewelryWpfApp
                             , _orderDetailService
                             , _purchaseOrderService
                             , _userSessionService
-                            , _customerService);
+                            , _customerService
+                            , _dataContext);
                     purchaseOrderDetailUI.purchaseOrderDto = _selected;
+                    purchaseOrderDetailUI.Customer = _customerService.searchCustomerById(_selected.CustomerId);
                     purchaseOrderDetailUI.ShowDialog();
 
                     await FillDataGridView();
@@ -99,7 +104,10 @@ namespace JewelryWpfApp
             }
             else
             {
-                dgvPurchaseOrders.ItemsSource = await _purchaseOrderService.GetPurchaseOrdersByDate(searchValue);
+                List<PurchaseOrderDto> purchaseOrderDtos = new List<PurchaseOrderDto>();
+                PurchaseOrderDto purchaseOrder = _purchaseOrderService.GetPurchaseOrdersById(Convert.ToInt32(searchValue));
+                purchaseOrderDtos.Add(purchaseOrder);
+                dgvPurchaseOrders.ItemsSource = purchaseOrderDtos;
             }
         }
 
@@ -112,7 +120,8 @@ namespace JewelryWpfApp
                     , _orderDetailService
                     , _purchaseOrderService
                     , _userSessionService
-                    , _customerService);
+                    , _customerService
+                    , _dataContext);
             purchaseOrderDetailUI.ShowDialog();
             await FillDataGridView();
         }

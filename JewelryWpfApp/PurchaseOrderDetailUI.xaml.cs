@@ -17,6 +17,8 @@ using System.Xml.Linq;
 using Repositories.Entities;
 using System.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using Repositories;
 
 namespace JewelryWpfApp
 {
@@ -33,13 +35,16 @@ namespace JewelryWpfApp
         private readonly CustomerService _customerService;
         private ProductDto? _selectedProduct = null;
         internal PurchaseOrderDto? purchaseOrderDto;
+        private DataContext _dataContext;
+        public Customer Customer;
 
         public PurchaseOrderDetailUI(ProductService productService
             , GoldService goldService
             , OrderDetailService orderDetailService
             , PurchaseOrderService purchaseOrderService
             , UserSessionService userSessionService
-            , CustomerService customerService)
+            , CustomerService customerService,
+                DataContext dataContext)
         {
             _productService = productService;
             _goldService = goldService;
@@ -48,6 +53,7 @@ namespace JewelryWpfApp
             _userSessionService = userSessionService;
             _customerService = customerService;
             InitializeComponent();
+            _dataContext = dataContext;
         }
 
         private async Task FillData()
@@ -66,19 +72,21 @@ namespace JewelryWpfApp
                 {
                     var product = _productService.GetProductById(productId);
 
-                    products.Add(product);
+                    if(product != null)
+                    {
+                        products.Add(product);
 
-                    totalPrice += (float)product.ProductPrice;
+                        totalPrice += (float)product.ProductPrice;
+                    }
                 }
 
                 //txtCustomer.Text = purchaseOrderDto.CustomerId.ToString();
 
                 txtTotalPrice.Text = totalPrice.ToString();
-                Customer customer = _customerService.searchCustomerById(purchaseOrderDto.CustomerId);
 
-                txtCustomerAddress.Text = customer.Address;
-                txtCustomerName.Text = customer.Name;
-                txtCustomerPhone.Text = customer.Phone;
+                txtCustomerAddress.Text = Customer.Address;
+                txtCustomerName.Text = Customer.Name;
+                txtCustomerPhone.Text = Customer.Phone;
 
                 dgvPurchaseOrder_ProductsList.ItemsSource = products;
             }
@@ -95,14 +103,43 @@ namespace JewelryWpfApp
             PurchaseOrderDetail_ProductDetail productDetailUI 
                 = new PurchaseOrderDetail_ProductDetail(
                     _productService, _goldService, _orderDetailService);
-            productDetailUI.OrderId = purchaseOrderDto.Id;
-            productDetailUI.ShowDialog();
-            await FillData();
+            if (purchaseOrderDto != null)
+            {
+                productDetailUI.OrderId = purchaseOrderDto.Id;
+                productDetailUI.ShowDialog();
+                await FillData();
+            }else
+            {
+                if (txtCustomerName.Text.IsNullOrEmpty()  ||
+                    txtCustomerPhone.Text.IsNullOrEmpty())
+                {
+                    MessageBox.Show("Must enter Customer Name or phone!", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }else
+                {
+                    PurchaseOrderDto purchaseOrderDto = new PurchaseOrderDto();
+                    var customerPhone = _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
+                    if (customerPhone != null)
+                    {
+                        Customer customer = new Customer();
+                        customer.Id = customerPhone.Id;
+                        customer.Name = txtCustomerName.Text;
+                        if (txtCustomerAddress.Text != null)
+                        {
+                            customer.Address = txtCustomerAddress.Text;
+                        }
+                    }
+                    purchaseOrderDto.CustomerName = txtCustomerName.Text;
+                    purchaseOrderDto.OrderDetails = new List<OrderDetail>();
+                    productDetailUI.ShowDialog();
+                }
+            }
+            
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            int totalPrice = 0;
+            decimal totalPrice = 0;
 
             if (purchaseOrderDto == null)
             {
@@ -114,8 +151,8 @@ namespace JewelryWpfApp
                 purchaseOrderDto.TotalPrice = totalPrice;
                 purchaseOrderDto.OrderDetails = new List<OrderDetail>();
                 purchaseOrderDto.PaymentMethod = "cash";
+                purchaseOrderDto.UserName = _userSessionService.CurrentUser.Username;
                 purchaseOrderDto.UserId = _userSessionService.CurrentUser.Id;
-                //purchaseOrderDto.CustomerId = int.TryParse(txtCustomer.Text, out var customerId) ? customerId : 0;
 
                 if (!txtCustomerPhone.Text.IsNullOrEmpty())
                 {
@@ -126,7 +163,7 @@ namespace JewelryWpfApp
                     {
                         txtCustomerAddress.Text = customer.Address;
                         txtCustomerName.Text = customer.Name;
-                        purchaseOrderDto.CustomerId = customer.Id;
+                        purchaseOrderDto.CustomerName = customer.Name;
                     }
                 }
                 Customer cus = new Customer();
@@ -136,6 +173,7 @@ namespace JewelryWpfApp
 
                 _customerService.AddCustomer(cus);
 
+                purchaseOrderDto.CustomerName = cus.Name;
                 purchaseOrderDto.CustomerId = cus.Id;
 
                 if (_purchaseOrderService.AddPurchaseOrder(purchaseOrderDto))
@@ -145,11 +183,20 @@ namespace JewelryWpfApp
                     btnSave.IsEnabled = false;  // Disable the Save button
                     Close();
                 }
-            }
-            else
+            }else
             {
-                btnSave.IsEnabled = false;
+                Order order = _purchaseOrderService.GetPurchaseOrdersByIdreturnOrder(purchaseOrderDto.Id);
+                purchaseOrderDto.TotalPrice = Convert.ToDecimal(txtTotalPrice.Text);
+                _dataContext.Entry(order).State = EntityState.Detached;
+                //await _purchaseOrderService.UpdatePurchaseOrder(purchaseOrderDto);
+                if (await _purchaseOrderService.UpdatePurchaseOrder(purchaseOrderDto))
+                {
+                    MessageBox.Show("Successfully updated a purchase order.", "Success",
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                Close();
             }
+
         }
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -171,13 +218,31 @@ namespace JewelryWpfApp
             }
         }
 
+        //private async void btnDelete_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_purchaseOrderService.DeletePurchaseOrder(purchaseOrderDto))
+        //    {
+        //        MessageBox.Show("Successfully deleted purchase order.", "Success",
+        //                        MessageBoxButton.OK, MessageBoxImage.Information);
+        //        Close();
+        //    }
+        //}
+
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (_purchaseOrderService.DeletePurchaseOrder(purchaseOrderDto))
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this purchase order?",
+                                                       "Confirm Delete",
+                                                       MessageBoxButton.OKCancel,
+                                                       MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.OK)
             {
-                MessageBox.Show("Successfully deleted purchase order.", "Success",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
+                if (_purchaseOrderService.DeletePurchaseOrder(purchaseOrderDto))
+                {
+                    MessageBox.Show("Successfully deleted purchase order.", "Success",
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();  // Close the window or perform any other necessary actions after deletion
+                }
             }
         }
 
