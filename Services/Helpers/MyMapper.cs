@@ -37,7 +37,10 @@ namespace Services.Helpers
 
 
             CreateMap<PurchaseOrderDto, Order>();
-            CreateMap<Order, PurchaseOrderDto>();
+                
+            CreateMap<Order, PurchaseOrderDto>()
+                .ForMember(d => d.UserName, o => o.MapFrom(src => src.User.Name))
+                .ForMember(d => d.CustomerName, o => o.MapFrom(src => src.Customer.Name));
 
             CreateMap<OrderDetailDto, OrderDetail>();
         }

@@ -48,12 +48,32 @@ namespace Services
             }
         }
 
+        public PurchaseOrderDto GetPurchaseOrdersById(int orderId)
+        {
+            var orders = _orderRepository.GetPurchaseOrderById(orderId);
+            var purchaseOrdersDto = _mapper.Map<Order, PurchaseOrderDto>(orders);
+
+            return purchaseOrdersDto;
+        }
+
+        public Order GetPurchaseOrdersByIdreturnOrder(int orderId)
+        {
+            var order = _orderRepository.GetPurchaseOrderById(orderId);
+
+            return order;
+        }
+
         public bool AddPurchaseOrder(PurchaseOrderDto purchaseOrderDto)
         {
             var purchaseOrder = _mapper.Map<Order>(purchaseOrderDto);
             return _orderRepository.AddPurchaseOrder(purchaseOrder);
         }
 
+        public Task<bool> UpdatePurchaseOrder(PurchaseOrderDto purchaseOrderDto)
+        {
+            var purchaseOrder = _mapper.Map<Order>(purchaseOrderDto);
+            return _orderRepository.UpdatePurchaseOrder(purchaseOrder);
+        }
 
         public bool DeletePurchaseOrder(PurchaseOrderDto purchaseOrderDto)
         {

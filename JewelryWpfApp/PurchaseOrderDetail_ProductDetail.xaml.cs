@@ -139,7 +139,7 @@ namespace JewelryWpfApp
                 ProductId = productId,
                 OrderId = orderId,
                 Quantity = string.IsNullOrEmpty(txtQuantity.Text) ? 0 : int.Parse(txtQuantity.Text),
-                Price = 100000 // Assuming this is the price you want to set
+                Price = (float)_productService.GetProductById(productId).ProductPrice,
             };
 
             bool result = _orderDetailService.AddOrderDetail(purchaseOrderDetailDto);

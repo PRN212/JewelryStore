@@ -17,12 +17,10 @@ namespace Repositories
 			_context.SaveChanges();
 		}
 
-		public void Update(Order obj)
-		{
-			_context.Orders.Update(obj);
-		}
-	
-
+        public void Update(Order obj)
+        {
+            _context.Orders.Update(obj);
+        }
 
         public async Task<IEnumerable<Order>> GetPurchaseOrders()
         {
@@ -53,6 +51,12 @@ namespace Repositories
         public bool AddPurchaseOrder(Order order)
         {
             _context.Add(order);
+            return _context.SaveChanges() > 0;
+        }
+
+        public async Task<bool> UpdatePurchaseOrder(Order order)
+        {
+            _context.Update(order);
             return _context.SaveChanges() > 0;
         }
 
@@ -94,14 +98,14 @@ namespace Repositories
 
         public async Task<IEnumerable<Order>> SearchPurchaseOrders(string searchValue)
         {
-            return await _context.Orders
+            return await _context.Orders.AsNoTracking()
                 .Where(p => p.Customer.Name.Contains(searchValue))
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Order>> SearchPurchaseOrdersByDate(DateTime searchDate)
         {
-            return await _context.Orders
+            return await _context.Orders.AsNoTracking()
                 .Where(p => p.CreatedDate.Date == searchDate.Date) // So sánh chỉ phần ngày, bỏ qua phần giờ.
                 .ToListAsync();
         }
