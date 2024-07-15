@@ -1,7 +1,7 @@
-﻿using Core.Enitities;
-using Core.Specifications;
+﻿using Repositories.Enitities;
+using Repositories.Specifications;
 
-namespace Core.Interfaces
+namespace Repositories.IRepositories
 {
     /// <summary>
     /// Create a new repository with type T without creating a new class.

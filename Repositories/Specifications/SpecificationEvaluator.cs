@@ -1,7 +1,7 @@
-﻿using Core.Enitities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Repositories.Enitities;
 
-namespace Core.Specifications
+namespace Repositories.Specifications
 {
     /// <summary>
     /// This class chains the queries together to create the final specification.

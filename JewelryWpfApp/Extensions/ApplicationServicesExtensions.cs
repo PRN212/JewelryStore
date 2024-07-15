@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repositories;
+using Repositories.IRepositories;
 using Services;
 
 namespace JewelryWpfApp.Extensions
@@ -22,7 +23,6 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<GoldService>(); 
             services.AddScoped<PurchaseOrderService>(); 
             services.AddScoped<OrderDetailService>(); 
-            services.AddScoped<OrderDetail_ProductOrderDetailService>();
             services.AddScoped<GoldPriceService>();
             services.AddScoped<CustomerService>();
             services.AddScoped<OrderDetailService>();
@@ -34,11 +34,13 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<GoldRepository>();
             services.AddScoped<OrderRepository>();
             services.AddScoped<OrderDetailRepository>();
-            services.AddScoped<OrderDetail_ProductOrderDetailRepository>();
             services.AddScoped<CustomerRepository>();
             services.AddScoped<OrderRepository>();
             services.AddScoped<OrderDetailRepository>();
             services.AddScoped<GoldPriceRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
             services.AddTransient<Login>();
             services.AddScoped<SellOrdersUI>();
@@ -47,8 +49,10 @@ namespace JewelryWpfApp.Extensions
             services.AddTransient<ProductsListUI>();
             services.AddTransient<GoldRateUI>();
             services.AddTransient<GoldPriceUI>();
-            services.AddTransient<PurchaseOrdersUI>();
-            services.AddTransient<PurchaseOrderDetail_ProductDetail>();
+            services.AddTransient<PurchaseOrdersListUI>();
+            services.AddTransient<PurchaseOrderDetailUI>();
+            services.AddTransient<PurchaseOrderUI>();
+            services.AddTransient<CustomerUI>();
 
             services.AddSingleton<UserSessionService>();
 

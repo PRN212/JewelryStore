@@ -1,9 +1,8 @@
-﻿using Core.Enitities;
-using Core.Interfaces;
-using Repositories;
+﻿using Repositories.Enitities;
+using Repositories.IRepositories;
 using System.Collections;
 
-namespace Infrastructure.Data
+namespace Repositories
 {
     /// <summary>
     /// Base implementation of the unit of work interface.

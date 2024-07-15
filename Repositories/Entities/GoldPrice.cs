@@ -1,6 +1,5 @@
 ﻿
-using Core.Enitities;
-using System.ComponentModel.DataAnnotations;
+using Repositories.Enitities;   
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities

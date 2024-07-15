@@ -1,4 +1,4 @@
-﻿namespace Core.Specifications.Orders
+﻿namespace Repositories.Specifications.Orders
 {
     public class OrderSpecParams
     {

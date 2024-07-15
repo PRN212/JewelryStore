@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Repositories.Entities;
+using Repositories.Entities.Orders;
 using Repositories.IRepositories;
 namespace Repositories
 {
@@ -36,10 +36,10 @@ namespace Repositories
             .ToListAsync();
         }
 
-        public bool AddOrderDetail(OrderDetail orderDetail)
+        public async Task<bool> AddOrderDetail(OrderDetail orderDetail)
         {
             _context.OrderDetails.Add(orderDetail);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<OrderDetail> GetOrderDetailByProductId(int productId)

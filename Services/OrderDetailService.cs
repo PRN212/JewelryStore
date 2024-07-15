@@ -2,15 +2,10 @@
 using AutoMapper;
 using Repositories.Entities;
 using Repositories;
-using Repositories.Entities;
 using Services.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Services.Helpers;
-using System.Linq.Expressions;
+using Repositories.Entities.Orders;
+using Repositories.IRepositories;
+using Repositories.Specifications.Products;
 
 namespace Services
 {
@@ -20,24 +15,18 @@ namespace Services
         private readonly GoldPriceRepository _goldPriceRepository;
         private readonly OrderDetailRepository _orderDetailRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public OrderDetailService(OrderDetailRepository orderRepo, IMapper mapper,
             GoldPriceRepository goldPriceRepository,
-            OrderDetailRepository orderDetailRepository)
+            OrderDetailRepository orderDetailRepository, IUnitOfWork unitOfWork)
         {
             _orderRepo = orderRepo;
             _goldPriceRepository = goldPriceRepository;
-
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _orderDetailRepository = orderDetailRepository;
         }
-        public List<OrderDetail> GetAll(Expression<Func<OrderDetail, bool>>? filter = null, string? includeProperties = null) { 
-            return _orderRepo.GetAll().ToList();
-		}
-        public OrderDetail Get(Expression<Func<OrderDetail, bool>> filter, string? includeProperties = null, bool tracked = false)
-        {
-            return _orderRepo.Get(filter, includeProperties, tracked);
-		}
 
         public List<SellOrderDetailDto> GetDetailsFromOrder(int id)
         {
@@ -50,43 +39,29 @@ namespace Services
             return detailDtos;
         }
 
-        public async Task<IEnumerable<int>> GetPurchaseOrdersInOrderDetail(int orderId) { 
+        public async Task<bool> AddOrderDetail(ProductToAddDto productToAddDto, int orderId)
+        {
+            // add product
+            var product = _mapper.Map<Product>(productToAddDto);
+            _unitOfWork.Repository<Product>().Add(product);
+            await _unitOfWork.Complete();
+            product = await _unitOfWork.Repository<Product>().GetEntityWithSpec(new ProductSpecification(product.Id));
 
-            var orders = await _orderDetailRepository.GetOrderDetails(orderId);
-
-            List<int> productIds = new List<int>();
-
-            foreach (var order in orders)
+            // add order item
+            var goldPrice = _goldPriceRepository.GetLatestGoldPrice(product.GoldId).AskPrice;
+            var orderDetail = new OrderDetail
             {
-                int pId = order.ProductId;
-                productIds.Add(pId);
-            }
+                ProductId = product.Id,
+                OrderId = orderId,
+                Quantity = product.Quantity,
+                Price = product.GoldWeight * goldPrice*100 + product.GemPrice
+            };
 
-            return productIds;
-        }
+            // update order's total price
+            var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
+            order.TotalPrice += orderDetail.Price * orderDetail.Quantity;
 
-        public async Task<OrderDetail> GetOrderDetailByProductId(int productId)
-        {
-            var orderDetail = _orderDetailRepository.GetOrderDetailByProductId(productId);
-
-            return await orderDetail;
-        }
-
-        public bool AddOrderDetail(OrderDetailDto orderDetailDto)
-        {
-            var orderDetail = _mapper.Map<OrderDetail>(orderDetailDto);
-            return _orderDetailRepository.AddOrderDetail(orderDetail);
-        }
-
-
-        public void Save()
-        {
-            _orderRepo.Save();
-        }
-
-        public void Update(OrderDetail obj)
-        {
-            _orderRepo.Update(obj);
+            return await _orderDetailRepository.AddOrderDetail(orderDetail);
         }
     }
 }

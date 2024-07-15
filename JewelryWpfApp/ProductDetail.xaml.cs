@@ -24,15 +24,16 @@ namespace JewelryWpfApp
     {
         private readonly ProductService _productService;
         private readonly GoldService _goldService;
-        public ProductDto ProductDto;
+        public ProductDto? ProductDto { get; set; } 
         public ProductDetail(ProductService productService, GoldService goldService)
         {
             _productService = productService;
-            _goldService = goldService;
+            _goldService = goldService;           
             InitializeComponent();
         }
         private async void PageLoaded(object sender, RoutedEventArgs e)
         {
+            DataContext = ProductDto;
             FillData();
         }
         private async void FillData()
@@ -40,22 +41,11 @@ namespace JewelryWpfApp
             // fill gold type list
             cbGoldType.ItemsSource = await _goldService.GetAllGoldTypeAsync();
             cbGoldType.DisplayMemberPath = "Name";
-            cbGoldType.SelectedValuePath = "Id";                     
+            cbGoldType.SelectedValuePath = "Id"; 
+            cbGoldType.SelectedIndex = 0;
 
             if (ProductDto != null)
             {
-                txtName.Text = ProductDto.Name;
-                txtDescription.Text = ProductDto.Description;
-                cbGoldType.SelectedValue = ProductDto.GoldId;
-                txtGoldWeight.Text = ProductDto.GoldWeight.ToString();
-                txtGoldPrice.Text = ProductDto.GoldPrice.ToString();
-                txtGemType.Text = ProductDto.GemName;
-                txtGemWeight.Text = ProductDto.GemWeight.ToString();
-                txtGemPrice.Text = ProductDto.GemPrice.ToString();
-                txtLabour.Text = ProductDto.Labour.ToString();
-                txtProductPrice.Text = ProductDto.ProductPrice.ToString();
-                txtQuantity.Text = ProductDto.Quantity.ToString();
-
                 if (!string.IsNullOrEmpty(ProductDto.ImgUrl))
                 {
                     Uri resourceUri = new Uri(ProductDto.ImgUrl,UriKind.Relative);
@@ -67,16 +57,6 @@ namespace JewelryWpfApp
             }
             else
             {
-                // set default value
-                cbGoldType.SelectedIndex = 0;
-                txtGoldWeight.Text = "0";
-                txtGemWeight.Text = "0";
-                txtGemPrice.Text = "0";
-                txtLabour.Text = "0";
-                txtQuantity.Text = "0";
-                txtGoldPrice.Text = "0";
-                txtProductPrice.Text = "0";
-
                 btnUpdate.IsEnabled = false;
                 btnDelete.IsEnabled = false;
                 btnDelete.Foreground = new SolidColorBrush(Colors.Black);

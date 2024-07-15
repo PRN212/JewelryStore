@@ -1,103 +1,136 @@
 ﻿using AutoMapper;
-using Repositories.Entities;
 using Repositories;
 using Services.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Repositories.Entities.Orders;
+using Repositories.Entities;
+using Repositories.IRepositories;
+using Repositories.Specifications.Orders;
 
 namespace Services
 {
     public class PurchaseOrderService
     {
         private readonly IMapper _mapper;
-        private readonly ProductRepository _productRepository;
         private readonly GoldPriceRepository _goldPriceRepository;
-        private readonly OrderRepository _orderRepository;
-        public PurchaseOrderService(IMapper mapper, ProductRepository productRepository,
-            GoldPriceRepository goldPriceRepository, OrderRepository orderRepository)
+
+        private readonly IUnitOfWork _unitOfWork;
+        public PurchaseOrderService(IMapper mapper, IUnitOfWork unitOfWork, GoldPriceRepository goldPriceRepository)
         {
-            _productRepository = productRepository;
-            _goldPriceRepository = goldPriceRepository;
-            _orderRepository = orderRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _goldPriceRepository = goldPriceRepository;
         }
-        public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrders()
+        public async Task<IReadOnlyList<PurchaseOrderDto>> GetOrdersWithSpec(string search, string orderType, string? orderStatus)
         {
-            var orders = await _orderRepository.GetPurchaseOrders();
-            var purchaseOrdersDto = _mapper.Map<IEnumerable<Order>, IEnumerable<PurchaseOrderDto>>(orders);
+            OrderSpecParams param = new OrderSpecParams
+            {
+                Search = search,
+                OrderType = orderType,
+                OrderStatus = orderStatus
+            };
+            OrdersSpecification spec = new OrdersSpecification(param);
+            var orders = await _unitOfWork.Repository<Order>().ListAsync(spec);
+            
+            var purchaseOrdersDto = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<PurchaseOrderDto>>(orders);
+            foreach (var o in purchaseOrdersDto)
+            {
+                foreach (var od in o.OrderDetails)
+                {
+                    od.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(od.GoldId)?.BidPrice ?? 0;
+                }
+            }
 
             return purchaseOrdersDto;
         }
 
-        public async Task<IEnumerable<PurchaseOrderDto>> GetPurchaseOrdersByDate(string day)
+        public async Task<PurchaseOrderDto?> GetOrderById(int orderId)
         {
-            if (DateTime.TryParse(day, out DateTime searchDate))
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(new OrdersSpecification(orderId));
+            var orderDto = _mapper.Map<Order, PurchaseOrderDto>(order);
+            foreach (var od in orderDto.OrderDetails)
             {
-                var orders = await _orderRepository.SearchPurchaseOrdersByDate(searchDate);
-                var purchaseOrdersDto = _mapper.Map<IEnumerable<Order>, IEnumerable<PurchaseOrderDto>>(orders);
-
-                return purchaseOrdersDto;
+                od.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(od.GoldId)?.BidPrice ?? 0;
             }
+            return orderDto;
+        }
+
+        public async Task<PurchaseOrderDto?> AddOrder(Customer customer, int userId, string orderType)
+        {
+            // add customer
+            if (customer.Id == 0)
+            {
+                _unitOfWork.Repository<Customer>().Add(customer);
+            }
+            // update customer
             else
             {
-                // Nếu ngày không hợp lệ, trả về danh sách rỗng hoặc xử lý lỗi tùy theo yêu cầu.
-                return Enumerable.Empty<PurchaseOrderDto>();
+                _unitOfWork.Repository<Customer>().Update(customer);
             }
+            await _unitOfWork.Complete();
+            
+            // create order
+            var order = new Order()
+            {
+                CustomerId = customer.Id,
+                UserId = userId,
+                CreatedDate = DateTime.UtcNow,
+                Status = OrderStatus.Pending.GetEnumMemberValue(),
+                Type = orderType,
+                PaymentMethod = PaymentMethod.Cash.GetEnumMemberValue(),
+            };
+            _unitOfWork.Repository<Order>().Add(order);
+
+            // save to db
+            if (await _unitOfWork.Complete() > 0)
+            {
+                order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(new OrdersSpecification(order.Id));
+                return _mapper.Map<PurchaseOrderDto>(order);
+            }
+            return null;               
         }
 
-        public PurchaseOrderDto GetPurchaseOrdersById(int orderId)
+        public async Task<bool> UpdateOrder(PurchaseOrderDto purchaseOrderDto)
         {
-            var orders = _orderRepository.GetPurchaseOrderById(orderId);
-            var purchaseOrdersDto = _mapper.Map<Order, PurchaseOrderDto>(orders);
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(
+                new OrdersSpecification(purchaseOrderDto.Id));
+         
+            if (existingOrder == null) return false;
 
-            return purchaseOrdersDto;
+            // update order
+            _mapper.Map(purchaseOrderDto, existingOrder);
+            _unitOfWork.Repository<Order>().Update(existingOrder);
+
+            return await _unitOfWork.Complete() > 0;
         }
 
-        public Order GetPurchaseOrdersByIdreturnOrder(int orderId)
+        public async Task<bool> DeleteOrder(PurchaseOrderDto purchaseOrderDto)
         {
-            var order = _orderRepository.GetPurchaseOrderById(orderId);
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(
+                new OrdersSpecification(purchaseOrderDto.Id));
 
-            return order;
+            if (existingOrder == null) return false;
+
+            // update order
+            _mapper.Map(purchaseOrderDto, existingOrder);
+            existingOrder.Status = OrderStatus.Cancel.GetEnumMemberValue();
+            _unitOfWork.Repository<Order>().Update(existingOrder);
+
+            return await _unitOfWork.Complete() > 0;
         }
 
-        public bool AddPurchaseOrder(PurchaseOrderDto purchaseOrderDto)
+        public async Task<bool> IsPaid(PurchaseOrderDto purchaseOrderDto)
         {
-            var purchaseOrder = _mapper.Map<Order>(purchaseOrderDto);
-            return _orderRepository.AddPurchaseOrder(purchaseOrder);
-        }
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(
+                new OrdersSpecification(purchaseOrderDto.Id));
 
-        public Task<bool> UpdatePurchaseOrder(PurchaseOrderDto purchaseOrderDto)
-        {
-            var purchaseOrder = _mapper.Map<Order>(purchaseOrderDto);
-            return _orderRepository.UpdatePurchaseOrder(purchaseOrder);
-        }
+            if (existingOrder == null) return false;
 
-        public bool DeletePurchaseOrder(PurchaseOrderDto purchaseOrderDto)
-        {
-            var purchaseOrder = _mapper.Map<Order>(purchaseOrderDto);
-            return _orderRepository.DeletePurchaseOrder(purchaseOrder);
-        }
+            // update order
+            _mapper.Map(purchaseOrderDto, existingOrder);
+            existingOrder.Status = OrderStatus.PaymentReceived.GetEnumMemberValue();
+            _unitOfWork.Repository<Order>().Update(existingOrder);
 
-        public bool IsPaid(PurchaseOrderDto purchaseOrderDto)
-        {
-            var purchaseOrder = _mapper.Map<Order>(purchaseOrderDto);
-            return _orderRepository.IsPaid(purchaseOrder);
-        }
-
-        public bool UpdateProduct(ProductDto productDto)
-        {
-            Product? product = _productRepository.GetProductById(productDto.Id);
-            if (product == null) { return false; }
-            _mapper.Map(productDto, product);
-            return _productRepository.UpdateProduct(product);
-        }
-
-        public async Task<IEnumerable<Product>> SearchProducts(string searchValue)
-        {
-            return await _productRepository.SearchProducts(searchValue);
+            return await _unitOfWork.Complete() > 0;
         }
     }
 }

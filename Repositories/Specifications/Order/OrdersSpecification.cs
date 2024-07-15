@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repositories.Entities.Orders;
 
-namespace Core.Specifications.Orders
+namespace Repositories.Specifications.Orders
 {
     public class OrdersSpecification : BaseSpecification<Order>
     {

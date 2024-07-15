@@ -1,10 +1,9 @@
-using Core.Enitities;
-using Core.Interfaces;
-using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
-using Repositories;
+using Repositories.Enitities;
+using Repositories.IRepositories;
+using Repositories.Specifications;
 
-namespace Infrastructure.Data
+namespace Repositories
 {
     /// <summary>
     /// Implementation of IGenericRepository<T>

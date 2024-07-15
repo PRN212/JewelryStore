@@ -1,5 +1,5 @@
 ﻿
-using Core.Enitities;
+using Repositories.Enitities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

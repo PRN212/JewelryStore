@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
-namespace Core.Specifications
+namespace Repositories.Specifications
 {
     /// <summary>
     /// Implementation of ISpecification<T>
