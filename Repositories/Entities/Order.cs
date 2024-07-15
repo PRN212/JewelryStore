@@ -1,13 +1,13 @@
 ﻿
 
+using Core.Enitities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         public string Status { get; set; }

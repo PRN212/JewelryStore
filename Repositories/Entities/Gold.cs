@@ -2,12 +2,12 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Core.Enitities;
 
 namespace Repositories.Entities
 {
-    public class Gold
+    public class Gold : BaseEntity
     {
-        public int Id { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         public string Name { get; set; }
         [Column(TypeName = "nvarchar(50)")]

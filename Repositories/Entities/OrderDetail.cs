@@ -15,7 +15,7 @@ namespace Repositories.Entities
         public Order Order { get; set; }
         public int Quantity { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float Price { get; set; }
+        public decimal Price { get; set; }
 
     }
 }
