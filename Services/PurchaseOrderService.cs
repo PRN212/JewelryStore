@@ -66,7 +66,7 @@ namespace Services
             {
                 _unitOfWork.Repository<Customer>().Update(customer);
             }
-            await _unitOfWork.Complete();
+            await _unitOfWork.Repository<Customer>().SaveAllAsync();
             
             // create order
             var order = new Order()

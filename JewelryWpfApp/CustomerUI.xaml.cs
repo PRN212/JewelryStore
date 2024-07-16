@@ -80,6 +80,7 @@ namespace JewelryWpfApp
                 // navigate to OrderUI
                 var orderUI = _serviceProvider.GetRequiredService<PurchaseOrderUI>();
                 orderUI.SelectedOrder = _purchaseOrderDto;
+                
                 orderUI.Show();
                 Close();
             }

@@ -11,6 +11,11 @@ namespace Repositories.Entities
         public string Unit { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public float Content { get; set; }
+        [Column(TypeName = "decimal(18,0)")]
+        public decimal BidPrice { get; set; }
+        [Column(TypeName = "decimal(18,0)")]
+        public decimal AskPrice { get; set; }
+
 
     }
 }

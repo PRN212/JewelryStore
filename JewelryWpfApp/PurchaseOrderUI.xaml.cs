@@ -24,9 +24,9 @@ namespace JewelryWpfApp
             InitializeComponent();         
         }
 
-        private async void FillData()
+        private void FillData()
         {
-            SelectedOrder = await _purchaseOrderService.GetOrderById(SelectedOrder.Id);
+            //SelectedOrder = await _purchaseOrderService.GetOrderById(SelectedOrder.Id);
             DataContext = SelectedOrder;
         }
 
@@ -40,11 +40,12 @@ namespace JewelryWpfApp
         /*
          * Add order item into purchase order
          */
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             PurchaseOrderDetailUI w = _serviceProvider.GetRequiredService<PurchaseOrderDetailUI>();
             w.OrderId = SelectedOrder.Id;
             w.ShowDialog();
+            SelectedOrder = await _purchaseOrderService.GetOrderById(SelectedOrder.Id);
             FillData();
         }
 

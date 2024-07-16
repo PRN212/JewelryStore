@@ -21,7 +21,7 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<ProductService>();
             services.AddScoped<UserService>();
             services.AddScoped<GoldService>(); 
-            services.AddScoped<PurchaseOrderService>(); 
+            services.AddTransient<PurchaseOrderService>(); 
             services.AddScoped<OrderDetailService>(); 
             services.AddScoped<GoldPriceService>();
             services.AddScoped<CustomerService>();
