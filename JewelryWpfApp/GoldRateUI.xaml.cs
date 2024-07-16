@@ -29,10 +29,12 @@ namespace JewelryWpfApp
     public partial class GoldRateUI : Page
     {
         private readonly GoldPriceService _goldPriceService;
-        public GoldRateUI(GoldPriceService goldPriceService)
+        private readonly GoldService _goldService;
+        public GoldRateUI(GoldPriceService goldPriceService, GoldService goldService)
         {
             _goldPriceService = goldPriceService;
             InitializeComponent();
+            _goldService = goldService;
         }
 
         private GoldPriceFromAPI _selected = null;
@@ -128,6 +130,9 @@ namespace JewelryWpfApp
                     BidPrice = _selected.SellingRate
                 };
                 _goldPriceService.SaveNewGoldPrice(goldPrice);
+
+                UpdateGoldTable(_selected.GoldId, _selected.BuyingRate, _selected.SellingRate);
+                
                 MessageBox.Show("Save successfully!", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -166,8 +171,18 @@ namespace JewelryWpfApp
                     BidPrice = gold.SellingRate
                 };
                 _goldPriceService.SaveNewGoldPrice(goldPrice);
+
+                UpdateGoldTable(gold.GoldId, gold.BuyingRate, gold.SellingRate);
             }
             MessageBox.Show("Save successfully!", "Save All", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void UpdateGoldTable(int goldId, decimal askPrice,  decimal bidPrice) {
+            Gold gold = _goldService.GetGoldById(goldId);
+
+            gold.AskPrice = askPrice;
+            gold.BidPrice = bidPrice;
+            _goldService.UpdateGold(gold);
         }
 
         private class GoldPriceFromAPI
