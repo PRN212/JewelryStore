@@ -1,20 +1,20 @@
 ﻿
 
+using Repositories.Enitities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Repositories.Entities
+namespace Repositories.Entities.Orders
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         [Column(TypeName = "nvarchar(50)")]
-        public string Status { get; set; }
+        public string Status { get; set; } = OrderStatus.Pending.GetEnumMemberValue();
         [Column(TypeName = "nvarchar(50)")]
         public string Type { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public float TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         public string PaymentMethod { get; set; }
         public int CustomerId { get; set; }

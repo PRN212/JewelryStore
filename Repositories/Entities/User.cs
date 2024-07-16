@@ -1,12 +1,12 @@
 ﻿
+using Repositories.Enitities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        public int Id { get; set; }
         [Column(TypeName = "nvarchar(200)")]
         public string Name { get; set; }
         [Column(TypeName = "varchar(200)")]

@@ -1,4 +1,4 @@
-﻿using Repositories.Entities;
+﻿using Repositories.Entities.Orders;
 using Static;
 using System.Collections.ObjectModel;
 

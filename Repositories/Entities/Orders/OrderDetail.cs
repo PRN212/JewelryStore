@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Repositories.Entities
+namespace Repositories.Entities.Orders
 {
     public class OrderDetail
     {
@@ -14,8 +14,10 @@ namespace Repositories.Entities
         public int OrderId { get; set; }
         public Order Order { get; set; }
         public int Quantity { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
-        public float Price { get; set; }
+        [Column(TypeName = "decimal(18,0)")]
+        public decimal Price { get; set; }
+        [Column(TypeName = "decimal(18,0)")]
+        public decimal GoldPrice { get; set; }
 
     }
 }

@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Repositories.Entities;
 using Services;
 using System.Windows;
-using System.Windows.Controls;
-
-
 
 namespace JewelryWpfApp
 {

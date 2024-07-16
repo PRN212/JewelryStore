@@ -1,12 +1,11 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
+using Repositories.Enitities;   
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities
 {
-    public class GoldPrice
+    public class GoldPrice : BaseEntity
     {
-        public int Id { get; set; }
         public int GoldId { get; set; }
         public Gold Gold { get; set; }
         public DateTime DateTime { get; set; }

@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Repositories.Entities;
+using Repositories.Entities.Orders;
 using Static;
 
 namespace Repositories
@@ -34,15 +35,15 @@ namespace Repositories
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = 1 },
-                new Order { Id = 2, CustomerId = 1, TotalPrice = 2000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 },
-                new Order { Id = 3, CustomerId = 1, TotalPrice = 3000f, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 }
+                new Order { Id = 1, CustomerId = 1, TotalPrice = 1000m, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Pending", Type = SD.TypeSell, PaymentMethod = SD.TypeCredit, UserId = 1 },
+                new Order { Id = 2, CustomerId = 1, TotalPrice = 2000m, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Completed", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 },
+                new Order { Id = 3, CustomerId = 1, TotalPrice = 3000m, CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), Status = "Shipped", Type = SD.TypeSell, PaymentMethod = SD.TypeCash, UserId = 1 }
             );
 
             modelBuilder.Entity<OrderDetail>().HasData(
-                new OrderDetail { OrderId = 1, ProductId = 1, Quantity = 2, Price = 500f },
-                new OrderDetail { OrderId = 2, ProductId = 2, Quantity = 3, Price = 700f },
-                new OrderDetail { OrderId = 3, ProductId = 3, Quantity = 4, Price = 900f }
+                new OrderDetail { OrderId = 1, ProductId = 1, Quantity = 2, Price = 500m },
+                new OrderDetail { OrderId = 2, ProductId = 2, Quantity = 3, Price = 700m },
+                new OrderDetail { OrderId = 3, ProductId = 3, Quantity = 4, Price = 900m }
             );
         }
 

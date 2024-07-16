@@ -38,22 +38,12 @@ namespace JewelryWpfApp
         {
             if (dgvProductsList.SelectedItems.Count > 0)
             {
-                try
-                {
                     _selected = (ProductDto)dgvProductsList.SelectedItems[0];
                     ProductDetail productDetailUI = new ProductDetail(_productService, _goldService);
                     productDetailUI.ProductDto = _selected;
                     productDetailUI.ShowDialog();
 
                     await FillDataGridView();
-                }
-                catch
-                {
-                    MessageBox.Show("Please select a valid row!",
-                    "Warning",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,12 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace JewelryWpfApp
 {
@@ -22,11 +18,11 @@ namespace JewelryWpfApp
     {
         IServiceProvider _serviceProvider;
         private readonly ProductsListUI _productsListUI;
-        private readonly PurchaseOrdersUI _purchaseOrdersUI;
+        private readonly PurchaseOrdersListUI _purchaseOrdersUI;
         private readonly GoldPriceUI _goldPriceUI;
 
         public StaffMainUI(ProductsListUI productListUI,
-             PurchaseOrdersUI purchaseOrdersUI,
+             PurchaseOrdersListUI purchaseOrdersUI,
              GoldPriceUI goldPriceUI,
              IServiceProvider serviceProvider)
         {

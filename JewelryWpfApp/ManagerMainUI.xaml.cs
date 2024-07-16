@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Repositories.Entities;
 using System.Windows;
 
 
@@ -10,11 +11,11 @@ namespace JewelryWpfApp
     public partial class ManagerMainUI : Window
     {
         private readonly ProductsListUI _productsListUI;
-        private readonly PurchaseOrdersUI _purchaseOrdersUI;
+        private readonly PurchaseOrdersListUI _purchaseOrdersUI;
         private readonly GoldRateUI _goldRateUI;
         private readonly SellOrdersUI _sellOrdersUI;
-        IServiceProvider _serviceProvider;
-        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider, SellOrdersUI sellOrdersUI, PurchaseOrdersUI purchaseOrdersUI)
+        private readonly IServiceProvider _serviceProvider;
+        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider, SellOrdersUI sellOrdersUI, PurchaseOrdersListUI purchaseOrdersUI)
         {
             _productsListUI = productListUI;
             _goldRateUI = goldRateUI;

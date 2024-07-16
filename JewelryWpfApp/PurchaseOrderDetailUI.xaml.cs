@@ -1,315 +1,142 @@
 ﻿using Services.Dto;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml.Linq;
-using Repositories.Entities;
-using System.Diagnostics;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore;
-using Repositories;
+using System.Text.RegularExpressions;
 
 namespace JewelryWpfApp
 {
     /// <summary>
-    /// Interaction logic for PurchaseOrderDetailUI.xaml
+    /// Interaction logic for PurchaseOrderDetail_ProductDetail.xaml
     /// </summary>
     public partial class PurchaseOrderDetailUI : Window
     {
-        private readonly ProductService _productService;
         private readonly GoldService _goldService;
         private readonly OrderDetailService _orderDetailService;
-        private readonly PurchaseOrderService _purchaseOrderService;
-        private readonly UserSessionService _userSessionService;
-        private readonly CustomerService _customerService;
-        private ProductDto? _selectedProduct = null;
-        internal PurchaseOrderDto? purchaseOrderDto;
-        private DataContext _dataContext;
-        public Customer Customer;
 
-        public PurchaseOrderDetailUI(ProductService productService
-            , GoldService goldService
-            , OrderDetailService orderDetailService
-            , PurchaseOrderService purchaseOrderService
-            , UserSessionService userSessionService
-            , CustomerService customerService,
-                DataContext dataContext)
+        public PurchaseOrderDetailDto? SelectedOrderDetail;
+        public int OrderId; 
+        public PurchaseOrderDetailUI(GoldService goldService, OrderDetailService orderDetailService)
         {
-            _productService = productService;
             _goldService = goldService;
             _orderDetailService = orderDetailService;
-            _purchaseOrderService = purchaseOrderService;
-            _userSessionService = userSessionService;
-            _customerService = customerService;
             InitializeComponent();
-            _dataContext = dataContext;
         }
-
-        private async Task FillData()
+        private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            int orderId = 0;
-            float totalPrice = 0;
-            if (purchaseOrderDto != null)
+            DataContext = SelectedOrderDetail;
+            FillData();
+        }
+        private async void FillData()
+        {
+            // fill gold type list
+            cbGoldType.ItemsSource = await _goldService.GetAllGoldTypeAsync();
+            cbGoldType.DisplayMemberPath = "Name";
+            cbGoldType.SelectedValuePath = "Id";
+            cbGoldType.SelectedIndex = 0;
+
+            if (SelectedOrderDetail != null)
             {
-                orderId = purchaseOrderDto.Id;
-
-                IEnumerable<int> productIds = await _orderDetailService.GetPurchaseOrdersInOrderDetail(orderId);
-
-                List<ProductDto> products = new List<ProductDto>();
-
-                foreach (int productId in productIds)
-                {
-                    var product = _productService.GetProductById(productId);
-
-                    if(product != null)
-                    {
-                        products.Add(product);
-
-                        totalPrice += (float)product.ProductPrice;
-                    }
-                }
-
-                //txtCustomer.Text = purchaseOrderDto.CustomerId.ToString();
-
-                txtTotalPrice.Text = totalPrice.ToString();
-
-                txtCustomerAddress.Text = Customer.Address;
-                txtCustomerName.Text = Customer.Name;
-                txtCustomerPhone.Text = Customer.Phone;
-
-                dgvPurchaseOrder_ProductsList.ItemsSource = products;
+                btnAdd.IsEnabled = false;
+                btnAdd.Foreground = new SolidColorBrush(Colors.Black);
             }
-        }
-
-        private async void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            await FillData();
-            SetupButton();
+            else
+            {
+                btnUpdate.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                btnDelete.Foreground = new SolidColorBrush(Colors.Black);
+            }
         }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            PurchaseOrderDetail_ProductDetail productDetailUI 
-                = new PurchaseOrderDetail_ProductDetail(
-                    _productService, _goldService, _orderDetailService);
-            if (purchaseOrderDto != null)
+            if (string.IsNullOrEmpty(txtName.Text))
             {
-                productDetailUI.OrderId = purchaseOrderDto.Id;
-                productDetailUI.ShowDialog();
-                await FillData();
-            }else
-            {
-                if (txtCustomerName.Text.IsNullOrEmpty()  ||
-                    txtCustomerPhone.Text.IsNullOrEmpty())
-                {
-                    MessageBox.Show("Must enter Customer Name or phone!", "Error",
-                                MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }else
-                {
-                    PurchaseOrderDto purchaseOrderDto = new PurchaseOrderDto();
-                    var customerPhone = _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
-                    if (customerPhone != null)
-                    {
-                        Customer customer = new Customer();
-                        customer.Id = customerPhone.Id;
-                        customer.Name = txtCustomerName.Text;
-                        if (txtCustomerAddress.Text != null)
-                        {
-                            customer.Address = txtCustomerAddress.Text;
-                        }
-                    }
-                    purchaseOrderDto.CustomerName = txtCustomerName.Text;
-                    purchaseOrderDto.OrderDetails = new List<OrderDetail>();
-                    productDetailUI.ShowDialog();
-                }
+                MessageBox.Show("Please enter product's name!", "Warning!!!",
+                                 MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
             }
-            
-        }
 
-        private async void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            decimal totalPrice = 0;
-
-            if (purchaseOrderDto == null)
+            var productDto = new ProductToAddDto()
             {
-                purchaseOrderDto = new PurchaseOrderDto();
+                Name = txtName.Text,
+                Description = txtDescription.Text,
+                GoldId = (int)cbGoldType.SelectedValue,
+                GoldWeight = string.IsNullOrEmpty(txtGoldWeight.Text) ? 0 : decimal.Parse(txtGoldWeight.Text),
+                GemName = txtGemType.Text,
+                GemWeight = string.IsNullOrEmpty(txtGemWeight.Text) ? 0 : decimal.Parse(txtGemWeight.Text),
+                GemPrice = string.IsNullOrEmpty(txtGemPrice.Text) ? 0 : decimal.Parse(txtGemPrice.Text),
+                Labour = string.IsNullOrEmpty(txtLabour.Text) ? 0 : decimal.Parse(txtLabour.Text),
+                Quantity = string.IsNullOrEmpty(txtQuantity.Text) ? 0 : int.Parse(txtQuantity.Text),
+                TotalWeight = (string.IsNullOrEmpty(txtGoldWeight.Text) ? 0 : decimal.Parse(txtGoldWeight.Text)) +
+                              (string.IsNullOrEmpty(txtGemWeight.Text) ? 0 : decimal.Parse(txtGemWeight.Text)),
+                ImgUrl = selectedImg.Source == null ? "" : ((BitmapImage)selectedImg.Source).UriSource.ToString()
+            };
 
-                purchaseOrderDto.Status = "Pending";
-                purchaseOrderDto.CreatedDate = DateTime.UtcNow.ToString();
-                purchaseOrderDto.Type = "Purchase Order";
-                purchaseOrderDto.TotalPrice = totalPrice;
-                purchaseOrderDto.OrderDetails = new List<OrderDetail>();
-                purchaseOrderDto.PaymentMethod = "cash";
-                purchaseOrderDto.UserName = _userSessionService.CurrentUser.Username;
-                purchaseOrderDto.UserId = _userSessionService.CurrentUser.Id;
-
-                if (!txtCustomerPhone.Text.IsNullOrEmpty())
-                {
-                    Customer? customer;
-                    customer = await _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
-
-                    if (customer != null)
-                    {
-                        txtCustomerAddress.Text = customer.Address;
-                        txtCustomerName.Text = customer.Name;
-                        purchaseOrderDto.CustomerName = customer.Name;
-                    }
-                }
-                Customer cus = new Customer();
-                cus.Name = txtCustomerName.Text;
-                cus.Address = txtCustomerAddress.Text;
-                cus.Phone = txtCustomerPhone.Text;
-
-                _customerService.AddCustomer(cus);
-
-                purchaseOrderDto.CustomerName = cus.Name;
-                purchaseOrderDto.CustomerId = cus.Id;
-
-                if (_purchaseOrderService.AddPurchaseOrder(purchaseOrderDto))
-                {
-                    MessageBox.Show("Successfully added a new purchase order.", "Success",
-                                    MessageBoxButton.OK, MessageBoxImage.Information);
-                    btnSave.IsEnabled = false;  // Disable the Save button
-                    Close();
-                }
-            }else
+            if (await _orderDetailService.AddOrderDetail(productDto, OrderId))
             {
-                Order order = _purchaseOrderService.GetPurchaseOrdersByIdreturnOrder(purchaseOrderDto.Id);
-                purchaseOrderDto.TotalPrice = Convert.ToDecimal(txtTotalPrice.Text);
-                _dataContext.Entry(order).State = EntityState.Detached;
-                //await _purchaseOrderService.UpdatePurchaseOrder(purchaseOrderDto);
-                if (await _purchaseOrderService.UpdatePurchaseOrder(purchaseOrderDto))
-                {
-                    MessageBox.Show("Successfully updated a purchase order.", "Success",
-                                    MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                MessageBox.Show("Successfully added an item to order", "Success!!!",
+                                 MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
-            }
-
-        }
-
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            var customer = await _customerService.searchCustomerByPhoneNumber(txtCustomerPhone.Text);
-
-            if(customer != null)
-            {
-                txtCustomerAddress.Text = customer.Address;
-                txtCustomerName.Text = customer.Name;
-                txtCustomerPhone.Text = customer.Phone;
             }
             else
             {
-               txtCustomerAddress.Text = null;
-               txtCustomerName.Text = null;
-               MessageBox.Show("This phone number does not exist!", "Error",
-                                MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
+                MessageBox.Show("Fail to add an item to order", "Error!!!",
+                                 MessageBoxButton.OK, MessageBoxImage.Error);
+            }           
         }
 
-        //private async void btnDelete_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (_purchaseOrderService.DeletePurchaseOrder(purchaseOrderDto))
-        //    {
-        //        MessageBox.Show("Successfully deleted purchase order.", "Success",
-        //                        MessageBoxButton.OK, MessageBoxImage.Information);
-        //        Close();
-        //    }
-        //}
-
-        private async void btnDelete_Click(object sender, RoutedEventArgs e)
+        private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this purchase order?",
-                                                       "Confirm Delete",
-                                                       MessageBoxButton.OKCancel,
-                                                       MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.OK)
+            if (string.IsNullOrEmpty(txtName.Text))
             {
-                if (_purchaseOrderService.DeletePurchaseOrder(purchaseOrderDto))
-                {
-                    MessageBox.Show("Successfully deleted purchase order.", "Success",
-                                    MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();  // Close the window or perform any other necessary actions after deletion
-                }
+                MessageBox.Show("Please enter product's name!", "Warning!!!",
+                                 MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
             }
-        }
+            var productDto = (ProductDto)DataContext;
 
-        private async void btnPaid_Click(object sender, RoutedEventArgs e)
+            //if (await _orderDetailService.UpdatePurchaseOrderDetail(productDto, OrderId))
+            //{
+            //    MessageBox.Show("Successfully updated order item.",
+            //                                      "Success",
+            //                                      MessageBoxButton.OK,
+            //                                      MessageBoxImage.Information);
+            //    Close();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Error while updating an order item!",
+            //                                                      "Error",
+            //                                                      MessageBoxButton.OK,
+            //                                                      MessageBoxImage.Error);
+            //}
+        }
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (_purchaseOrderService.IsPaid(purchaseOrderDto))
+            MessageBoxResult result = MessageBox.Show("Do you really want to delete this item!", "Delete confirm",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
             {
-                MessageBox.Show("Payment Successful!!!", "Success",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
+                return;
             }
+            //if (_productService.DeleteProduct(ProductDto))
+            //{
+            //    MessageBox.Show("Successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            //    Close();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Error while updating a product!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
-        private async void dgvProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NumberValidation(object sender, TextCompositionEventArgs e)
         {
-            if (dgvPurchaseOrder_ProductsList.SelectedItems.Count > 0)
-            {
-                try
-                {
-                    _selectedProduct = (ProductDto)dgvPurchaseOrder_ProductsList.SelectedItems[0];
-                    PurchaseOrderDetail_ProductDetail productDetailUI =
-                        new PurchaseOrderDetail_ProductDetail(_productService, _goldService, _orderDetailService);
-                    productDetailUI.ProductDto = _selectedProduct;
-
-                    productDetailUI.OrderId = purchaseOrderDto.Id;
-
-                    productDetailUI.ShowDialog();
-
-                    await FillData();
-                }
-                catch
-                {
-                    MessageBox.Show("Please select a valid row!",
-                    "Warning",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-
-            }
-            else
-            {
-                _selectedProduct = null;
-            }
+            Regex regex = new Regex("[^0-9.]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
-
-        private void SetupButton()
-        {
-            if (purchaseOrderDto != null && purchaseOrderDto.Status != "Pending")
-            {
-                btnSave.IsEnabled = false;
-                btnDelete.IsEnabled = false;
-                btnPaid.IsEnabled = false;
-                btnAdd.IsEnabled = false;
-
-                btnSave.Foreground = new SolidColorBrush(Colors.Black);
-                btnDelete.Foreground = new SolidColorBrush(Colors.Black);
-                btnPaid.Foreground = new SolidColorBrush(Colors.Black);
-                btnAdd.Foreground = new SolidColorBrush(Colors.Black) ;
-            }
-            else if (purchaseOrderDto == null)
-            {
-                btnDelete.IsEnabled = false;
-                btnPaid.IsEnabled = false;
-                btnDelete.Foreground = new SolidColorBrush(Colors.Black);
-                btnPaid.Foreground = new SolidColorBrush(Colors.Black);
-            }
-        }
-
     }
 }
- 
