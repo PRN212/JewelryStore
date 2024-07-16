@@ -12,6 +12,8 @@ namespace Repositories.Specifications.Orders
                 || o.Customer.Name.ToLower().Contains(orderSpecParams.Search))
                 && (string.IsNullOrEmpty(orderSpecParams.OrderType) 
                 || o.Type.ToString() == orderSpecParams.OrderType)
+                && (string.IsNullOrEmpty(orderSpecParams.OrderStatus)
+                || o.Type.ToString() == orderSpecParams.OrderStatus)
             )
         {
             AddInclude(o => o.User);

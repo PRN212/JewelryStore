@@ -48,14 +48,14 @@ namespace Services
             product = await _unitOfWork.Repository<Product>().GetEntityWithSpec(new ProductSpecification(product.Id));
 
             // add order item
-            var goldPrice = _goldPriceRepository.GetLatestGoldPrice(product.GoldId).AskPrice;
             var orderDetail = new OrderDetail
             {
+                GoldPrice = product.Gold.AskPrice,
                 ProductId = product.Id,
                 OrderId = orderId,
                 Quantity = product.Quantity,
-                Price = product.GoldWeight * goldPrice*100 + product.GemPrice
             };
+            orderDetail.Price = orderDetail.GoldPrice * product.GoldWeight + product.GemPrice;
 
             // update order's total price
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
@@ -63,5 +63,17 @@ namespace Services
 
             return await _orderDetailRepository.AddOrderDetail(orderDetail);
         }
+
+        //public async Task<bool> UpdatePurchaseOrderDetail(ProductDto productDto, int orderId)
+        //{
+        //    Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
+        //    if (product == null) { return false; }
+        //    _mapper.Map(productDto, product);
+        //    //update product
+        //    _unitOfWork.Repository<Product>().Update(product);
+
+        //    //update order item
+
+        //}
     }
 }

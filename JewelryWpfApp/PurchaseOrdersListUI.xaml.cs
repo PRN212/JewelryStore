@@ -34,9 +34,9 @@ namespace JewelryWpfApp
         {
             // set value for combobox of order status
             cbOrderStatus.ItemsSource = new List<string> {
-                OrderStatus.Pending.ToString(), 
-                OrderStatus.Cancel.ToString(),
-                OrderStatus.PaymentReceived.ToString()};
+                OrderStatus.Pending.GetEnumMemberValue(), 
+                OrderStatus.Cancel.GetEnumMemberValue(),
+                OrderStatus.PaymentReceived.GetEnumMemberValue()};
 
             IEnumerable<PurchaseOrderDto> purchaseOrders = await _purchaseOrderService.GetOrdersWithSpec
                 ("",OrderType.Purchase.GetEnumMemberValue(),"");

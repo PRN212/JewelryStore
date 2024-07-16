@@ -30,7 +30,7 @@ namespace JewelryWpfApp
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             var phone = txtPhone.Text;
-            var customer = await _customerService.searchCustomerByPhoneNumber(phone);
+            var customer = await _customerService.searchCustomer(phone);
             if (customer == null)
             {
                 MessageBox.Show("This phone number does not exist!", "Warning!!!",

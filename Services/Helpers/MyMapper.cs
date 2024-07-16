@@ -10,7 +10,8 @@ namespace Services.Helpers
         public MyMapper()
         {
             CreateMap<Product, ProductDto>()
-                .ForMember(d => d.GoldType, o => o.MapFrom(s => s.Gold.Name));
+                .ForMember(d => d.GoldType, o => o.MapFrom(s => s.Gold.Name))
+                .ForMember(d => d.GoldPrice, o => o.MapFrom(s => s.Gold.BidPrice));
 
             CreateMap<ProductToAddDto, Product>();
             CreateMap<ProductDto, Product>();

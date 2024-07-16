@@ -88,9 +88,31 @@ namespace JewelryWpfApp
             }           
         }
 
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(txtName.Text))
+            {
+                MessageBox.Show("Please enter product's name!", "Warning!!!",
+                                 MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            var productDto = (ProductDto)DataContext;
 
+            //if (await _orderDetailService.UpdatePurchaseOrderDetail(productDto, OrderId))
+            //{
+            //    MessageBox.Show("Successfully updated order item.",
+            //                                      "Success",
+            //                                      MessageBoxButton.OK,
+            //                                      MessageBoxImage.Information);
+            //    Close();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Error while updating an order item!",
+            //                                                      "Error",
+            //                                                      MessageBoxButton.OK,
+            //                                                      MessageBoxImage.Error);
+            //}
         }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {

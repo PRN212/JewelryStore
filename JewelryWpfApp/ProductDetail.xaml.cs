@@ -63,7 +63,7 @@ namespace JewelryWpfApp
             }
         }
 
-        private void btnAdd_Click (object sender, RoutedEventArgs e)
+        private async void btnAdd_Click (object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtName.Text)) 
             {
@@ -87,7 +87,7 @@ namespace JewelryWpfApp
                 ImgUrl = selectedImg.Source == null ? "" : ((BitmapImage)selectedImg.Source).UriSource.ToString()
             };
 
-            if (_productService.AddProduct(productDto))
+            if (await _productService.AddProduct(productDto))
             {
                 MessageBox.Show("Successfully added a new product.","Success",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
@@ -99,7 +99,7 @@ namespace JewelryWpfApp
             }
         }          
 
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtName.Text))
             {
@@ -107,24 +107,9 @@ namespace JewelryWpfApp
                                  MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
-            var productDto = new ProductDto()
-            {
-                Id = ProductDto.Id,
-                Name = txtName.Text,
-                Description = txtDescription.Text,
-                GoldId = (int)cbGoldType.SelectedValue,
-                GoldWeight = string.IsNullOrEmpty(txtGoldWeight.Text) ? 0 : decimal.Parse(txtGoldWeight.Text),
-                GemName = txtGemType.Text,
-                GemWeight = string.IsNullOrEmpty(txtGemWeight.Text) ? 0 : decimal.Parse(txtGemWeight.Text),
-                GemPrice = string.IsNullOrEmpty(txtGemPrice.Text) ? 0 : decimal.Parse(txtGemPrice.Text),
-                Labour = string.IsNullOrEmpty(txtLabour.Text) ? 0 : decimal.Parse(txtLabour.Text),
-                Quantity = string.IsNullOrEmpty(txtQuantity.Text) ? 0 : int.Parse(txtQuantity.Text),
-                TotalWeight = (string.IsNullOrEmpty(txtGoldWeight.Text) ? 0 : decimal.Parse(txtGoldWeight.Text)) +
-                (string.IsNullOrEmpty(txtGoldWeight.Text) ? 0 : decimal.Parse(txtGemWeight.Text)),
-                ImgUrl = selectedImg.Source == null ? "" : ((BitmapImage)selectedImg.Source).UriSource.ToString()
-            };
+            var productDto = (ProductDto) DataContext;
 
-            if (_productService.UpdateProduct(productDto))
+            if (await _productService.UpdateProduct(productDto))
             {
                 MessageBox.Show("Successfully updated product.",
                                                   "Success",
@@ -141,7 +126,7 @@ namespace JewelryWpfApp
             }
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Do you really want to delete this item!", "Delete confirm",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -149,7 +134,7 @@ namespace JewelryWpfApp
             {
                 return;
             }
-            if (_productService.DeleteProduct(ProductDto))
+            if (await _productService.DeleteProduct(ProductDto))
             {
                 MessageBox.Show("Successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();

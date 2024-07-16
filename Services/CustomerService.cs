@@ -1,40 +1,41 @@
 ﻿using Repositories.Entities;
-using Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Services.Dto;
+using Repositories.Specifications.Customers;
+using Repositories.IRepositories;
 
 namespace Services
 {
     public class CustomerService
     {
-        private readonly CustomerRepository _customerRepo;
-        public CustomerService(CustomerRepository customerRepo)
+        private readonly IGenericRepository<Customer> _customerRepo;
+        public CustomerService(IGenericRepository<Customer> customerRepo)
         {
             _customerRepo = customerRepo;
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            return await _customerRepo.GetAllCustomerAsync();
+            return await _customerRepo.ListAllAsync();
         }
 
-        public bool AddCustomer(Customer customer)
+        public async Task<bool> AddCustomer(Customer customer)
         {
-            return _customerRepo.AddCustomer(customer);
+            _customerRepo.Add(customer);
+            return await _customerRepo.SaveAllAsync();
         }
 
-        public async Task<Customer?> searchCustomerByPhoneNumber(string phoneNumber)
+        public async Task<Customer?> searchCustomer(string search)
         {
-            return await _customerRepo.SearchCustomerByPhoneNumber(phoneNumber);
+            var param = new CustomerParam()
+            {
+                Search = search
+            };
+            var spec = new CustomerSpecification(param);
+            return await _customerRepo.GetEntityWithSpec(spec);
         }
 
-        public Customer searchCustomerById(int customerId)
+        public async Task<Customer> searchCustomerById(int customerId)
         {
-            return _customerRepo.SearchCustomerById(customerId);
+            return await _customerRepo.GetByIdAsync(customerId);
         }
     }
 }

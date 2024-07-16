@@ -11,14 +11,11 @@ namespace Services
     public class PurchaseOrderService
     {
         private readonly IMapper _mapper;
-        private readonly GoldPriceRepository _goldPriceRepository;
-
         private readonly IUnitOfWork _unitOfWork;
-        public PurchaseOrderService(IMapper mapper, IUnitOfWork unitOfWork, GoldPriceRepository goldPriceRepository)
+        public PurchaseOrderService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _goldPriceRepository = goldPriceRepository;
         }
         public async Task<IReadOnlyList<PurchaseOrderDto>> GetOrdersWithSpec(string search, string orderType, string? orderStatus)
         {
@@ -32,13 +29,6 @@ namespace Services
             var orders = await _unitOfWork.Repository<Order>().ListAsync(spec);
             
             var purchaseOrdersDto = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<PurchaseOrderDto>>(orders);
-            foreach (var o in purchaseOrdersDto)
-            {
-                foreach (var od in o.OrderDetails)
-                {
-                    od.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(od.GoldId)?.BidPrice ?? 0;
-                }
-            }
 
             return purchaseOrdersDto;
         }
@@ -47,10 +37,6 @@ namespace Services
         {
             var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(new OrdersSpecification(orderId));
             var orderDto = _mapper.Map<Order, PurchaseOrderDto>(order);
-            foreach (var od in orderDto.OrderDetails)
-            {
-                od.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(od.GoldId)?.BidPrice ?? 0;
-            }
             return orderDto;
         }
 
@@ -95,9 +81,16 @@ namespace Services
                 new OrdersSpecification(purchaseOrderDto.Id));
          
             if (existingOrder == null) return false;
+            _mapper.Map(purchaseOrderDto, existingOrder);
+
+            //update customer infor
+            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(existingOrder.CustomerId);
+            customer.Name = purchaseOrderDto.CustomerName;
+            customer.Address = purchaseOrderDto.CustomerAddress;
+            customer.Phone = purchaseOrderDto.CustomerPhone;
+            _unitOfWork.Repository<Customer>().Update(customer);
 
             // update order
-            _mapper.Map(purchaseOrderDto, existingOrder);
             _unitOfWork.Repository<Order>().Update(existingOrder);
 
             return await _unitOfWork.Complete() > 0;
