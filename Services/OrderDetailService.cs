@@ -67,7 +67,6 @@ namespace Services
 
         public async Task<bool> UpdatePurchaseOrderDetail(ProductDto productDto, int orderId)
         {
-            var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
 
             //update product
             Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
@@ -82,16 +81,15 @@ namespace Services
                 OrderId = orderId,
             });
             var orderDetail = await _unitOfWork.Repository<OrderDetail>().GetEntityWithSpec(spec);
-            // reset price of this item => 0
-            order.TotalPrice -= orderDetail.Price * orderDetail.Quantity;
             //update order item
             orderDetail.Quantity = productDto.Quantity;
             orderDetail.GoldPrice = product.Gold.AskPrice;
-            orderDetail.Price = orderDetail.GoldPrice + product.GemPrice;
+            orderDetail.Price = orderDetail.GoldPrice*100 + product.GemPrice;
             _unitOfWork.Repository<OrderDetail>().Update(orderDetail);
 
             //update order total price          
-            order.TotalPrice += orderDetail.Price * orderDetail.Quantity;
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(new OrdersSpecification(orderId));
+            order.TotalPrice = order.OrderDetails.Aggregate(0m, (acc, oi) => acc + oi.Price * oi.Quantity);
             _unitOfWork.Repository<Order>().Update(order);
 
             // save to db
@@ -115,8 +113,8 @@ namespace Services
             _unitOfWork.Repository<Product>().Delete(product);
 
             //update order total price
-            var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
-            order.TotalPrice -= orderDetail.Price * orderDetail.Quantity;
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(new OrdersSpecification(orderId));
+            order.TotalPrice = order.OrderDetails.Aggregate(0m, (acc, oi) => acc + oi.Price * oi.Quantity);
             _unitOfWork.Repository<Order>().Update(order);
 
             // save to db
