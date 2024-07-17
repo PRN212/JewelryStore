@@ -39,6 +39,7 @@ namespace JewelryWpfApp
 
         private void SeedDataAndMigrate(DataContext dataContext)
         {
+            DataContextSeed.SeedData(dataContext);
             try
             {
                 if (dataContext.Database.GetPendingMigrations().Count() > 0)
@@ -47,7 +48,6 @@ namespace JewelryWpfApp
                 }
             }
             catch (Exception ex) { }
-            DataContextSeed.SeedData(dataContext);
         }
     }
 

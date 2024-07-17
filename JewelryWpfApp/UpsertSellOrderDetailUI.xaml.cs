@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Repositories.Entities;
 using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelryWpfApp
 {
@@ -24,27 +25,34 @@ namespace JewelryWpfApp
 	/// </summary>
 	public partial class UpsertSellOrderDetailUI : Window
 	{
+		private readonly IServiceProvider _serviceProvider;
 		private readonly ProductService _productService;
 		private readonly OrderDetailService _orderDetailService;
 		private readonly SellOrderService _sellOrderService;
+		private readonly CustomerService _customerService; // Added CustomerService field
 		private int orderId = 0;
+		private Order order;
 
-		public UpsertSellOrderDetailUI(ProductService productService
-			, OrderDetailService orderDetailService
-			, SellOrderService sellOrderService, int orderId)
+		public UpsertSellOrderDetailUI(IServiceProvider serviceProvider, int orderId)
 		{
-			_productService = productService;
-			_orderDetailService = orderDetailService;
-			_sellOrderService = sellOrderService;
+			_serviceProvider = serviceProvider;
+			_productService = _serviceProvider.GetRequiredService<ProductService>();
+			_orderDetailService = _serviceProvider.GetRequiredService<OrderDetailService>();
+			_sellOrderService = _serviceProvider.GetRequiredService<SellOrderService>();
+			_customerService = _serviceProvider.GetRequiredService<CustomerService>(); // Assigned CustomerService parameter to field
 			this.orderId = orderId;
+			order = _sellOrderService.Get(order => order.Id == orderId);
 			InitializeComponent();
 		}
 
-		private void FillData()
+		private async void FillData()
 		{
+			cbCustomer.ItemsSource = await _customerService.GetAllCustomersAsync();
+			cbCustomer.SelectedValuePath = "Id";
+			if (orderId == 0) return;
 			var details = _orderDetailService.GetDetailsFromOrder(orderId);
-			if (details is not null)
-				dgvSellOrder.ItemsSource = details;
+			dgvSellOrder.ItemsSource = details;
+			cbCustomer.SelectedValue = order.CustomerId;
 		}
 
 		private async void PageLoaded(object sender, RoutedEventArgs e)
@@ -54,7 +62,11 @@ namespace JewelryWpfApp
 
 		private async void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
+			FillData();
+		}
 
+		private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
+		{
 			FillData();
 		}
 
@@ -99,7 +111,5 @@ namespace JewelryWpfApp
 		//        Close();
 		//    }
 		//}
-
-
 	}
 }
