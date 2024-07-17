@@ -88,5 +88,9 @@ namespace JewelryWpfApp
             dgSellOrders.ItemsSource = _orderService.GetByCustomerName(searchValue);
         }
 
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

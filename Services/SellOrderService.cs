@@ -31,7 +31,7 @@ namespace Services
 
         public List<SellOrderDto> GetSellOrders()
         {
-            // TODO: includeProp for Details
+            
             List<Order> orders = _orderRepo.GetAll(o => o.Type == SD.TypeSell, includeProperties: "User,Customer").ToList();
             List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
 

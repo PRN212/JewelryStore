@@ -25,7 +25,7 @@
                 </Grid.RowDefinitions>
                 <TextBox x:Name="txtSearch" Grid.Column="0" Height="30"/>
                 <Button x:Name="btnSearch" Grid.Column="1" Content="Search" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="20 0" Click="btnSearch_Click"/>
-                <!--<Button x:Name="btnAdd" Grid.Column="2" Content="Add" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="40 0 0 0" Click="btnAdd_Click"/>-->
+                <Button x:Name="btnAdd" Grid.Column="2" Content="Add" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="40 0 0 0" Click="btnAdd_Click"/>
             </Grid>
 
             <!---Data List-->

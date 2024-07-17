@@ -41,6 +41,7 @@ namespace Services
 
         public List<SellOrderDetailDto> GetDetailsFromOrder(int id)
         {
+            if (id == 0) return null;
             var details = _orderRepo.GetDetailsFromOrder(id);
             List<SellOrderDetailDto> detailDtos = _mapper.Map<List<SellOrderDetailDto>>(details);
             foreach (var p in detailDtos)
