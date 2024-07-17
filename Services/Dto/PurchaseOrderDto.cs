@@ -16,6 +16,6 @@ namespace Services.Dto
         public int UserId { get; set; }
         public int CustomerId { get; set; }
         public string UserName { get; set; }
-        public List<PurchaseOrderDetailDto> OrderDetails { get; set; } = new List<PurchaseOrderDetailDto>();
+        public List<ProductDto> OrderDetails { get; set; } = new List<ProductDto>();
     }
 }

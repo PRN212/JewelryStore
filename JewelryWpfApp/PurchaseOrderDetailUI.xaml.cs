@@ -16,7 +16,7 @@ namespace JewelryWpfApp
         private readonly GoldService _goldService;
         private readonly OrderDetailService _orderDetailService;
 
-        public PurchaseOrderDetailDto? SelectedOrderDetail;
+        public ProductDto? SelectedOrderDetail;
         public int OrderId; 
         public PurchaseOrderDetailUI(GoldService goldService, OrderDetailService orderDetailService)
         {
@@ -68,7 +68,6 @@ namespace JewelryWpfApp
                 GemName = txtGemType.Text,
                 GemWeight = string.IsNullOrEmpty(txtGemWeight.Text) ? 0 : decimal.Parse(txtGemWeight.Text),
                 GemPrice = string.IsNullOrEmpty(txtGemPrice.Text) ? 0 : decimal.Parse(txtGemPrice.Text),
-                Labour = string.IsNullOrEmpty(txtLabour.Text) ? 0 : decimal.Parse(txtLabour.Text),
                 Quantity = string.IsNullOrEmpty(txtQuantity.Text) ? 0 : int.Parse(txtQuantity.Text),
                 TotalWeight = (string.IsNullOrEmpty(txtGoldWeight.Text) ? 0 : decimal.Parse(txtGoldWeight.Text)) +
                               (string.IsNullOrEmpty(txtGemWeight.Text) ? 0 : decimal.Parse(txtGemWeight.Text)),
@@ -98,23 +97,23 @@ namespace JewelryWpfApp
             }
             var productDto = (ProductDto)DataContext;
 
-            //if (await _orderDetailService.UpdatePurchaseOrderDetail(productDto, OrderId))
-            //{
-            //    MessageBox.Show("Successfully updated order item.",
-            //                                      "Success",
-            //                                      MessageBoxButton.OK,
-            //                                      MessageBoxImage.Information);
-            //    Close();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Error while updating an order item!",
-            //                                                      "Error",
-            //                                                      MessageBoxButton.OK,
-            //                                                      MessageBoxImage.Error);
-            //}
+            if (await _orderDetailService.UpdatePurchaseOrderDetail(productDto, OrderId))
+            {
+                MessageBox.Show("Successfully updated order item.",
+                                                  "Success",
+                                                  MessageBoxButton.OK,
+                                                  MessageBoxImage.Information);
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Error while updating an order item!",
+                                                                  "Error",
+                                                                  MessageBoxButton.OK,
+                                                                  MessageBoxImage.Error);
+            }
         }
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Do you really want to delete this item!", "Delete confirm",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -122,15 +121,16 @@ namespace JewelryWpfApp
             {
                 return;
             }
-            //if (_productService.DeleteProduct(ProductDto))
-            //{
-            //    MessageBox.Show("Successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    Close();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Error while updating a product!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            var productDto = (ProductDto)DataContext;
+            if (await _orderDetailService.DetelePurchaseOrderDetail(productDto, OrderId))
+            {
+                MessageBox.Show("Successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Error while updating a product!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void NumberValidation(object sender, TextCompositionEventArgs e)
