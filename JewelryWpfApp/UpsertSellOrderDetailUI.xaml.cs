@@ -29,7 +29,7 @@ namespace JewelryWpfApp
 		private readonly ProductService _productService;
 		private readonly OrderDetailService _orderDetailService;
 		private readonly SellOrderService _sellOrderService;
-		private readonly CustomerService _customerService; // Added CustomerService field
+		private readonly CustomerService _customerService; 
 		private int orderId = 0;
 		private Order order;
 
@@ -39,7 +39,7 @@ namespace JewelryWpfApp
 			_productService = _serviceProvider.GetRequiredService<ProductService>();
 			_orderDetailService = _serviceProvider.GetRequiredService<OrderDetailService>();
 			_sellOrderService = _serviceProvider.GetRequiredService<SellOrderService>();
-			_customerService = _serviceProvider.GetRequiredService<CustomerService>(); // Assigned CustomerService parameter to field
+			_customerService = _serviceProvider.GetRequiredService<CustomerService>();
 			this.orderId = orderId;
 			order = _sellOrderService.Get(order => order.Id == orderId, includeProperties: "OrderDetails", tracked: true);
 			InitializeComponent();
