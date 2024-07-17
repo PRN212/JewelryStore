@@ -21,7 +21,7 @@ namespace JewelryWpfApp
             InitializeComponent();          
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtUsername.Text) || string.IsNullOrEmpty(txtPassword.Password))
             {
@@ -29,7 +29,7 @@ namespace JewelryWpfApp
                 return;
             }
 
-            User? acc = _userService.CheckLogin(txtUsername.Text, txtPassword.Password);
+            User? acc = await _userService.CheckLogin(txtUsername.Text, txtPassword.Password);
             // login fail
             if (acc == null)
             {

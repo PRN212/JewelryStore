@@ -78,10 +78,8 @@ namespace Services
         public async Task<bool> UpdateOrder(PurchaseOrderDto purchaseOrderDto)
         {
             var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(
-                new OrdersSpecification(purchaseOrderDto.Id));
-         
+                new OrdersSpecification(purchaseOrderDto.Id));       
             if (existingOrder == null) return false;
-            _mapper.Map(purchaseOrderDto, existingOrder);
 
             //update customer infor
             var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(existingOrder.CustomerId);
@@ -89,9 +87,6 @@ namespace Services
             customer.Address = purchaseOrderDto.CustomerAddress;
             customer.Phone = purchaseOrderDto.CustomerPhone;
             _unitOfWork.Repository<Customer>().Update(customer);
-
-            // update order
-            _unitOfWork.Repository<Order>().Update(existingOrder);
 
             return await _unitOfWork.Complete() > 0;
         }
