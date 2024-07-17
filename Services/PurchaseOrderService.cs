@@ -104,7 +104,6 @@ namespace Services
             if (existingOrder == null) return false;
 
             // update order
-            _mapper.Map(purchaseOrderDto, existingOrder);
             existingOrder.Status = OrderStatus.Cancel.GetEnumMemberValue();
             _unitOfWork.Repository<Order>().Update(existingOrder);
 
@@ -119,7 +118,6 @@ namespace Services
             if (existingOrder == null) return false;
 
             // update order
-            _mapper.Map(purchaseOrderDto, existingOrder);
             existingOrder.Status = OrderStatus.PaymentReceived.GetEnumMemberValue();
             _unitOfWork.Repository<Order>().Update(existingOrder);
 

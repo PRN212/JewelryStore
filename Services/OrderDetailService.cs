@@ -6,6 +6,7 @@ using Services.Dto;
 using Repositories.Entities.Orders;
 using Repositories.IRepositories;
 using Repositories.Specifications.Products;
+using Repositories.Specifications.Orders;
 
 namespace Services
 {
@@ -13,19 +14,16 @@ namespace Services
     {
         private readonly OrderDetailRepository _orderRepo;
         private readonly GoldPriceRepository _goldPriceRepository;
-        private readonly OrderDetailRepository _orderDetailRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public OrderDetailService(OrderDetailRepository orderRepo, IMapper mapper,
-            GoldPriceRepository goldPriceRepository,
-            OrderDetailRepository orderDetailRepository, IUnitOfWork unitOfWork)
+            GoldPriceRepository goldPriceRepository, IUnitOfWork unitOfWork)
         {
             _orderRepo = orderRepo;
             _goldPriceRepository = goldPriceRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _orderDetailRepository = orderDetailRepository;
         }
 
         public List<SellOrderDetailDto> GetDetailsFromOrder(int id)
@@ -55,25 +53,74 @@ namespace Services
                 OrderId = orderId,
                 Quantity = product.Quantity,
             };
-            orderDetail.Price = orderDetail.GoldPrice * product.GoldWeight + product.GemPrice;
+            orderDetail.Price = orderDetail.GoldPrice * product.GoldWeight*100 + product.GemPrice;
+            _unitOfWork.Repository<OrderDetail>().Add(orderDetail);
 
             // update order's total price
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
             order.TotalPrice += orderDetail.Price * orderDetail.Quantity;
+            _unitOfWork.Repository<Order>().Update(order);
 
-            return await _orderDetailRepository.AddOrderDetail(orderDetail);
+
+            return await _unitOfWork.Complete() > 0;
         }
 
-        //public async Task<bool> UpdatePurchaseOrderDetail(ProductDto productDto, int orderId)
-        //{
-        //    Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
-        //    if (product == null) { return false; }
-        //    _mapper.Map(productDto, product);
-        //    //update product
-        //    _unitOfWork.Repository<Product>().Update(product);
+        public async Task<bool> UpdatePurchaseOrderDetail(ProductDto productDto, int orderId)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
 
-        //    //update order item
+            //update product
+            Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
+            if (product == null) { return false; }
+            _mapper.Map(productDto, product);           
+            _unitOfWork.Repository<Product>().Update(product);
 
-        //}
+            // get orderItem by (productId, orderId)
+            var spec = new OrderDetailSpecification(new OrderDetailParam()
+            {
+                ProductId = productDto.Id,
+                OrderId = orderId,
+            });
+            var orderDetail = await _unitOfWork.Repository<OrderDetail>().GetEntityWithSpec(spec);
+            // reset price of this item => 0
+            order.TotalPrice -= orderDetail.Price * orderDetail.Quantity;
+            //update order item
+            orderDetail.Quantity = productDto.Quantity;
+            orderDetail.GoldPrice = product.Gold.AskPrice;
+            orderDetail.Price = orderDetail.GoldPrice + product.GemPrice;
+            _unitOfWork.Repository<OrderDetail>().Update(orderDetail);
+
+            //update order total price          
+            order.TotalPrice += orderDetail.Price * orderDetail.Quantity;
+            _unitOfWork.Repository<Order>().Update(order);
+
+            // save to db
+            return await _unitOfWork.Complete() > 0;
+        }
+
+        public async Task<bool> DetelePurchaseOrderDetail (ProductDto productDto, int orderId)
+        {
+            // delete order item
+            var spec = new OrderDetailSpecification(new OrderDetailParam()
+            {
+                ProductId = productDto.Id,
+                OrderId = orderId,
+            });
+            var orderDetail = await _unitOfWork.Repository<OrderDetail>().GetEntityWithSpec(spec);
+            _unitOfWork.Repository<OrderDetail>().Delete(orderDetail);
+
+            //delete product
+            Product? product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
+            if (product == null) { return false; }
+            _unitOfWork.Repository<Product>().Delete(product);
+
+            //update order total price
+            var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
+            order.TotalPrice -= orderDetail.Price * orderDetail.Quantity;
+            _unitOfWork.Repository<Order>().Update(order);
+
+            // save to db
+            return await _unitOfWork.Complete() > 0;
+        }
     }
 }

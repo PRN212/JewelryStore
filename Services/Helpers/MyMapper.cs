@@ -47,18 +47,23 @@ namespace Services.Helpers
                 .ForMember(d => d.CustomerAddress, o => o.MapFrom(src => src.Customer.Address))
                 .ForMember(d => d.OrderDetails, o => o.MapFrom(src => src.OrderDetails));
 
-            CreateMap<OrderDetail, PurchaseOrderDetailDto>()
-                .ForMember(d => d.ProductId, o => o.MapFrom(src => src.Product.Id))
-                .ForMember(d => d.ProductName, o => o.MapFrom(src => src.Product.Name))
+            CreateMap<OrderDetail, ProductDto>()
+                .ForMember(d => d.Id, o => o.MapFrom(src => src.Product.Id))
+                .ForMember(d => d.Name, o => o.MapFrom(src => src.Product.Name))
                 .ForMember(d => d.Description, o => o.MapFrom(src => src.Product.Description))
                 .ForMember(d => d.GoldId, o => o.MapFrom(src => src.Product.GoldId))
                 .ForMember(d => d.GoldType, o => o.MapFrom(src => src.Product.Gold.Name))
                 .ForMember(d => d.GoldWeight, o => o.MapFrom(src => src.Product.GoldWeight))
-                .ForMember(d => d.ProductWeight, o => o.MapFrom(src => src.Product.TotalWeight))
+                .ForMember(d => d.Labour, o => o.MapFrom(src => src.Product.Labour))
+                .ForMember(d => d.TotalWeight, o => o.MapFrom(src => src.Product.TotalWeight))
                 .ForMember(d => d.GemName, o => o.MapFrom(src => src.Product.GemName))
                 .ForMember(d => d.GemWeight, o => o.MapFrom(src => src.Product.GemWeight))
                 .ForMember(d => d.GemPrice, o => o.MapFrom(src => src.Product.GemPrice));
-            CreateMap<PurchaseOrderDetailDto, OrderDetail>();
+
+            CreateMap<ProductDto, OrderDetail>()
+                .ForMember(d => d.ProductId, o => o.MapFrom(src => src.Id))
+                .ForMember(d => d.Price, o => o.MapFrom(src => src.ProductPrice));
+
         }
     }
 }

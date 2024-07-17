@@ -49,9 +49,9 @@ namespace JewelryWpfApp
             {
                 _selected = (PurchaseOrderDto)dgvPurchaseOrders.SelectedItems[0];
 
-                var purchaseOrderDetailUI = _serviceProvider.GetRequiredService<PurchaseOrderUI>();
-                purchaseOrderDetailUI.SelectedOrder = _selected;
-                purchaseOrderDetailUI.ShowDialog();
+                var purchaseOrderUI = _serviceProvider.GetRequiredService<PurchaseOrderUI>();
+                purchaseOrderUI.SelectedOrder = _selected;
+                purchaseOrderUI.ShowDialog();
 
                 await FillDataGridView();
             }

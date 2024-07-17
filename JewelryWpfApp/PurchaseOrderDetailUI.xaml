@@ -35,30 +35,27 @@
                 <Label x:Name="lblGemType" Content="Gem Type" Grid.Column="0" Grid.Row="3" Margin="0 10"/>
                 <Label x:Name="lblGemWeight" Content="Gem Weight" Grid.Column="2" Grid.Row="3" Margin="40 10 0 10"/>
                 <Label x:Name="lblGemPrice" Content="Gem Price" Grid.Column="4" Grid.Row="3" Margin="40 10 0 10"/>
-                <Label x:Name="lblLabour" Content="Labour" Grid.Column="0" Grid.Row="4" Margin="0 10"/>
-                <Label x:Name="lblQuantity" Content="Quantity" Grid.Column="2" Grid.Row="4" Margin="40 10 0 10"/>
-                <Label x:Name="lblProductPrice" Content="Total price" Grid.Column="4" Grid.Row="4" Margin="40 10 0 10"/>
+                <Label x:Name="lblQuantity" Content="Quantity" Grid.Column="0" Grid.Row="4" Margin="0 10"/>
+                <Label x:Name="lblProductPrice" Content="Total price" Grid.Column="2" Grid.Row="4" Margin="40 10 0 10"/>
 
                 <!--TextBox-->
-                <TextBox x:Name="txtName" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3"/>
+                <TextBox x:Name="txtName" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding Name}"/>
                 <Image x:Name="selectedImg"  Grid.Column="5" Grid.Row="0" />
-                <TextBox x:Name="txtDescription" TextWrapping="Wrap" Height="50" Margin="0,10" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5"/>
-                <ComboBox x:Name="cbGoldType" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="2"/>
+                <TextBox x:Name="txtDescription" TextWrapping="Wrap" Height="50" Margin="0,10" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" Text="{Binding Description}"/>
+                <ComboBox x:Name="cbGoldType" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="2" SelectedValue="{Binding GoldId}"/>
                 <TextBox x:Name="txtGoldWeight" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="3" Grid.Row="2"
-                     PreviewTextInput="NumberValidation"/>
+                     PreviewTextInput="NumberValidation" Text="{Binding GoldWeight}"/>
                 <TextBox x:Name="txtGoldPrice" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="5" Grid.Row="2"
-                     IsReadOnly="true"/>
-                <TextBox x:Name="txtGemType" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="3"/>
+                     IsEnabled="false" Text="{Binding GoldPrice}"/>
+                <TextBox x:Name="txtGemType" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="3" Text="{Binding GemName}"/>
                 <TextBox x:Name="txtGemWeight" Height="30" Grid.Column="3" Margin="0,10" Grid.Row="3"
-                     PreviewTextInput="NumberValidation"/>
+                     PreviewTextInput="NumberValidation" Text="{Binding GemWeight}"/>
                 <TextBox x:Name="txtGemPrice" Height="30" Grid.Column="5" Margin="0,10" Grid.Row="3"
-                     PreviewTextInput="NumberValidation"/>
-                <TextBox x:Name="txtLabour" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="4"
-                     PreviewTextInput="NumberValidation"/>
-                <TextBox x:Name="txtQuantity" Height="30" Grid.Column="3" Margin="0,10" Grid.Row="4"
-                     PreviewTextInput="NumberValidation"/>
-                <TextBox x:Name="txtProductPrice" Height="30" Grid.Column="5" Grid.Row="4"
-                     IsReadOnly="true"/>
+                     PreviewTextInput="NumberValidation" Text="{Binding GemPrice}"/>
+                <TextBox x:Name="txtQuantity" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="4"
+                     PreviewTextInput="NumberValidation" Text="{Binding Quantity}"/>
+                <TextBox x:Name="txtProductPrice" Height="30" Grid.Column="3" Grid.Row="4"
+                     IsEnabled="false" Text="{Binding ProductPrice, Mode=OneWay}"/>
             </Grid>
             <!--Button-->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">

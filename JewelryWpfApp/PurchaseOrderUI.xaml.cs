@@ -108,17 +108,17 @@ namespace JewelryWpfApp
             }
         }
 
-        private void dgvProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void dgvProductsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dgvPurchaseOrder_ProductsList.SelectedItems.Count > 0)
             {
                 
                 var detailUI = _serviceProvider.GetRequiredService<PurchaseOrderDetailUI>();
-                detailUI.SelectedOrderDetail = (PurchaseOrderDetailDto)dgvPurchaseOrder_ProductsList.SelectedItems[0];
+                detailUI.SelectedOrderDetail = (ProductDto)dgvPurchaseOrder_ProductsList.SelectedItems[0];
                 detailUI.OrderId = SelectedOrder.Id;
 
                 detailUI.ShowDialog();
-
+                SelectedOrder = await _purchaseOrderService.GetOrderById(SelectedOrder.Id);
                 FillData();
             }
         }
