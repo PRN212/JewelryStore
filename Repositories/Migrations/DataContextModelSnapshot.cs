@@ -45,15 +45,6 @@ namespace Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "3 Nam Ky Khoi Nghia",
-                            Name = "John Doe",
-                            Phone = "0123456789"
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Gold", b =>
@@ -152,91 +143,38 @@ namespace Repositories.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
-                            CustomerId = 1,
-                            PaymentMethod = "Credit Card",
-                            Status = "Pending",
-                            TotalPrice = 1000m,
-                            Type = "Sell",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
-                            CustomerId = 1,
-                            PaymentMethod = "Cash",
-                            Status = "Completed",
-                            TotalPrice = 2000m,
-                            Type = "Sell",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
-                            CustomerId = 1,
-                            PaymentMethod = "Cash",
-                            Status = "Shipped",
-                            TotalPrice = 3000m,
-                            Type = "Sell",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Orders.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("GoldPrice")
                         .HasColumnType("decimal(18,0)");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,0)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 1,
-                            GoldPrice = 0m,
-                            Price = 500m,
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 2,
-                            GoldPrice = 0m,
-                            Price = 700m,
-                            Quantity = 3
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            ProductId = 3,
-                            GoldPrice = 0m,
-                            Price = 900m,
-                            Quantity = 4
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.Product", b =>
@@ -339,21 +277,6 @@ namespace Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Dob = new DateOnly(2000, 1, 1),
-                            Email = "<email>",
-                            Gender = "M",
-                            Name = "<name>",
-                            Password = "1",
-                            Phone = "1",
-                            Role = "Manager",
-                            Status = true,
-                            Username = "1"
-                        });
                 });
 
             modelBuilder.Entity("Repositories.Entities.GoldPrice", b =>
