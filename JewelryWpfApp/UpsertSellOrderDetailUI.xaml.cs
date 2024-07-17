@@ -41,7 +41,7 @@ namespace JewelryWpfApp
 			_sellOrderService = _serviceProvider.GetRequiredService<SellOrderService>();
 			_customerService = _serviceProvider.GetRequiredService<CustomerService>(); // Assigned CustomerService parameter to field
 			this.orderId = orderId;
-			order = _sellOrderService.Get(order => order.Id == orderId);
+			order = _sellOrderService.Get(order => order.Id == orderId, includeProperties: "OrderDetails", tracked: true);
 			InitializeComponent();
 		}
 
@@ -49,6 +49,11 @@ namespace JewelryWpfApp
 		{
 			cbCustomer.ItemsSource = await _customerService.GetAllCustomersAsync();
 			cbCustomer.SelectedValuePath = "Id";
+
+			cbProduct.ItemsSource = await _productService.GetProducts();
+			cbProduct.SelectedValuePath = "Id";
+			cbProduct.DisplayMemberPath = "Name";
+
 			if (orderId == 0) return;
 			var details = _orderDetailService.GetDetailsFromOrder(orderId);
 			dgvSellOrder.ItemsSource = details;
@@ -62,6 +67,50 @@ namespace JewelryWpfApp
 
 		private async void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
+			if (cbProduct.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a product.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (string.IsNullOrEmpty(txtQuantity.Text))
+			{
+				MessageBox.Show("Please enter a quantity.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (int.TryParse(txtQuantity.Text, out var quantity))
+			{
+				int productId = (int)cbProduct.SelectedValue;
+				// Search for an existing OrderDetail with the same orderId and productId
+				var existingDetail = order.OrderDetails.FirstOrDefault(detail => detail.OrderId == orderId && detail.ProductId == productId);
+
+				if (existingDetail != null)
+				{
+					// If found, only update the quantity
+					existingDetail.Quantity += quantity;
+				}
+				else
+				{
+					// If not found, create a new OrderDetail
+					OrderDetail detail = new OrderDetail()
+					{
+						OrderId = orderId,
+						ProductId = productId,
+						Quantity = quantity
+					};
+					order.OrderDetails.Add(detail);
+				}
+
+				_sellOrderService.Update(order);
+				_sellOrderService.Save();
+			}
+			else
+			{
+				MessageBox.Show("Please enter a valid quantity.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
 			FillData();
 		}
 

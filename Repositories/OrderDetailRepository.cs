@@ -24,7 +24,7 @@ namespace Repositories
 
         public List<OrderDetail> GetDetailsFromOrder(int id)
         {
-            var details = _context.OrderDetails.Where(o => o.OrderId == id).Include(d => d.Product).ThenInclude(p => p.Gold).ToList();
+            var details = _context.OrderDetails.AsNoTracking().Where(o => o.OrderId == id).Include(d => d.Product).ThenInclude(p => p.Gold).ToList();
             return details;
         }
     
