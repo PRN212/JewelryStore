@@ -79,7 +79,7 @@ namespace JewelryWpfApp
 				return;
 			}
 
-			if (int.TryParse(txtQuantity.Text, out var quantity))
+			if (int.TryParse(txtQuantity.Text, out int quantity))
 			{
 				int productId = (int)cbProduct.SelectedValue;
 				// Search for an existing OrderDetail with the same orderId and productId
@@ -116,8 +116,22 @@ namespace JewelryWpfApp
 
 		private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
 		{
-			FillData();
+			CustomerDetail view = new(_serviceProvider);
+			// Subscribe to the Closed event
+			//view.Closed += CustomerDetailWindow_Closed;
+			view.Show();
 		}
+
+		// This method will be called when the CustomerDetail window is closed
+		//private void CustomerDetailWindow_Closed(object sender, EventArgs e)
+		//{
+		//	if (sender is CustomerDetail customerDetailWindow)
+		//	{
+		//		customerDetailWindow.Closed -= CustomerDetailWindow_Closed;
+		//	}
+
+		//	FillData();
+		//}
 
 		private async void btnSave_Click(object sender, RoutedEventArgs e)
 		{

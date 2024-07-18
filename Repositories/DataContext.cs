@@ -52,7 +52,7 @@ namespace Repositories
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                    .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json")
+                   .AddJsonFile("appsettings.json", true, true)
                    .Build();
                 var connectionString = configuration.GetConnectionString("DBDefault");
                 optionsBuilder.UseSqlServer(connectionString);
