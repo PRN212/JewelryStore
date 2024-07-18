@@ -50,14 +50,13 @@ namespace JewelryWpfApp
 
 		private void PageLoaded(object sender, RoutedEventArgs e)
 		{
-			var orders = GetOrders();
-			dgSellOrders.ItemsSource = orders;
+			GetOrders();
 		}
 
-		private List<SellOrderDto> GetOrders()
+		private void GetOrders()
 		{
 			List<SellOrderDto> orders = _orderService.GetSellOrders();
-			return orders;
+			dgSellOrders.ItemsSource = orders;
 		}
 
 		private void dgSellOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,9 +66,11 @@ namespace JewelryWpfApp
 				try
 				{
 					_selected = (SellOrderDto)dgSellOrders.SelectedItems[0];
-					//var details = _orderDetailService.GetDetailsFromOrder(_selected.Id);
-					UpsertSellOrderDetailUI upsertSellOrderDetailUI = new UpsertSellOrderDetailUI(_serviceProvider, _selected.Id);
-					upsertSellOrderDetailUI.ShowDialog();
+					UpsertSellOrderDetailUI window = new UpsertSellOrderDetailUI(_serviceProvider, _selected.Id);
+					// Subscribe to save metadata event
+					window.OrderSaved += UpsertSellOrderDetailUI_OrderSaved;
+					window.Closed += (s, e) => window.OrderSaved -= UpsertSellOrderDetailUI_OrderSaved;
+					window.ShowDialog();
 				}
 				catch
 				{
@@ -82,6 +83,11 @@ namespace JewelryWpfApp
 			{
 				_selected = null;
 			}
+		}
+
+		private void UpsertSellOrderDetailUI_OrderSaved(object? sender, EventArgs e)
+		{
+			GetOrders();
 		}
 
 		private async void btnSearch_Click(object sender, RoutedEventArgs e)

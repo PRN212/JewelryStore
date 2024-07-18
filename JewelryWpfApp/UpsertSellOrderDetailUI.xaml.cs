@@ -32,6 +32,7 @@ namespace JewelryWpfApp
 		private readonly CustomerService _customerService; 
 		private int orderId = 0;
 		private Order order;
+		public event EventHandler OrderSaved;
 
 		public UpsertSellOrderDetailUI(IServiceProvider serviceProvider, int orderId)
 		{
@@ -53,6 +54,10 @@ namespace JewelryWpfApp
 			cbProduct.ItemsSource = await _productService.GetProducts();
 			cbProduct.SelectedValuePath = "Id";
 			cbProduct.DisplayMemberPath = "Name";
+
+			txtPaymentMethod.Text = order.PaymentMethod;
+			txtRate.Text = "1.3";
+			txtStatus.Text = order.Status;
 
 			if (orderId == 0) return;
 			var details = _orderDetailService.GetDetailsFromOrder(orderId);
@@ -102,8 +107,8 @@ namespace JewelryWpfApp
 					order.OrderDetails.Add(detail);
 				}
 
-				_sellOrderService.Update(order);
-				_sellOrderService.Save();
+				//_sellOrderService.Update(order);
+				//_sellOrderService.Save();
 			}
 			else
 			{
@@ -117,53 +122,98 @@ namespace JewelryWpfApp
 		private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
 		{
 			CustomerDetail view = new(_serviceProvider);
-			// Subscribe to the Closed event
-			//view.Closed += CustomerDetailWindow_Closed;
+			// Subscribe to the saving event
+			view.CustomerSaved += CustomerDetail_CustomerSaved;
+			view.Closed += (s,e) => view.CustomerSaved -= CustomerDetail_CustomerSaved;
 			view.Show();
 		}
 
-		// This method will be called when the CustomerDetail window is closed
-		//private void CustomerDetailWindow_Closed(object sender, EventArgs e)
-		//{
-		//	if (sender is CustomerDetail customerDetailWindow)
-		//	{
-		//		customerDetailWindow.Closed -= CustomerDetailWindow_Closed;
-		//	}
+		private void CustomerDetail_CustomerSaved(object sender, EventArgs e)
+		{
 
-		//	FillData();
-		//}
+			// Refresh data after the customer is saved
+			FillData();
+		}
+
+		private float GetTotalPrice()
+		{
+			// TODO
+			return 0;
+		}
+
+		/*		private async void btnSave_Click(object sender, RoutedEventArgs e)
+				{
+					GetTotalPrice();
+
+					if (purchaseOrderDto == null)
+					{
+						purchaseOrderDto = new PurchaseOrderDto();
+
+						purchaseOrderDto.Status = "Pending";
+						purchaseOrderDto.CreatedDate = DateTime.UtcNow.ToString();
+						purchaseOrderDto.Type = "Purchase Order";
+						purchaseOrderDto.TotalPrice = totalPrice;
+						purchaseOrderDto.OrderDetails = new List<OrderDetail>();
+						purchaseOrderDto.PaymentMethod = "cash";
+						//purchaseOrderDto.UserId = int.TryParse(txtUser.Text, out var userId) ? userId : 0;
+						purchaseOrderDto.UserId = _userSessionService.CurrentUser.Id;
+						//purchaseOrderDto.CustomerId = int.TryParse(txtCustomer.Text, out var customerId) ? customerId : 0;
+
+						if (_purchaseOrderService.AddPurchaseOrder(purchaseOrderDto))
+						{
+							MessageBox.Show("Successfully added a new purchase order.", "Success",
+											MessageBoxButton.OK, MessageBoxImage.Information);
+							btnSave.IsEnabled = false;  // Disable the Save button
+							Close();
+						}
+					}
+					else
+					{
+						btnSave.IsEnabled = false;
+					}
+				}*/
 
 		private async void btnSave_Click(object sender, RoutedEventArgs e)
 		{
-			//int totalPrice = 0;
+			if (string.IsNullOrWhiteSpace(txtPaymentMethod.Text))
+			{
+				MessageBox.Show("Please enter a payment method.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 
-			//if (purchaseOrderDto == null)
-			//{
-			//    purchaseOrderDto = new PurchaseOrderDto();
+			if (string.IsNullOrWhiteSpace(txtStatus.Text))
+			{
+				MessageBox.Show("Please enter a status.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 
-			//    purchaseOrderDto.Status = "Pending";
-			//    purchaseOrderDto.CreatedDate = DateTime.UtcNow.ToString();
-			//    purchaseOrderDto.Type = "Purchase Order";
-			//    purchaseOrderDto.TotalPrice = totalPrice;
-			//    purchaseOrderDto.OrderDetails = new List<OrderDetail>();
-			//    purchaseOrderDto.PaymentMethod = "cash";
-			//    //purchaseOrderDto.UserId = int.TryParse(txtUser.Text, out var userId) ? userId : 0;
-			//    purchaseOrderDto.UserId = _userSessionService.CurrentUser.Id;   
-			//    //purchaseOrderDto.CustomerId = int.TryParse(txtCustomer.Text, out var customerId) ? customerId : 0;
+			if (cbCustomer.SelectedItem == null)
+			{
+				MessageBox.Show("Please select a customer.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 
-			//    if (_purchaseOrderService.AddPurchaseOrder(purchaseOrderDto))
-			//    {
-			//        MessageBox.Show("Successfully added a new purchase order.", "Success",
-			//                        MessageBoxButton.OK, MessageBoxImage.Information);
-			//        btnSave.IsEnabled = false;  // Disable the Save button
-			//        Close();
-			//    }
-			//}
-			//else
-			//{
-			//    btnSave.IsEnabled = false;
-			//}
+			order.PaymentMethod = txtPaymentMethod.Text.Trim();
+			order.Status = txtStatus.Text.Trim();
+
+			// Update the CustomerId for the order
+			if (cbCustomer.SelectedValue is int customerId)
+			{
+				order.CustomerId = customerId;
+			}
+			else
+			{
+				MessageBox.Show("Invalid customer selection.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			_sellOrderService.Update(order);
+			_sellOrderService.Save();
+			OrderSaved?.Invoke(this, EventArgs.Empty);
+
+			MessageBox.Show("Order saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
+
 
 		//private async void btnDelete_Click(object sender, RoutedEventArgs e)
 		//{

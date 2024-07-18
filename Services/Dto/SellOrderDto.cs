@@ -10,6 +10,6 @@ namespace Services.Dto
         public float TotalPrice { get; set; }
         public string PaymentMethod { get; set; }
         public string UserName { get; set; } 
-        public string CustomerName { get; set; } 
+        public string Customer { get; set; } 
     }
 }

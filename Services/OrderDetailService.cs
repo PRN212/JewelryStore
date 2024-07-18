@@ -51,7 +51,19 @@ namespace Services
             return detailDtos;
         }
 
-        public async Task<IEnumerable<int>> GetPurchaseOrdersInOrderDetail(int orderId) { 
+		//public List<SellOrderDetailDto> Mapping(List<OrderDetail> details)
+		//{
+		//	if (id == 0) return null;
+		//	var details = _orderRepo.GetDetailsFromOrder(id);
+		//	List<SellOrderDetailDto> detailDtos = _mapper.Map<List<SellOrderDetailDto>>(details);
+		//	foreach (var p in detailDtos)
+		//	{
+		//		p.GoldPrice = _goldPriceRepository.GetLatestGoldPrice(p.GoldId).BidPrice;
+		//	}
+		//	return detailDtos;
+		//}
+
+		public async Task<IEnumerable<int>> GetPurchaseOrdersInOrderDetail(int orderId) { 
 
             var orders = await _orderDetailRepository.GetOrderDetails(orderId);
 

@@ -12,8 +12,8 @@ using Repositories;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240710120007_shortUsername")]
-    partial class shortUsername
+    [Migration("20240718035521_seed")]
+    partial class seed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,7 @@ namespace Repositories.Migrations
                             Id = 1,
                             CreatedDate = new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local),
                             CustomerId = 1,
-                            PaymentMethod = "CreditCard",
+                            PaymentMethod = "Credit Card",
                             Status = "Pending",
                             TotalPrice = 1000m,
                             Type = "Sell",

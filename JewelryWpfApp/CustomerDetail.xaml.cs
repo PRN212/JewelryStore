@@ -23,6 +23,7 @@ namespace JewelryWpfApp
 	public partial class CustomerDetail : Window
 	{
 		private IServiceProvider service;
+		public event EventHandler CustomerSaved;
 		public CustomerDetail(IServiceProvider serviceProvider)
 		{
 			InitializeComponent();
@@ -46,6 +47,9 @@ namespace JewelryWpfApp
 			else
 			{
 				MessageBox.Show(GetWindow(this), "Customer added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+				// Raise the event
+				CustomerSaved?.Invoke(this, EventArgs.Empty);
 			}
 
 		}

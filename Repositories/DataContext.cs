@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Repositories.Entities;
 using Static;
+using System.Diagnostics;
 
 namespace Repositories
 {
@@ -19,14 +20,28 @@ namespace Repositories
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			//if (!optionsBuilder.IsConfigured)
+			//{
+				IConfigurationRoot configuration = new ConfigurationBuilder()
+				   .SetBasePath(Directory.GetCurrentDirectory())
+				   .AddJsonFile("appsettings.json", true, true)
+				   .Build();
+				var connectionString = configuration["ConnectionStrings:DBDefault"];
+				Trace.WriteLine(connectionString);
+				optionsBuilder.UseSqlServer("Database=JewelryStore;Trusted_Connection=True;TrustServerCertificate=True");
+			//}
+		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(k => new { k.OrderId, k.ProductId });
 
             // Short username
             modelBuilder.Entity<User>().HasData(
-                new User() { Id=-1, Username = "1", Password = "1", Name = "<name>", Email = "<email>", Role = "Manager", Status = true, Gender = "M", Dob = DateOnly.Parse("2000-01-01"), Phone = "1" });
+                new User() { Id = -1, Username = "1", Password = "1", Name = "<name>", Email = "<email>", Role = "Manager", Status = true, Gender = "M", Dob = DateOnly.Parse("2000-01-01"), Phone = "1" });
 
             // Seed Orders
             modelBuilder.Entity<Customer>().HasData(
@@ -46,17 +61,6 @@ namespace Repositories
             );
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                   .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json", true, true)
-                   .Build();
-                var connectionString = configuration.GetConnectionString("DBDefault");
-                optionsBuilder.UseSqlServer(connectionString);
-            }
-        }
+
     }
 }

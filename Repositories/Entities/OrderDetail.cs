@@ -1,16 +1,18 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities
 {
+    [PrimaryKey(nameof(ProductId), nameof(OrderId))]
     public class OrderDetail
     {
-        [Key]
+        //[Key]
         public int ProductId { get; set; }
         public Product Product { get; set; }
-        [Key]
+        //[Key]
         public int OrderId { get; set; }
         public Order Order { get; set; }
         public int Quantity { get; set; }
