@@ -26,7 +26,7 @@ namespace Services
             //_orderDetailRepository = orderDetailRepository;
         }
         public List<Order> GetAll(Expression<Func<Order, bool>>? filter = null, string? includeProperties = null) { 
-            return _orderRepo.GetAll().ToList();
+            return _orderRepo.GetAll(filter, includeProperties).ToList();
 		}
 
         public List<SellOrderDto> GetSellOrders()

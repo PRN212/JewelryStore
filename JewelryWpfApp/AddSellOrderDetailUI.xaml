@@ -55,6 +55,7 @@
                     <Label x:Name="lblRate" Content="Rate:" RenderTransformOrigin="0.676,1.017" Height="28"    />
                     <TextBox x:Name="txtRate" Height="30" Margin="10" Width="50" VerticalAlignment="Center"/>
                     <Button x:Name="btnAdd"  Content="Add Item" Grid.Row="2" FontSize="12" Height="30" Padding="5" Margin="10 0" Background="#FFC7A882" Foreground="White" Click="btnAdd_Click" RenderTransformOrigin="-0.628,-1.369"/>
+                   
                 </StackPanel>
 
                 <!--<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" >
@@ -76,6 +77,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="btnSave" Grid.Column="1" Content="Save" FontSize="18" Height="30" Width="86" Margin="10" Background="#FFC7A882" Foreground="White" Click="btnSave_Click"/>
+                <Button x:Name="btnPrint" Grid.Column="1" Content="Print" FontSize="18" Height="30" Width="86" Margin="10" Background="#FFC7A882" Foreground="White" Click="btnPrint_Click"/>
                 <!--<Button x:Name="btnDelete" Grid.Column="2" Content="Delete" FontSize="18" Height="30" Width="86" Margin="10" Background="DarkRed" Foreground="White" Click="btnDelete_Click"/>
                 <Button x:Name="btnPaid" Grid.Column="3" Content="Paid" FontSize="18" Height="30" Width="86" Margin="10" Background="LightGreen" Foreground="White" Click="btnPaid_Click"/>-->
             </StackPanel>

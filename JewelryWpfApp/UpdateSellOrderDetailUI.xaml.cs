@@ -138,12 +138,6 @@ namespace JewelryWpfApp
 			FillData();
 		}
 
-		private float GetTotalPrice()
-		{
-			// TODO
-			return 0;
-		}
-
 
 		private void btnSave_Click(object sender, RoutedEventArgs e)
 		{
@@ -187,6 +181,13 @@ namespace JewelryWpfApp
 			}
 
 			return true;
+		}
+
+		private void btnPrint_Click(object sender, RoutedEventArgs e)
+		{
+			PrintService printService = new(_serviceProvider);
+			printService.ExportOrderToCsv(order.Id);
+			MessageBox.Show("Print Succesfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 

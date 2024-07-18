@@ -207,6 +207,17 @@ namespace JewelryWpfApp
 			return true;
 		}
 
+		private void btnPrint_Click(object sender, RoutedEventArgs e)
+		{
+			if (orderId == 0)
+			{
+				MessageBox.Show("Please create the order first", "Failure", MessageBoxButton.OK, MessageBoxImage.Error); 
+				return;
+			}
+			PrintService printService = new(_serviceProvider);
+			printService.ExportOrderToCsv(order.Id);
+			MessageBox.Show("Print Succesfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+		}
 
 
 	}
