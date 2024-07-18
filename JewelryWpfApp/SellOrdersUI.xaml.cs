@@ -25,11 +25,8 @@ namespace JewelryWpfApp
 	/// </summary>
 	public partial class SellOrdersUI : Page
 	{
-		private readonly ProductService _productService;
-		private readonly GoldService _goldService;
+
 		private readonly SellOrderService _orderService;
-		private readonly OrderDetailService _orderDetailService;
-		private readonly CustomerService _customerService;
 		private SellOrderDto? _selected = null;
 		private IServiceProvider _serviceProvider;
 		//public ObservableCollection<Order> OrderList { get; set; }
@@ -38,11 +35,8 @@ namespace JewelryWpfApp
 		public SellOrdersUI(IServiceProvider serviceProvider)
 		{
 			_serviceProvider = serviceProvider;
-			_productService = _serviceProvider.GetRequiredService<ProductService>();
-			_goldService = _serviceProvider.GetRequiredService<GoldService>();
-			_orderDetailService = _serviceProvider.GetRequiredService<OrderDetailService>();
 			_orderService = _serviceProvider.GetRequiredService<SellOrderService>();
-			_customerService = _serviceProvider.GetRequiredService<CustomerService>();
+
 
 			InitializeComponent();
 			//OrderList = new ObservableCollection<Order>();
@@ -66,7 +60,7 @@ namespace JewelryWpfApp
 				try
 				{
 					_selected = (SellOrderDto)dgSellOrders.SelectedItems[0];
-					UpsertSellOrderDetailUI window = new UpsertSellOrderDetailUI(_serviceProvider, _selected.Id);
+					UpdateSellOrderDetailUI window = new UpdateSellOrderDetailUI(_serviceProvider, _selected.Id);
 					// Subscribe to save metadata event
 					window.OrderSaved += UpsertSellOrderDetailUI_OrderSaved;
 					window.Closed += (s, e) => window.OrderSaved -= UpsertSellOrderDetailUI_OrderSaved;
@@ -74,9 +68,7 @@ namespace JewelryWpfApp
 				}
 				catch
 				{
-					MessageBox.Show("Please select a valid row!",
-					"Warning",
-					MessageBoxButton.OK, MessageBoxImage.Warning);
+					MessageBox.Show("Please select a valid row!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				}
 			}
 			else
@@ -99,7 +91,11 @@ namespace JewelryWpfApp
 
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
+			AddSellOrderDetailUI window = new AddSellOrderDetailUI(_serviceProvider);
 
+			window.OrderSaved += UpsertSellOrderDetailUI_OrderSaved;
+			window.Closed += (s, e) => window.OrderSaved -= UpsertSellOrderDetailUI_OrderSaved;
+			window.ShowDialog();
 		}
 	}
 }

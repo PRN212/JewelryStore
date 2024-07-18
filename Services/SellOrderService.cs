@@ -55,6 +55,18 @@ namespace Services
             return orderDtos;
         }
 
+        public bool Add(Order obj)
+		{
+			try
+			{
+				_orderRepo.Add(obj);
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
 
 
 		public void Save()

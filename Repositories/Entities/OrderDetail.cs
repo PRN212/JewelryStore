@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities
 {
+    // DO NOT REMOVE
     [PrimaryKey(nameof(ProductId), nameof(OrderId))]
     public class OrderDetail
     {
