@@ -58,7 +58,7 @@ namespace Services
 
 		public List<SellOrderDto> GetByCustomerPhoneOrName(string text)
 		{
-			var orders = _orderRepo.GetAll(includeProperties: "Customer").Where(o => o.Customer.Phone.Contains(text) || o.Customer.Name.Contains(text)).ToList();
+			var orders = _orderRepo.GetAll(includeProperties: "Customer").Where(o => o.Type == SD.TypeSell && (o.Customer.Phone.Contains(text) || o.Customer.Name.Contains(text))).ToList();
 			List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
 			return orderDtos;
 		}
