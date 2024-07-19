@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class Db : Migration
+    public partial class Schemas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -152,16 +154,17 @@ namespace Repositories.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
-                    GoldPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    GoldPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => new { x.OrderId, x.ProductId });
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
@@ -176,10 +179,35 @@ namespace Repositories.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "Id", "Address", "Name", "Phone" },
+                values: new object[] { 1, "3 Nam Ky Khoi Nghia", "John Doe", "0123456789" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Dob", "Email", "Gender", "ImgUrl", "Name", "Password", "Phone", "Role", "Status", "Username" },
+                values: new object[] { -1, new DateOnly(2000, 1, 1), "<email>", "M", null, "<name>", "1", "1", "Manager", true, "1" });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "Id", "CreatedDate", "CustomerId", "PaymentMethod", "Status", "TotalPrice", "Type", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), 1, "Credit Card", "Pending", 0m, "Sell", -1 },
+                    { 2, new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), 1, "Cash", "Completed", 0m, "Sell", -1 },
+                    { 3, new DateTime(2024, 7, 10, 18, 53, 33, 294, DateTimeKind.Local), 1, "Cash", "Shipped", 0m, "Sell", -1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_GoldPrices_GoldId",
                 table: "GoldPrices",
                 column: "GoldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ProductId",

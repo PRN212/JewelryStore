@@ -31,14 +31,15 @@ namespace Repositories
 				   .Build();
 				var connectionString = configuration["ConnectionStrings:DBDefault"];
 				Trace.WriteLine(connectionString);
-				optionsBuilder.UseSqlServer(connectionString);
-			//}
-		}
+            optionsBuilder.UseSqlServer(connectionString);
+            //optionsBuilder.UseSqlServer("Database=JewelryStore;Trusted_Connection=True;TrustServerCertificate=True");
+            //}
+        }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			modelBuilder.Entity<OrderDetail>()
-	            .HasKey(k => new { k.OrderId, k.ProductId });
+			//modelBuilder.Entity<OrderDetail>()
+	  //          .HasKey(k => new { k.OrderId, k.ProductId });
 
             // Short username
             modelBuilder.Entity<User>().HasData(
