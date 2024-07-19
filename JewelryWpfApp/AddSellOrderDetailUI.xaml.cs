@@ -56,11 +56,11 @@ namespace JewelryWpfApp
 			cbProduct.DisplayMemberPath = "Name";
 
 			txtRate.Text = "1.3";
+			txtStatus.IsEnabled = false;
 
 			if (orderId == 0)
 			{
 				txtStatus.Text = "Pending";
-				txtStatus.IsEnabled = false;
 				return;
 			}
 			txtStatus.Text = order.Status;
@@ -68,6 +68,8 @@ namespace JewelryWpfApp
 			var details = _orderDetailService.GetDetailsFromOrder(orderId);
 			dgvSellOrder.ItemsSource = details;
 		}
+
+
 
 		private async void PageLoaded(object sender, RoutedEventArgs e)
 		{
@@ -110,32 +112,34 @@ namespace JewelryWpfApp
 					// If found, only update the quantity
 					existingDetail.Quantity += quantity;
 				}
-					if (decimal.TryParse(txtRate.Text, out decimal rate))
+				if (decimal.TryParse(txtRate.Text, out decimal rate))
+				{
+					if (rate < 1)
 					{
-						if (rate < 1)
-						{
-							MessageBox.Show("Please enter a rate of at least 1", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-							return;
-						}
-						decimal detailPrice = await GetOrderDetailTotalAsync(productId, quantity, rate);
-						// If not found, create a new OrderDetail
-						OrderDetail detail = new OrderDetail()
-						{
-							OrderId = orderId,
-							ProductId = productId,
-							Quantity = quantity,
-							Price = detailPrice
-						};
-						order.OrderDetails.Add(detail);
-						order.TotalPrice += detailPrice;
-						_sellOrderService.Update(order);
-						_sellOrderService.Save();
-					}
-					else
-					{
-						MessageBox.Show("Please enter valid rate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+						MessageBox.Show("Please enter a rate of at least 1", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 						return;
 					}
+					decimal detailPrice = await GetOrderDetailTotalAsync(productId, quantity, rate);
+					// If not found, create a new OrderDetail
+					OrderDetail detail = new OrderDetail()
+					{
+						OrderId = orderId,
+						ProductId = productId,
+						Quantity = quantity,
+						Price = detailPrice
+					};
+					order.OrderDetails.Add(detail);
+					order.TotalPrice += detailPrice;
+					txtSearch.Text = "0";
+
+					_sellOrderService.Update(order);
+					_sellOrderService.Save();
+				}
+				else
+				{
+					MessageBox.Show("Please enter valid rate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					return;
+				}
 			}
 			else
 			{
@@ -230,14 +234,45 @@ namespace JewelryWpfApp
 		{
 			if (orderId == 0)
 			{
-				MessageBox.Show("Please create the order first", "Failure", MessageBoxButton.OK, MessageBoxImage.Error); 
+				MessageBox.Show("Please create the order first", "Failure", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 			PrintService printService = new(_serviceProvider);
 			printService.ExportOrderToCsv(order.Id);
-			MessageBox.Show("Print Succesfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+			MessageBox.Show("Print Succesfully to desktop", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
+
+
+		private async void btnSearchProduct_Click(object sender, RoutedEventArgs eventArgs)
+		{
+			if (int.TryParse(txtSearch.Text, out int pId))
+			{
+				var product = await _productService.GetProductById(pId);
+				if (product == null)
+				{
+					MessageBox.Show("Product not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					return;
+				}
+				else
+				{
+					cbProduct.SelectedValue = product.Id;
+				}
+			}
+			else
+			{
+				MessageBox.Show("Please enter a valid id to search.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+		}
+
+		private void cbProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (cbProduct.SelectedItem is ProductDto selectedProduct)
+			{
+				txtSearch.Text = selectedProduct.Id.ToString();
+			}
+		}
 
 	}
 }

@@ -46,9 +46,11 @@
                 <!--Label-->
 
                 <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" >
-                    <Label x:Name="lblProduct" Content="Product:"  Margin="10" Grid.Column="0" Grid.Row="1" />
+                    <Label x:Name="lblProduct" Content="Product Id:"  Margin="10" Grid.Column="0" Grid.Row="1" />
+                    <TextBox  x:Name="txtSearch" Height="30" Width="50" VerticalAlignment="Center"/>
+                    <Button x:Name="btnSearch"  Content="Search" Grid.Row="2" FontSize="12" Height="30" Padding="5" Margin="5 10" Background="#FFC7A882" Foreground="White" Click="btnSearchProduct_Click" RenderTransformOrigin="-0.628,-1.369"/>
 
-                    <ComboBox Width="200" x:Name="cbProduct" Height="30" Margin="0,0,30,0" Grid.Column="1" Grid.Row="0"/>
+                    <ComboBox Width="200" x:Name="cbProduct" Height="30" Margin="0,0,30,0" Grid.Column="1" Grid.Row="0" SelectionChanged="cbProduct_SelectionChanged"/>
 
                     <Label x:Name="lblQuantity" Content="Quantity:" RenderTransformOrigin="0.676,1.017" Height="28"    />
                     <TextBox x:Name="txtQuantity" Height="30" Margin="10" Width="50" VerticalAlignment="Center"/>
