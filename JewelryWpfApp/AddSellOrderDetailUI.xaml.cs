@@ -55,7 +55,7 @@ namespace JewelryWpfApp
 			cbProduct.SelectedValuePath = "Id";
 			cbProduct.DisplayMemberPath = "Name";
 
-			txtRate.Text = "1.3";
+			//txtRate.Text = "1.3";
 			txtStatus.IsEnabled = false;
 
 			if (orderId == 0)
@@ -76,12 +76,12 @@ namespace JewelryWpfApp
 			FillData();
 		}
 
-		private async Task<decimal> GetOrderDetailTotalAsync(int productId, int quantity, decimal rate)
+		private async Task<decimal> GetOrderDetailTotalAsync(int productId, int quantity)
 		{
 			var service = _serviceProvider.GetRequiredService<ProductService>();
 			ProductDto product = await service.GetProductById(productId);
 
-			return product.ProductPrice * quantity * rate;
+			return product.ProductPrice * quantity;
 		}
 
 		private async void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -107,19 +107,21 @@ namespace JewelryWpfApp
 				// Search for an existing OrderDetail with the same orderId and productId
 				var existingDetail = order.OrderDetails.FirstOrDefault(detail => detail.OrderId == orderId && detail.ProductId == productId);
 
+				decimal detailPrice = await GetOrderDetailTotalAsync(productId, quantity);
 				if (existingDetail != null)
 				{
 					// If found, only update the quantity
 					existingDetail.Quantity += quantity;
 				}
-				if (decimal.TryParse(txtRate.Text, out decimal rate))
+				//if (decimal.TryParse(txtRate.Text, out decimal rate))
+				//{
+				//	if (rate < 1)
+				//	{
+				//		MessageBox.Show("Please enter a rate of at least 1", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				//		return;
+				//	}
+				else
 				{
-					if (rate < 1)
-					{
-						MessageBox.Show("Please enter a rate of at least 1", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-						return;
-					}
-					decimal detailPrice = await GetOrderDetailTotalAsync(productId, quantity, rate);
 					// If not found, create a new OrderDetail
 					OrderDetail detail = new OrderDetail()
 					{
@@ -129,17 +131,18 @@ namespace JewelryWpfApp
 						Price = detailPrice
 					};
 					order.OrderDetails.Add(detail);
-					order.TotalPrice += detailPrice;
-					txtSearch.Text = "0";
+				}
+				order.TotalPrice += detailPrice;
+				txtSearch.Text = "0";
 
-					_sellOrderService.Update(order);
-					_sellOrderService.Save();
-				}
-				else
-				{
-					MessageBox.Show("Please enter valid rate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					return;
-				}
+				_sellOrderService.Update(order);
+				_sellOrderService.Save();
+				//}
+				//else
+				//{
+				//	MessageBox.Show("Please enter valid rate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				//	return;
+				//}
 			}
 			else
 			{
