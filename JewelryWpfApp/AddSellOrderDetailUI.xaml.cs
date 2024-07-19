@@ -79,8 +79,8 @@ namespace JewelryWpfApp
 		private async Task<decimal> GetOrderDetailTotalAsync(int productId, int quantity)
 		{
 			var service = _serviceProvider.GetRequiredService<ProductService>();
-			ProductDto product = await service.GetProductById(productId);
-
+			var products = await service.GetProducts();
+			ProductDto product = products.SingleOrDefault(p => p.Id == productId);
 			return product.ProductPrice * quantity;
 		}
 
@@ -112,6 +112,7 @@ namespace JewelryWpfApp
 				{
 					// If found, only update the quantity
 					existingDetail.Quantity += quantity;
+					existingDetail.Price += detailPrice;
 				}
 				//if (decimal.TryParse(txtRate.Text, out decimal rate))
 				//{
