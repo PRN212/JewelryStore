@@ -5,59 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelryWpfApp"
         mc:Ignorable="d"
-        Title="PurchaseOrderDetailUI" Height="500" Width="800" Loaded="PageLoaded" ResizeMode="NoResize">
+        Title="PurchaseOrderDetail_ProductDetail" Height="450" Width="800"
+        Loaded="PageLoaded">
     <Grid Margin="20">
         <StackPanel>
-            <Label Content="PURCHASE ORDER DETAIL" FontSize="22"/>
+            <Label Content="PRODUCT DETAIL" FontSize="22"/>
             <Grid Grid.Column="0" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <!--Label-->
-                <Label x:Name="lblCustomerName" Content="Customer Name:" Grid.Column="0" Grid.Row="0" Margin="10" />
-                <Label x:Name="lblCustomerPhone" Content="Customer Phone:" Grid.Column="2" Grid.Row="0" Margin="10"/>
-                <Label x:Name="lblCustomerAddress" Content="Customer Address:" Grid.Column="0" Grid.Row="1" Margin="10"/>
-                <Label x:Name="lblTotalPrice" Content="TOTAL PRICE:" Grid.Column="2" Grid.Row="1" Margin="10" />
+                <Label x:Name="lblName" Content="Product Name" Grid.Column="0" Grid.Row="0" Margin="0 10"/>
+                <Label x:Name="lblDescription" Content="Description" Grid.Column="0" Grid.Row="1" Margin="0 10"/>
+                <Label x:Name="lblGoldType" Content="Gold Type" Grid.Column="0" Grid.Row="2" Margin="0 10"/>
+                <Label x:Name="lblGoldWeight" Content="Gold Weight" Grid.Column="2" Grid.Row="2" Margin="40 10 0 10"/>
+                <Label x:Name="lblGoldPrice" Content="Gold Price" Grid.Column="4" Grid.Row="2" Margin="40 10 0 10"/>
+                <Label x:Name="lblGemType" Content="Gem Type" Grid.Column="0" Grid.Row="3" Margin="0 10"/>
+                <Label x:Name="lblGemWeight" Content="Gem Weight" Grid.Column="2" Grid.Row="3" Margin="40 10 0 10"/>
+                <Label x:Name="lblGemPrice" Content="Gem Price" Grid.Column="4" Grid.Row="3" Margin="40 10 0 10"/>
+                <Label x:Name="lblQuantity" Content="Quantity" Grid.Column="0" Grid.Row="4" Margin="0 10"/>
+                <Label x:Name="lblProductPrice" Content="Total price" Grid.Column="2" Grid.Row="4" Margin="40 10 0 10"/>
+
                 <!--TextBox-->
-                <TextBox x:Name="txtCustomerName" Height="30" Grid.Column="1" Margin="10" Grid.Row="0"/>
-                <StackPanel Orientation="Horizontal" Grid.Column="3" Margin="0 10" Grid.Row="0">
-                    <TextBox x:Name="txtCustomerPhone" Height="30" Width="200"/>
-                    <Button  x:Name="btnSearch" Click="btnSearch_Click">Search</Button>
-                </StackPanel>
-                
-                <TextBox x:Name="txtCustomerAddress" Height="30" Grid.Column="1" Margin="10" Grid.Row="1"/>
-                <TextBox x:Name="txtTotalPrice" Height="30" Grid.Column="3" IsReadOnly="True" Margin="10" Grid.Row="1" BorderThickness="0"/>
-
-            </Grid>
-            <!---Data List-->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <DataGrid Grid.Column="0" Grid.Row="0" x:Name="dgvPurchaseOrder_ProductsList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10" SelectionChanged="dgvProductsList_SelectionChanged" Height="180" Width="650"/>
-                <StackPanel Grid.Column="1" Grid.Row="0"  Margin="10">
-                    <Button x:Name="btnAdd" Grid.Column="0" Content="Add Item" FontSize="12" Height="30"  Margin="0 0 0 10" Background="#FFC7A882" Foreground="White" Click="btnAdd_Click"/>
-                </StackPanel>
+                <TextBox x:Name="txtName" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding Name}"/>
+                <Image x:Name="selectedImg"  Grid.Column="5" Grid.Row="0" />
+                <TextBox x:Name="txtDescription" TextWrapping="Wrap" Height="50" Margin="0,10" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="5" Text="{Binding Description}"/>
+                <ComboBox x:Name="cbGoldType" Height="30" Margin="0,10" Grid.Column="1" Grid.Row="2" SelectedValue="{Binding GoldId}"/>
+                <TextBox x:Name="txtGoldWeight" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="3" Grid.Row="2"
+                     PreviewTextInput="NumberValidation" Text="{Binding GoldWeight}"/>
+                <TextBox x:Name="txtGoldPrice" TextWrapping="Wrap" Height="30" Margin="0,10" Grid.Column="5" Grid.Row="2"
+                     IsEnabled="false" Text="{Binding GoldPrice}"/>
+                <TextBox x:Name="txtGemType" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="3" Text="{Binding GemName}"/>
+                <TextBox x:Name="txtGemWeight" Height="30" Grid.Column="3" Margin="0,10" Grid.Row="3"
+                     PreviewTextInput="NumberValidation" Text="{Binding GemWeight}"/>
+                <TextBox x:Name="txtGemPrice" Height="30" Grid.Column="5" Margin="0,10" Grid.Row="3"
+                     PreviewTextInput="NumberValidation" Text="{Binding GemPrice}"/>
+                <TextBox x:Name="txtQuantity" Height="30" Grid.Column="1" Margin="0,10" Grid.Row="4"
+                     PreviewTextInput="NumberValidation" Text="{Binding Quantity}"/>
+                <TextBox x:Name="txtProductPrice" Height="30" Grid.Column="3" Grid.Row="4"
+                     IsEnabled="false" Text="{Binding ProductPrice, Mode=OneWay}"/>
             </Grid>
             <!--Button-->
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="btnSave" Grid.Column="1" Content="Save" FontSize="18" Height="30" Width="86" Margin="10" Background="DarkGreen" Foreground="White" Click="btnSave_Click"/>
-                <Button x:Name="btnDelete" Grid.Column="2" Content="Delete" FontSize="18" Height="30" Width="86" Margin="10" Background="DarkRed" Foreground="White" Click="btnDelete_Click"/>
-                <Button x:Name="btnPaid" Grid.Column="3" Content="Paid" FontSize="18" Height="30" Width="86" Margin="10" Background="LightGreen" Foreground="White" Click="btnPaid_Click"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
+                <Button x:Name="btnAdd" Content="Add" FontSize="18" Height="30" Width="86" Background="White" Foreground="#FFC7A882" FontWeight="Bold" Click="btnAdd_Click"/>
+                <Button x:Name="btnUpdate" Content="Update" FontSize="18" Height="30" Width="86" Background="White" Foreground="#FFC7A882" FontWeight="Bold" Click="btnUpdate_Click" Margin="10,0,0,0"/>
+                <Button x:Name="btnDelete" Content="Delete" FontSize="18" Height="30" Width="86" Background="#FF902626" Foreground="White" Click="btnDelete_Click" Margin="10,0,0,0" />
             </StackPanel>
-
         </StackPanel>
     </Grid>
 </Window>

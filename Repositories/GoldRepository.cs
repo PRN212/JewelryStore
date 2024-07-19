@@ -16,5 +16,16 @@ namespace Repositories
         {
             return await _context.Golds.ToListAsync();
         }
+
+        public Gold? GetById (int id)
+        {
+            return _context.Golds.SingleOrDefault(g => g.Id == id);
+        }
+
+        public void UpdateGold(Gold gold)
+        {
+            _context.Golds.Update(gold);
+            _context.SaveChanges();
+        }
     }
 }

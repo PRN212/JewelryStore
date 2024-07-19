@@ -12,8 +12,13 @@ using Repositories;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
+<<<<<<<< HEAD:Repositories/Migrations/20240718035328_schemas.Designer.cs
     [Migration("20240718035328_schemas")]
     partial class schemas
+========
+    [Migration("20240717011145_FinalMigration")]
+    partial class FinalMigration
+>>>>>>>> origin/dev:Repositories/Migrations/20240717011145_FinalMigration.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +63,12 @@ namespace Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("AskPrice")
+                        .HasColumnType("decimal(18,0)");
+
+                    b.Property<decimal>("BidPrice")
+                        .HasColumnType("decimal(18,0)");
+
                     b.Property<decimal>("Content")
                         .HasColumnType("decimal(18,2)");
 
@@ -101,7 +112,7 @@ namespace Repositories.Migrations
                     b.ToTable("GoldPrices");
                 });
 
-            modelBuilder.Entity("Repositories.Entities.Order", b =>
+            modelBuilder.Entity("Repositories.Entities.Orders.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,21 +153,43 @@ namespace Repositories.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Repositories.Entities.OrderDetail", b =>
+            modelBuilder.Entity("Repositories.Entities.Orders.OrderDetail", b =>
                 {
+<<<<<<<< HEAD:Repositories/Migrations/20240718035328_schemas.Designer.cs
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+========
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("GoldPrice")
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
+
+                    b.Property<int>("ProductId")
+>>>>>>>> origin/dev:Repositories/Migrations/20240717011145_FinalMigration.Designer.cs
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+<<<<<<<< HEAD:Repositories/Migrations/20240718035328_schemas.Designer.cs
                     b.HasKey("ProductId", "OrderId");
+========
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+>>>>>>>> origin/dev:Repositories/Migrations/20240717011145_FinalMigration.Designer.cs
 
                     b.HasIndex("OrderId");
 
@@ -276,7 +309,7 @@ namespace Repositories.Migrations
                     b.Navigation("Gold");
                 });
 
-            modelBuilder.Entity("Repositories.Entities.Order", b =>
+            modelBuilder.Entity("Repositories.Entities.Orders.Order", b =>
                 {
                     b.HasOne("Repositories.Entities.Customer", "Customer")
                         .WithMany()
@@ -295,9 +328,9 @@ namespace Repositories.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Repositories.Entities.OrderDetail", b =>
+            modelBuilder.Entity("Repositories.Entities.Orders.OrderDetail", b =>
                 {
-                    b.HasOne("Repositories.Entities.Order", "Order")
+                    b.HasOne("Repositories.Entities.Orders.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -325,7 +358,7 @@ namespace Repositories.Migrations
                     b.Navigation("Gold");
                 });
 
-            modelBuilder.Entity("Repositories.Entities.Order", b =>
+            modelBuilder.Entity("Repositories.Entities.Orders.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });

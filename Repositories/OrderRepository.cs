@@ -1,10 +1,9 @@
-﻿
-using Repositories.Entities;
-using Repositories.IRepositories;
+﻿using Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using Repositories.Entities.Orders;
 namespace Repositories
 {
-	public class OrderRepository : Repository<Order>, IOrderRepository
+    public class OrderRepository : Repository<Order>, IOrderRepository
 	{
 		private DataContext _context;
 		public OrderRepository(DataContext db) : base(db)
@@ -17,19 +16,20 @@ namespace Repositories
 			_context.SaveChanges();
 		}
 
-		public void Update(Order obj)
-		{
-			_context.Orders.Update(obj);
-		}
-	
+        public void Update(Order obj)
+        {
+            _context.Orders.Update(obj);
+        }
 
-
-        public async Task<IEnumerable<Order>> GetPurchaseOrders()
+        public async Task<IReadOnlyList<Order>> GetPurchaseOrders()
         {
             return await _context.Orders
-            .Where(p => p.Type == "Purchase Order" && p.Status != "Disabled")
+            .Where(p => p.Type == "Purchase Order")
             .Include(p => p.Customer)
             .Include(p => p.User)
+            .Include(p => p.OrderDetails)
+            .ThenInclude(o => o.Product)
+            .ThenInclude(x => x.Gold)
             .ToListAsync();
         }
 
@@ -56,52 +56,22 @@ namespace Repositories
             return _context.SaveChanges() > 0;
         }
 
-        public bool DeletePurchaseOrder(Order order)
+        public async Task<bool> UpdatePurchaseOrder(Order order)
         {
-            // Retrieve the order from the context
-            var ordered = _context.Orders.SingleOrDefault(o => o.Id == order.Id);
-
-            if (ordered == null)
-            {
-                // Order not found
-                return false;
-            }
-
-            // Set the Status property to "Disabled"
-            ordered.Status = "Disabled";
-
-            // Save the changes to the database
+            _context.Update(order);
             return _context.SaveChanges() > 0;
-        }
-        
-        public bool IsPaid(Order order)
-        {
-            // Retrieve the order from the context
-            var ordered = _context.Orders.SingleOrDefault(o => o.Id == order.Id);
-
-            if (ordered == null)
-            {
-                // Order not found
-                return false;
-            }
-
-            // Set the Status property to "Disabled"
-            ordered.Status = "Paid";
-
-            // Save the changes to the database
-            return _context.SaveChanges() > 0;
-        }
+        }        
 
         public async Task<IEnumerable<Order>> SearchPurchaseOrders(string searchValue)
         {
-            return await _context.Orders
+            return await _context.Orders.AsNoTracking()
                 .Where(p => p.Customer.Name.Contains(searchValue))
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Order>> SearchPurchaseOrdersByDate(DateTime searchDate)
         {
-            return await _context.Orders
+            return await _context.Orders.AsNoTracking()
                 .Where(p => p.CreatedDate.Date == searchDate.Date) // So sánh chỉ phần ngày, bỏ qua phần giờ.
                 .ToListAsync();
         }

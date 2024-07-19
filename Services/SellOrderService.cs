@@ -2,7 +2,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
-using Repositories.Entities;
+using Repositories.Entities.Orders;
 using Services.Dto;
 using Static;
 using System.Buffers;
