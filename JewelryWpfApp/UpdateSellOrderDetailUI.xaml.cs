@@ -222,6 +222,8 @@ namespace JewelryWpfApp
 			order.Status = "Canceled";
 			MessageBox.Show("Successfully canceled.", "Success",
 							MessageBoxButton.OK, MessageBoxImage.Information);
+			OrderSaved?.Invoke(this, EventArgs.Empty);
+
 			Close();
 		}
 		private async void btnPaid_Click(object sender, RoutedEventArgs e)
@@ -229,6 +231,8 @@ namespace JewelryWpfApp
 			order.Status = "Paid";
 			MessageBox.Show("Successfully paid", "Success",
 							MessageBoxButton.OK, MessageBoxImage.Information);
+			OrderSaved?.Invoke(this, EventArgs.Empty);
+
 			//Close();
 		}
 
