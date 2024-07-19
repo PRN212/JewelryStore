@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repositories.Entities;
+using Repositories.Entities.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
