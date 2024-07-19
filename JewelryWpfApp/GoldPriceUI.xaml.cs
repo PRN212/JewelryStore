@@ -23,24 +23,32 @@ namespace JewelryWpfApp
     public partial class GoldPriceUI : Page
     {
         private readonly GoldPriceService _goldPriceService;
-        public GoldPriceUI(GoldPriceService goldPriceService)
+        private readonly GoldService _goldService;
+        public GoldPriceUI(GoldPriceService goldPriceService, GoldService goldService)
         {
             _goldPriceService = goldPriceService;
             InitializeComponent();
+            _goldService = goldService;
         }
 
         private void btnReload_Click(object sender, RoutedEventArgs e)
         {
-            List<GoldPrice> goldPrices = _goldPriceService.GetLatestGoldPrices();
+            //List<GoldPrice> goldPrices = _goldPriceService.GetLatestGoldPrices();
+            //grdGoldPrice.ItemsSource = null;
+            //grdGoldPrice.ItemsSource = goldPrices;
+
             grdGoldPrice.ItemsSource = null;
-            grdGoldPrice.ItemsSource = goldPrices;
+            grdGoldPrice.ItemsSource = _goldService.GetAllGoldType();
         }
 
         private void grdGoldPrice_Loaded(object sender, RoutedEventArgs e)
         {
-            List<GoldPrice> goldPrices = _goldPriceService.GetLatestGoldPrices();
+            //List<GoldPrice> goldPrices = _goldPriceService.GetLatestGoldPrices();
+            //grdGoldPrice.ItemsSource = null;
+            //grdGoldPrice.ItemsSource = goldPrices;
+
             grdGoldPrice.ItemsSource = null;
-            grdGoldPrice.ItemsSource = goldPrices;
+            grdGoldPrice.ItemsSource = _goldService.GetAllGoldType();
         }
     }
 }
