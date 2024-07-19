@@ -10,6 +10,6 @@
             set => _search = value.ToLower();
         }
         public int? GoldTypeId { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
     }
 }

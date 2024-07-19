@@ -17,7 +17,8 @@ namespace Services
         }
         public async Task<IEnumerable<ProductDto>> GetProducts()
         {
-            var products = await _productRepository.ListAllAsync();
+            var spec = new ProductSpecification(new ProductParams());
+            var products = await _productRepository.ListAsync(spec);
             var productsDto = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products); 
 
             return productsDto;

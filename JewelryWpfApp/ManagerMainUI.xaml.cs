@@ -13,9 +13,11 @@ namespace JewelryWpfApp
         private readonly ProductsListUI _productsListUI;
         private readonly PurchaseOrdersListUI _purchaseOrdersUI;
         private readonly GoldRateUI _goldRateUI;
+        private readonly GoldPriceUI _goldPriceUI;
         private readonly SellOrdersUI _sellOrdersUI;
         private readonly IServiceProvider _serviceProvider;
-        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider, SellOrdersUI sellOrdersUI, PurchaseOrdersListUI purchaseOrdersUI)
+        public ManagerMainUI(ProductsListUI productListUI, GoldRateUI goldRateUI, IServiceProvider serviceProvider, 
+            SellOrdersUI sellOrdersUI, PurchaseOrdersListUI purchaseOrdersUI, GoldPriceUI goldPriceUI)
         {
             _productsListUI = productListUI;
             _goldRateUI = goldRateUI;
@@ -23,12 +25,13 @@ namespace JewelryWpfApp
             _purchaseOrdersUI = purchaseOrdersUI;
             InitializeComponent();
             _sellOrdersUI = sellOrdersUI;
+            _goldPriceUI = goldPriceUI;
         }
 
         /* Gold Page is shown first*/
         private void StartWindow(object sender, EventArgs e)
         {
-            // frMain.Content = ...
+            frMain.Content = _goldPriceUI;
         }
 
         /* Navigate to gold price management page*/
@@ -55,24 +58,17 @@ namespace JewelryWpfApp
             frMain.Content = _purchaseOrdersUI;
         }
 
-        /* Navigate to staff management page*/
-        private void btnNavStaff_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        /* Navigate to profile page*/
-        private void btnNavProfile_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         /* Logout */
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             var loginWindow = _serviceProvider.GetRequiredService<Login>();
             loginWindow.Show();
             Close();
+        }
+
+        private void btnNavGoldPrice_Click(object sender, RoutedEventArgs e)
+        {
+            frMain.Content = _goldPriceUI;
         }
     }
 }

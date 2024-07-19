@@ -101,6 +101,10 @@ namespace JewelryWpfApp
                 return;
             }
             var productDto = (ProductDto) DataContext;
+            if (selectedImg.Source != null)
+            {
+                productDto.ImgUrl = ((BitmapImage)selectedImg.Source).UriSource.ToString();
+            }
 
             if (await _productService.UpdateProduct(productDto))
             {

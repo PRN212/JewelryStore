@@ -27,5 +27,10 @@ namespace Repositories
             _context.Golds.Update(gold);
             _context.SaveChanges();
         }
+
+        public List<Gold> GetAllGold()
+        {
+            return _context.Golds.ToList(); 
+        }
     }
 }
