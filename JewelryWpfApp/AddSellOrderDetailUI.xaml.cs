@@ -60,6 +60,7 @@ namespace JewelryWpfApp
 			if (orderId == 0)
 			{
 				txtStatus.Text = "Pending";
+				txtStatus.IsEnabled = false;
 				return;
 			}
 			txtStatus.Text = order.Status;
