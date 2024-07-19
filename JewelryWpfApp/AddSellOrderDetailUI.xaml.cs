@@ -175,7 +175,7 @@ namespace JewelryWpfApp
 				_sellOrderService.Update(order);
 				_sellOrderService.Save();
 
-				MessageBox.Show("Order saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+				//MessageBox.Show("Order Header Saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 			}
 			else
 			{

@@ -182,7 +182,7 @@ namespace JewelryWpfApp
 			_sellOrderService.Save();
 			OrderSaved?.Invoke(this, EventArgs.Empty);
 
-			MessageBox.Show("Order saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+			//MessageBox.Show("Order Header saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 		private bool Validate()
