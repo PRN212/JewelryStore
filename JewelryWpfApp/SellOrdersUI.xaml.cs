@@ -85,8 +85,8 @@ namespace JewelryWpfApp
 		private async void btnSearch_Click(object sender, RoutedEventArgs e)
 		{
 			var searchValue = txtSearch.Text;
-
-			dgSellOrders.ItemsSource = _orderService.GetByCustomerName(searchValue);
+			var ordersByPhoneOrName = _orderService.GetByCustomerPhoneOrName(searchValue);
+			dgSellOrders.ItemsSource = ordersByPhoneOrName;
 		}
 
 		private void btnAdd_Click(object sender, RoutedEventArgs e)

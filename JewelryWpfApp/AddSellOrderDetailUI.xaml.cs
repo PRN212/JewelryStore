@@ -170,7 +170,7 @@ namespace JewelryWpfApp
 		{
 			if (!Validate()) return;
 			SaveOrder();
-
+			MessageBox.Show("Order Saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 		private void SaveOrder()
