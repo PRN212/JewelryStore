@@ -1,81 +1,79 @@
-﻿using Services.Dto;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Repositories.Entities.Orders;
 using Services;
+using Services.Dto;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.IdentityModel.Tokens;
-using Repositories;
-using Repositories.Entities.Orders;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelryWpfApp
 {
-    /// <summary>
-    /// Interaction logic for PurchaseOrdersUI.xaml
-    /// </summary>
-    public partial class PurchaseOrdersListUI : Page
-    {
-        private readonly PurchaseOrderService _purchaseOrderService; 
-        private readonly IServiceProvider _serviceProvider;
-        private PurchaseOrderDto? _selected = null;
+	/// <summary>
+	/// Interaction logic for PurchaseOrdersUI.xaml
+	/// </summary>
+	public partial class PurchaseOrdersListUI : Page
+	{
+		private readonly PurchaseOrderService _purchaseOrderService;
+		private readonly IServiceProvider _serviceProvider;
+		private PurchaseOrderDto? _selected = null;
 
-        public PurchaseOrdersListUI(PurchaseOrderService purchaseOrderService, IServiceProvider serviceProvider)
-        {
-            _purchaseOrderService = purchaseOrderService;
-            _serviceProvider = serviceProvider;
-            InitializeComponent();        
-        }
+		public PurchaseOrdersListUI(PurchaseOrderService purchaseOrderService, IServiceProvider serviceProvider)
+		{
+			_purchaseOrderService = purchaseOrderService;
+			_serviceProvider = serviceProvider;
+			InitializeComponent();
+		}
 
-        private async void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            await FillDataGridView();
-        }
+		private async void PageLoaded(object sender, RoutedEventArgs e)
+		{
+			await FillDataGridView();
+		}
 
-        private async Task FillDataGridView()
-        {
-            // set value for combobox of order status
-            cbOrderStatus.ItemsSource = new List<string> {
-                OrderStatus.Pending.GetEnumMemberValue(), 
-                OrderStatus.Cancel.GetEnumMemberValue(),
-                OrderStatus.PaymentReceived.GetEnumMemberValue()};
+		private async Task FillDataGridView()
+		{
+			// set value for combobox of order status
+			cbOrderStatus.ItemsSource = new List<string> {
+				OrderStatus.Pending.GetEnumMemberValue(),
+				OrderStatus.Cancel.GetEnumMemberValue(),
+				OrderStatus.PaymentReceived.GetEnumMemberValue()};
 
-            IEnumerable<PurchaseOrderDto> purchaseOrders = await _purchaseOrderService.GetOrdersWithSpec
-                ("",OrderType.Purchase.GetEnumMemberValue(),"");
-            dgvPurchaseOrders.ItemsSource = purchaseOrders;
-        }
+			IEnumerable<PurchaseOrderDto> purchaseOrders = await _purchaseOrderService.GetOrdersWithSpec
+				("", OrderType.Purchase.GetEnumMemberValue(), "");
+			dgvPurchaseOrders.ItemsSource = purchaseOrders;
+		}
 
-        private async void dgvPurchaseOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dgvPurchaseOrders.SelectedItems.Count > 0)
-            {
-                _selected = (PurchaseOrderDto)dgvPurchaseOrders.SelectedItems[0];
+		private async void dgvPurchaseOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (dgvPurchaseOrders.SelectedItems.Count > 0)
+			{
+				_selected = (PurchaseOrderDto)dgvPurchaseOrders.SelectedItems[0];
 
-                var purchaseOrderUI = _serviceProvider.GetRequiredService<PurchaseOrderUI>();
-                purchaseOrderUI.SelectedOrder = _selected;
-                purchaseOrderUI.ShowDialog();
+				var purchaseOrderUI = _serviceProvider.GetRequiredService<PurchaseOrderUI>();
+				purchaseOrderUI.SelectedOrder = _selected;
+				purchaseOrderUI.ShowDialog();
 
-                await FillDataGridView();
-            }
-            else
-            {
-                _selected = null;
-            }
-        }
+				await FillDataGridView();
+			}
+			else
+			{
+				_selected = null;
+			}
+		}
 
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            var searchValue = txtSearch.Text;
-            var orderStatus = cbOrderStatus.SelectedValue.ToString();
-            dgvPurchaseOrders.ItemsSource = await _purchaseOrderService.GetOrdersWithSpec
-            (searchValue, OrderType.Purchase.GetEnumMemberValue(), orderStatus);
-        }
+		private async void btnSearch_Click(object sender, RoutedEventArgs e)
+		{
+			var searchValue = txtSearch.Text;
+			var orderStatus = cbOrderStatus.SelectedValue.ToString();
+			dgvPurchaseOrders.ItemsSource = await _purchaseOrderService.GetOrdersWithSpec
+			(searchValue, OrderType.Purchase.GetEnumMemberValue(), orderStatus);
+		}
 
-        private async void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            var customerUI = _serviceProvider.GetRequiredService<CustomerUI>();
-            customerUI.ShowDialog();
+		private async void btnAdd_Click(object sender, RoutedEventArgs e)
+		{
+			var customerUI = _serviceProvider.GetRequiredService<CustomerUI>();
+			customerUI.ShowDialog();
 
-            await FillDataGridView();
-        }
+			await FillDataGridView();
+		}
 
-    }
+	}
 }

@@ -1,24 +1,11 @@
-﻿using Services.Dto;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Repositories.Entities;
+using Repositories.Entities.Orders;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Services.Dto;
+using Static;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml.Linq;
-using Repositories.Entities;
-using System.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using Static;
-using Repositories.Entities.Orders;
 
 namespace JewelryWpfApp
 {
@@ -305,16 +292,16 @@ namespace JewelryWpfApp
 		private async void btnSearchCustomer_Click(object sender, RoutedEventArgs eventArgs)
 		{
 
-				var customer = await _customerService.searchCustomer(txtSearchCustomer.Text);
-				if (customer == null)
-				{
-					MessageBox.Show("Customer not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					return;
-				}
-				else
-				{
-					cbCustomer.SelectedValue = customer.Id;
-				}
+			var customer = await _customerService.searchCustomer(txtSearchCustomer.Text);
+			if (customer == null)
+			{
+				MessageBox.Show("Customer not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			else
+			{
+				cbCustomer.SelectedValue = customer.Id;
+			}
 
 		}
 

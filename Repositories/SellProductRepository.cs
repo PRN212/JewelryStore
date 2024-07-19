@@ -1,9 +1,6 @@
 ﻿
 using Repositories.Entities;
 using Repositories.IRepositories;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Repositories
 {

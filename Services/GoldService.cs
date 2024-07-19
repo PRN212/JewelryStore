@@ -4,31 +4,26 @@ using Repositories.Entities;
 
 namespace Services
 {
-    public class GoldService
-    {
-        private readonly GoldRepository _goldRepo;
-        public GoldService(GoldRepository goldRepo) 
-        {
-            _goldRepo = goldRepo;
-        }
-        public async Task<IEnumerable<Gold>> GetAllGoldTypeAsync()
-        {
-            return await _goldRepo.GetAllGoldAsync();
-        }
+	public class GoldService
+	{
+		private readonly GoldRepository _goldRepo;
+		public GoldService(GoldRepository goldRepo)
+		{
+			_goldRepo = goldRepo;
+		}
+		public async Task<IEnumerable<Gold>> GetAllGoldTypeAsync()
+		{
+			return await _goldRepo.GetAllGoldAsync();
+		}
 
-        public List<Gold> GetAllGoldType()
-        {
-            return _goldRepo.GetAllGold();
-        }
+		public Gold? GetGoldById(int id)
+		{
+			return _goldRepo.GetById(id);
+		}
 
-        public Gold? GetGoldById(int id)
-        {
-            return _goldRepo.GetById(id);
-        }
-
-        public void UpdateGold(Gold gold) 
-        {
-            _goldRepo.UpdateGold(gold);
-        }
-    }
+		public void UpdateGold(Gold gold)
+		{
+			_goldRepo.UpdateGold(gold);
+		}
+	}
 }

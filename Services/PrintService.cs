@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Repositories.Entities;
 using Repositories.Entities.Orders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -37,7 +32,7 @@ namespace Services
 			csv.AppendLine("ProductName,TotalWeight,Quantity,Price");
 
 			var detailService = service.GetRequiredService<OrderDetailService>();
-			var details = detailService.GetAll(o => o.OrderId == orderId, includeProperties:"Product");
+			var details = detailService.GetAll(o => o.OrderId == orderId, includeProperties: "Product");
 			foreach (var detail in details)
 			{
 				var product = detail.Product;
@@ -47,7 +42,7 @@ namespace Services
 
 			using (StreamWriter outputFile = new StreamWriter(Path.Combine(filePath, $"Order{orderId}-JewelryStore.csv")))
 			{
-					outputFile.WriteLine(csv);
+				outputFile.WriteLine(csv);
 			}
 		}
 	}

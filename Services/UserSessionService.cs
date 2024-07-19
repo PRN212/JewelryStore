@@ -2,8 +2,8 @@
 
 namespace Services
 {
-    public class UserSessionService
-    {
-        public User CurrentUser { get; set; }
-    }
+	public class UserSessionService
+	{
+		public User CurrentUser { get; set; }
+	}
 }
