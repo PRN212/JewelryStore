@@ -36,9 +36,10 @@ namespace JewelryWpfApp.Extensions
             services.AddScoped<GoldPriceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<OrderDetail_ProductOrderDetailRepository>();
+            //services.AddScoped<OrderDetail_ProductOrderDetailRepository>();
             services.AddScoped<CustomerRepository>();
             services.AddScoped<GoldPriceRepository>();
+            services.AddScoped<SellProductRepository>();
 
 
             services.AddTransient<Login>();

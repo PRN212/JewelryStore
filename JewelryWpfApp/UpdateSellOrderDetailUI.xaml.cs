@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using Repositories.Entities;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Repositories.Entities.Orders;
 
 namespace JewelryWpfApp
 {
@@ -70,6 +71,14 @@ namespace JewelryWpfApp
 			FillData();
 		}
 
+		private async Task<decimal> GetOrderDetailTotalAsync(int productId, int quantity, decimal rate)
+		{
+			var service = _serviceProvider.GetRequiredService<ProductService>();
+			ProductDto product = await service.GetProductById(productId);
+
+			return product.ProductPrice * quantity * rate;
+		}
+
 		private async void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
 			if (!Validate()) return;
@@ -100,18 +109,34 @@ namespace JewelryWpfApp
 				}
 				else
 				{
-					// If not found, create a new OrderDetail
-					OrderDetail detail = new OrderDetail()
+					if (decimal.TryParse(txtRate.Text, out decimal rate))
 					{
-						OrderId = orderId,
-						ProductId = productId,
-						Quantity = quantity
-					};
-					order.OrderDetails.Add(detail);
+						if (rate < 1)
+						{
+							MessageBox.Show("Please enter a rate of at least 1", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+							return;
+						}
+						decimal detailPrice = await GetOrderDetailTotalAsync(productId, quantity, rate);
+						// If not found, create a new OrderDetail
+						OrderDetail detail = new OrderDetail()
+						{
+							OrderId = orderId,
+							ProductId = productId,
+							Quantity = quantity,
+							Price = detailPrice
+						};
+						order.OrderDetails.Add(detail);
+						order.TotalPrice += detailPrice;
+						_sellOrderService.Update(order);
+						_sellOrderService.Save();
+					}
+					else
+					{
+						MessageBox.Show("Please enter valid rate.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+						return;
+					}
 				}
 
-				_sellOrderService.Update(order);
-				_sellOrderService.Save();
 			}
 			else
 			{
