@@ -16,6 +16,11 @@ namespace Services
             return await _goldRepo.GetAllGoldAsync();
         }
 
+        public List<Gold> GetAllGoldType()
+        {
+            return _goldRepo.GetAllGold();
+        }
+
         public Gold? GetGoldById(int id)
         {
             return _goldRepo.GetById(id);

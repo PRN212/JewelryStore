@@ -25,8 +25,9 @@
             </Grid.ColumnDefinitions>
             <DataGrid Grid.Column="0" x:Name="grdGoldPrice" AutoGenerateColumns="False" IsReadOnly="True" Margin="26,10,20,20" Loaded="grdGoldPrice_Loaded">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Gold ID" Binding="{Binding GoldId}"/>
-                    <DataGridTextColumn Header="Date Time" Binding="{Binding DateTime}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Unit" Binding="{Binding Unit}"/>
+                    <DataGridTextColumn Header="Content" Binding="{Binding Content}"/>
                     <DataGridTextColumn  Header="Ask Price" Binding="{Binding AskPrice, StringFormat='{}{0:0}'}"/>
                     <DataGridTextColumn Header="Bid Price" Binding="{Binding BidPrice, StringFormat='{}{0:0}'}"/>
                 </DataGrid.Columns>
