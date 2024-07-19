@@ -16,77 +16,86 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Repositories.Entities;
 using System.Collections.ObjectModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JewelryWpfApp
 {
-    /// <summary>
-    /// Interaction logic for SellOrdersUI.xaml
-    /// </summary>
-    public partial class SellOrdersUI : Page
-    {
-        private readonly ProductService _productService;
-        private readonly GoldService _goldService;
-        private readonly SellOrderService _orderService; 
-        private readonly OrderDetailService _orderDetailService;
-        private SellOrderDto? _selected = null;
+	/// <summary>
+	/// Interaction logic for SellOrdersUI.xaml
+	/// </summary>
+	public partial class SellOrdersUI : Page
+	{
+
+		private readonly SellOrderService _orderService;
+		private SellOrderDto? _selected = null;
+		private IServiceProvider _serviceProvider;
+		//public ObservableCollection<Order> OrderList { get; set; }
 
 
-        //public ObservableCollection<Order> OrderList { get; set; }
+		public SellOrdersUI(IServiceProvider serviceProvider)
+		{
+			_serviceProvider = serviceProvider;
+			_orderService = _serviceProvider.GetRequiredService<SellOrderService>();
 
 
-        public SellOrdersUI(ProductService productService, GoldService goldService,
-            OrderDetailService orderDetailService, SellOrderService orderService)
-        {
-            _productService = productService;
-            _goldService = goldService;
-            _orderDetailService = orderDetailService;
-            _orderService = orderService;
-            InitializeComponent();
-            //OrderList = new ObservableCollection<Order>();
-        }
+			InitializeComponent();
+			//OrderList = new ObservableCollection<Order>();
+		}
 
-        private void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            var orders = GetOrders(); 
-            dgSellOrders.ItemsSource = orders;
-        }
+		private void PageLoaded(object sender, RoutedEventArgs e)
+		{
+			GetOrders();
+		}
 
-        private List<SellOrderDto> GetOrders()
-        {
-            List<SellOrderDto> orders = _orderService.GetSellOrders();
-            return orders;
-        }
+		private void GetOrders()
+		{
+			List<SellOrderDto> orders = _orderService.GetSellOrders();
+			dgSellOrders.ItemsSource = orders;
+		}
 
-        private void dgSellOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dgSellOrders.SelectedItems.Count > 0)
-            {
-                try
-                {
-                    _selected = (SellOrderDto)dgSellOrders.SelectedItems[0];
-                    var details = _orderDetailService.GetDetailsFromOrder(_selected.Id);
-                    SellOrderDetailsUI sellOrderDetailsUI = new SellOrderDetailsUI(details);
-                    sellOrderDetailsUI.ShowDialog();
-                }
-                catch
-                {
-                    MessageBox.Show("Please select a valid row!",
-                    "Warning",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-            else
-            {
-                _selected = null;
-            }
-        }
+		private void dgSellOrders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (dgSellOrders.SelectedItems.Count > 0)
+			{
+				try
+				{
+					_selected = (SellOrderDto)dgSellOrders.SelectedItems[0];
+					UpdateSellOrderDetailUI window = new UpdateSellOrderDetailUI(_serviceProvider, _selected.Id);
+					// Subscribe to save metadata event
+					window.OrderSaved += UpsertSellOrderDetailUI_OrderSaved;
+					window.Closed += (s, e) => window.OrderSaved -= UpsertSellOrderDetailUI_OrderSaved;
+					window.ShowDialog();
+				}
+				catch
+				{
+					MessageBox.Show("Please select a valid row!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				}
+			}
+			else
+			{
+				_selected = null;
+			}
+		}
 
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            var searchValue = txtSearch.Text;
+		private void UpsertSellOrderDetailUI_OrderSaved(object? sender, EventArgs e)
+		{
+			GetOrders();
+		}
 
-            dgSellOrders.ItemsSource = _orderService.GetByCustomerName(searchValue);
-        }
+		private async void btnSearch_Click(object sender, RoutedEventArgs e)
+		{
+			var searchValue = txtSearch.Text;
 
-    }
+			dgSellOrders.ItemsSource = _orderService.GetByCustomerName(searchValue);
+		}
+
+		private void btnAdd_Click(object sender, RoutedEventArgs e)
+		{
+			AddSellOrderDetailUI window = new AddSellOrderDetailUI(_serviceProvider);
+
+			window.OrderSaved += UpsertSellOrderDetailUI_OrderSaved;
+			window.Closed += (s, e) => window.OrderSaved -= UpsertSellOrderDetailUI_OrderSaved;
+			window.ShowDialog();
+		}
+	}
 }

@@ -147,30 +147,25 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("Repositories.Entities.Orders.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("GoldPrice")
                         .HasColumnType("decimal(18,0)");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,0)");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
@@ -311,7 +306,7 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("Repositories.Entities.Orders.OrderDetail", b =>
                 {
-                    b.HasOne("Repositories.Entities.Orders.Order", "Order")
+                    b.HasOne("Repositories.Entities.Orders.Order", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -322,8 +317,6 @@ namespace Repositories.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });

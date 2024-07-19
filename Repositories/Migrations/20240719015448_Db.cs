@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class FinalMigration : Migration
+    public partial class Db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -152,17 +152,16 @@ namespace Repositories.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
-                    GoldPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                    GoldPrice = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
                         name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
@@ -181,11 +180,6 @@ namespace Repositories.Migrations
                 name: "IX_GoldPrices_GoldId",
                 table: "GoldPrices",
                 column: "GoldId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_OrderId",
-                table: "OrderDetails",
-                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ProductId",

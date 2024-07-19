@@ -7,27 +7,36 @@ using Repositories.Entities.Orders;
 using Repositories.IRepositories;
 using Repositories.Specifications.Products;
 using Repositories.Specifications.Orders;
+using System.Linq.Expressions;
 
 namespace Services
 {
-    public class OrderDetailService
+    public class OrderDetailService 
     {
         private readonly OrderDetailRepository _orderRepo;
         private readonly GoldPriceRepository _goldPriceRepository;
+        private readonly SellProductRepository _sellProductRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public OrderDetailService(OrderDetailRepository orderRepo, IMapper mapper,
-            GoldPriceRepository goldPriceRepository, IUnitOfWork unitOfWork)
+            GoldPriceRepository goldPriceRepository, SellProductRepository sellProductRepository, IUnitOfWork unitOfWork)
         {
             _orderRepo = orderRepo;
             _goldPriceRepository = goldPriceRepository;
             _unitOfWork = unitOfWork;
+            _sellProductRepository = sellProductRepository;
             _mapper = mapper;
         }
 
-        public List<SellOrderDetailDto> GetDetailsFromOrder(int id)
+		public List<OrderDetail> GetAll(Expression<Func<OrderDetail, bool>>? filter = null, string? includeProperties = null)
+		{
+			return _orderRepo.GetAll(filter, includeProperties).ToList();
+		}
+
+		public List<SellOrderDetailDto> GetDetailsFromOrder(int id)
         {
+            if (id == 0) return null;
             var details = _orderRepo.GetDetailsFromOrder(id);
             List<SellOrderDetailDto> detailDtos = _mapper.Map<List<SellOrderDetailDto>>(details);
             foreach (var p in detailDtos)
@@ -120,5 +129,6 @@ namespace Services
             // save to db
             return await _unitOfWork.Complete() > 0;
         }
-    }
+
+	}
 }

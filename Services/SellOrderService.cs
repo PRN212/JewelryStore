@@ -25,13 +25,14 @@ namespace Services
             //_productRepository = productRepository;
             //_orderDetailRepository = orderDetailRepository;
         }
-        public List<Order> GetAll(Expression<Func<Order, bool>>? filter = null, string? includeProperties = null) { 
-            return _orderRepo.GetAll().ToList();
+        public List<Order> GetAll(Expression<Func<Order, bool>>? filter = null, string? includeProperties = null)
+        { 
+            return _orderRepo.GetAll(filter, includeProperties).ToList();
 		}
 
         public List<SellOrderDto> GetSellOrders()
         {
-            // TODO: includeProp for Details
+            
             List<Order> orders = _orderRepo.GetAll(o => o.Type == SD.TypeSell, includeProperties: "User,Customer").ToList();
             List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
 
@@ -54,6 +55,20 @@ namespace Services
             List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
             return orderDtos;
         }
+
+        public bool Add(Order obj)
+		{
+			try
+			{
+				_orderRepo.Add(obj);
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
 
 		public void Save()
 		{

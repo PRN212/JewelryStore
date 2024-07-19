@@ -1,12 +1,15 @@
 ﻿
 
 using Repositories.Enitities;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Repositories.Entities.Orders
 {
-    public class OrderDetail : BaseEntity
+	// DO NOT REMOVE
+	[PrimaryKey(nameof(ProductId), nameof(OrderId))]
+	public class OrderDetail : BaseEntity
     {
         public int ProductId { get; set; }
         public Product Product { get; set; }

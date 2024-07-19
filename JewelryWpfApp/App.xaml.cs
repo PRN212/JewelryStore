@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Repositories;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Navigation;
@@ -20,6 +22,8 @@ namespace JewelryWpfApp
             base.OnStartup(e);
 
             var serviceCollection = new ServiceCollection();
+
+
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

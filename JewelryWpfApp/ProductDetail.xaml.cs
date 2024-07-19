@@ -1,16 +1,9 @@
 ﻿using Microsoft.Win32;
 using Services;
 using Services.Dto;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -145,47 +138,47 @@ namespace JewelryWpfApp
             }
         }
 
-        private void NumberValidation(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9.]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
+		private void NumberValidation(object sender, TextCompositionEventArgs e)
+		{
+			Regex regex = new Regex("[^0-9.]+");
+			e.Handled = regex.IsMatch(e.Text);
+		}
 
-        private void chooseImg_Click(object sender, RoutedEventArgs e)
-        {
-            // Tạo một hộp thoại chọn file
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+		private void chooseImg_Click(object sender, RoutedEventArgs e)
+		{
+			// Tạo một hộp thoại chọn file
+			OpenFileDialog openFileDialog = new OpenFileDialog();
 
-            // Thiết lập các thuộc tính cho hộp thoại chọn file
-            openFileDialog.Filter = "Image files (*.png;*.jpg;*.jpeg;*.gif)|*.png;*.jpg;*.jpeg;*.gif|All files (*.*)|*.*";
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures); 
-            openFileDialog.Title = "Chọn ảnh";
+			// Thiết lập các thuộc tính cho hộp thoại chọn file
+			openFileDialog.Filter = "Image files (*.png;*.jpg;*.jpeg;*.gif)|*.png;*.jpg;*.jpeg;*.gif|All files (*.*)|*.*";
+			openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+			openFileDialog.Title = "Chọn ảnh";
 
-            // Mở hộp thoại và xác nhận rằng người dùng đã chọn một file
-            bool? result = openFileDialog.ShowDialog();
-            if (result == true)
-            {
-                try
-                {
-                    // Lấy đường dẫn tuong doi đến file đã chọn
-                    string projectRoot = Directory.GetCurrentDirectory();
-                    Uri fileUri = new Uri(openFileDialog.FileName);
-                    Uri relativeUri = new Uri(projectRoot+"/",UriKind.Absolute).MakeRelativeUri(fileUri);
-                    string relativePath = relativeUri.ToString();
+			// Mở hộp thoại và xác nhận rằng người dùng đã chọn một file
+			bool? result = openFileDialog.ShowDialog();
+			if (result == true)
+			{
+				try
+				{
+					// Lấy đường dẫn tuong doi đến file đã chọn
+					string projectRoot = Directory.GetCurrentDirectory();
+					Uri fileUri = new Uri(openFileDialog.FileName);
+					Uri relativeUri = new Uri(projectRoot + "/", UriKind.Absolute).MakeRelativeUri(fileUri);
+					string relativePath = relativeUri.ToString();
 
-                    // Hiển thị ảnh lên Image control
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(relativePath,UriKind.Relative);
-                    bitmap.EndInit();
+					// Hiển thị ảnh lên Image control
+					BitmapImage bitmap = new BitmapImage();
+					bitmap.BeginInit();
+					bitmap.UriSource = new Uri(relativePath, UriKind.Relative);
+					bitmap.EndInit();
 
-                    selectedImg.Source = bitmap;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Đã xảy ra lỗi khi mở và hiển thị ảnh: {ex.Message}");
-                }
-            }
-        }
-    }
+					selectedImg.Source = bitmap;
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Đã xảy ra lỗi khi mở và hiển thị ảnh: {ex.Message}");
+				}
+			}
+		}
+	}
 }
