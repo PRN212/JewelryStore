@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelryWpfApp"
         mc:Ignorable="d"
-        Title="PurchaseOrderDetailUI" Height="500" Width="1000" Loaded="PageLoaded" ResizeMode="NoResize">
+        Title="PurchaseOrderDetailUI" Height="500" Width="1200" Loaded="PageLoaded" ResizeMode="NoResize">
     <Grid Margin="10">
         <StackPanel>
             <Label Content="SELL ORDER DETAILS" FontSize="22"/>
@@ -20,9 +20,11 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Width="auto">
-                    
-                    <Label x:Name="lblCustomer" Content="Customer:" Grid.Column="0" Grid.Row="0" Margin="10" />
-                    <ComboBox x:Name="cbCustomer" Margin="0 0 10 0" Width="200" Height="30" Grid.Column="1" Grid.Row="0">
+
+                    <Label x:Name="lblCustomer" Content="Customer:"  Margin="10" />
+                    <TextBox  x:Name="txtSearchCustomer" Height="30" Width="150" VerticalAlignment="Center"/>
+                    <Button x:Name="btnSearchCustomer"  Content="Search" FontSize="12" Height="30" Padding="5" Margin="5 10" Background="#FFC7A882" Foreground="White" Click="btnSearchCustomer_Click" RenderTransformOrigin="-0.628,-1.369"/>
+                    <ComboBox x:Name="cbCustomer" Margin="0 0 10 0" Width="200" Height="30" Grid.Column="1" Grid.Row="0" SelectionChanged="cbCustomer_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -36,13 +38,14 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button x:Name="btnAddCustomer" Content="Add a new Customer" FontSize="12" Height="30" Width="120" Margin="0, 0, 10, 0" Background="#FFC7A882" Foreground="White" Click="btnAddCustomer_Click"/>
+                    <Button x:Name="btnAddCustomer" Content="Add Customer" FontSize="12" Height="30" Width="90" Margin="0, 0, 10, 0" Background="#FFC7A882" Foreground="White" Click="btnAddCustomer_Click"/>
                     <Label x:Name="lblPaymentMethod" Content="Payment Method:" RenderTransformOrigin="0.676,1.017" Height="28"    />
                     <TextBox x:Name="txtPaymentMethod" Height="30" Margin="10" Width="120" VerticalAlignment="Center"/>
                     <Label x:Name="lblStatus" Content="Status:" RenderTransformOrigin="0.676,1.017" Height="28"    />
                     <TextBox x:Name="txtStatus" Height="30" Margin="10" Width="120" VerticalAlignment="Center"/>
                     <!--TextBox-->
                 </StackPanel>
+
                 <!--Label-->
 
                 <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" >

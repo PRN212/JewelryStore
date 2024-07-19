@@ -187,8 +187,7 @@ namespace JewelryWpfApp
 				order.Status = txtStatus.Text.Trim();
 
 				order.CustomerId = (int)cbCustomer.SelectedValue;
-				_sellOrderService.Update(order);
-				_sellOrderService.Save();
+				UpdateOrder();
 
 				//MessageBox.Show("Order Header Saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 			}
@@ -236,6 +235,12 @@ namespace JewelryWpfApp
 			return true;
 		}
 
+		private void UpdateOrder()
+		{
+			_sellOrderService.Update(order);
+			_sellOrderService.Save();
+		}
+
 		private void btnPrint_Click(object sender, RoutedEventArgs e)
 		{
 			if (orderId == 0)
@@ -249,7 +254,32 @@ namespace JewelryWpfApp
 		}
 
 
+		private async void btnCancel_Click(object sender, RoutedEventArgs e)
+		{
+			if (!Validate()) return;
+			SaveOrder();
+			order.Status = "Canceled";
+			MessageBox.Show("Successfully canceled.", "Success",
+							MessageBoxButton.OK, MessageBoxImage.Information);
+			txtStatus.Text = "Canceled";
+			UpdateOrder();
+			OrderSaved?.Invoke(this, EventArgs.Empty);
 
+			Close();
+		}
+		private async void btnPaid_Click(object sender, RoutedEventArgs e)
+		{
+			if (!Validate()) return;
+			SaveOrder();
+			order.Status = "Paid";
+			MessageBox.Show("Successfully paid", "Success",
+							MessageBoxButton.OK, MessageBoxImage.Information);
+			txtStatus.Text = "Paid";
+			UpdateOrder();
+			OrderSaved?.Invoke(this, EventArgs.Empty);
+
+			//Close();
+		}
 		private async void btnSearchProduct_Click(object sender, RoutedEventArgs eventArgs)
 		{
 			if (int.TryParse(txtSearch.Text, out int pId))
@@ -262,13 +292,37 @@ namespace JewelryWpfApp
 				}
 				else
 				{
-					cbProduct.SelectedValue = product.Id;
+					cbProduct.SelectedValue = pId;
 				}
 			}
 			else
 			{
 				MessageBox.Show("Please enter a valid id to search.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
+			}
+		}
+
+		private async void btnSearchCustomer_Click(object sender, RoutedEventArgs eventArgs)
+		{
+
+				var customer = await _customerService.searchCustomer(txtSearchCustomer.Text);
+				if (customer == null)
+				{
+					MessageBox.Show("Customer not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					return;
+				}
+				else
+				{
+					cbCustomer.SelectedValue = customer.Id;
+				}
+
+		}
+
+		private void cbCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (cbCustomer.SelectedItem is Customer selectedCustomer)
+			{
+				txtSearchCustomer.Text = selectedCustomer.Phone.ToString();
 			}
 		}
 

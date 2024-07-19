@@ -18,18 +18,18 @@ namespace Services.Dto
         public decimal GemPrice { get; set; }
         public decimal Labour { get; set; }
         public string? ImgUrl { get; set; }
-        public decimal ProductPrice
+        public decimal UnitPrice
         {
             get
             {
                 return Math.Floor(GoldPrice * GoldWeight * 100 + Labour + GemPrice);
             }
         }
-        public decimal DetailPrice
+        public decimal Price
         {
             get
             {
-                return ProductPrice * Quantity;
+                return UnitPrice * Quantity;
             }
         }
 
