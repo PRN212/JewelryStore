@@ -49,14 +49,21 @@ namespace Services
         //    var orde _orderDetailRepository.GetDetailsFromOrder(id);
         //}
 
-        public List<SellOrderDto> GetByCustomerName(string text)
-        {
-            var orders = _orderRepo.GetAll(includeProperties: "Customer").Where(o => o.Customer.Name.Contains(text)).ToList();
-            List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
-            return orderDtos;
-        }
+        //public List<SellOrderDto> GetByCustomerName(string text)
+        //{
+        //    var orders = _orderRepo.GetAll(includeProperties: "Customer").Where(o => o.Customer.Name.Contains(text)).ToList();
+        //    List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
+        //    return orderDtos;
+        //}
 
-        public bool Add(Order obj)
+		public List<SellOrderDto> GetByCustomerPhoneOrName(string text)
+		{
+			var orders = _orderRepo.GetAll(includeProperties: "Customer").Where(o => o.Customer.Phone.Contains(text) || o.Customer.Name.Contains(text)).ToList();
+			List<SellOrderDto> orderDtos = _mapper.Map<List<SellOrderDto>>(orders);
+			return orderDtos;
+		}
+
+		public bool Add(Order obj)
 		{
 			try
 			{

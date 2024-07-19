@@ -9,7 +9,7 @@
         Height="450" Width="800"
         Loaded="PageLoaded">
     <Grid x:Name="grdPurchaseOrderManagement" Background="White">
-        <StackPanel Margin="30">
+        <StackPanel Margin="10 10 40 0">
             <!--Label-->
             <Label Grid.Row="0" Grid.Column="0" Content="SELL ORDER MANAGEMENT"  FontSize="22"/>
 
@@ -24,8 +24,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBox x:Name="txtSearch" Grid.Column="0" Height="30"/>
-                <Button x:Name="btnSearch" Grid.Column="1" Content="Search" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="20 0" Click="btnSearch_Click"/>
-                <Button x:Name="btnAdd" Grid.Column="2" Content="Add" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="40 0 0 0" Click="btnAdd_Click"/>
+                <Button Width="80"  x:Name="btnSearch" Grid.Column="1" Content="Search" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="0 0" Click="btnSearch_Click"/>
+                <Button Width="80"  x:Name="btnAdd" Grid.Column="2" Content="Add" FontSize="18" Background="#FFC7A882" Foreground="White" Margin="40 0 0 0" Click="btnAdd_Click"/>
             </Grid>
 
             <!---Data List-->
