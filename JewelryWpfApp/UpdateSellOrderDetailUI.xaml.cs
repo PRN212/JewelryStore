@@ -138,6 +138,7 @@ namespace JewelryWpfApp
 				txtSearch.Text = "0";
 				_sellOrderService.Update(order);
 				_sellOrderService.Save();
+				OrderSaved?.Invoke(this, EventArgs.Empty);
 
 			}
 			else
@@ -171,6 +172,7 @@ namespace JewelryWpfApp
 			if (!Validate()) return;
 			SaveOrder();
 			MessageBox.Show("Order Saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
 
 		}
 

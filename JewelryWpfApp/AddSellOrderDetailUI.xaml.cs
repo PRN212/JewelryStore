@@ -137,6 +137,8 @@ namespace JewelryWpfApp
 
 				_sellOrderService.Update(order);
 				_sellOrderService.Save();
+				OrderSaved?.Invoke(this, EventArgs.Empty);
+
 				//}
 				//else
 				//{

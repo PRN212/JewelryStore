@@ -25,6 +25,13 @@ namespace Services.Dto
                 return Math.Floor(GoldPrice * GoldWeight * 100 + Labour + GemPrice);
             }
         }
+        public decimal DetailPrice
+        {
+            get
+            {
+                return ProductPrice * Quantity;
+            }
+        }
 
     }
 }
