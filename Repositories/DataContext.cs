@@ -31,7 +31,7 @@ namespace Repositories
 				   .Build();
 				var connectionString = configuration["ConnectionStrings:DBDefault"];
 				Trace.WriteLine(connectionString);
-				optionsBuilder.UseSqlServer("Database=JewelryStore;Trusted_Connection=True;TrustServerCertificate=True");
+				optionsBuilder.UseSqlServer(connectionString);
 			//}
 		}
 
