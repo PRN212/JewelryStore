@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Repositories.Entities.Orders
 {
 	// DO NOT REMOVE
-	[PrimaryKey(nameof(ProductId), nameof(OrderId))]
+	//[PrimaryKey(nameof(ProductId), nameof(OrderId))]
 	public class OrderDetail : BaseEntity
     {
         public int ProductId { get; set; }
