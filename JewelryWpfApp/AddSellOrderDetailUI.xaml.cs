@@ -57,7 +57,11 @@ namespace JewelryWpfApp
 
 			txtRate.Text = "1.3";
 
-			if (orderId == 0) return;
+			if (orderId == 0)
+			{
+				txtStatus.Text = "Pending";
+				return;
+			}
 			txtStatus.Text = order.Status;
 			txtPaymentMethod.Text = order.PaymentMethod;
 			var details = _orderDetailService.GetDetailsFromOrder(orderId);
