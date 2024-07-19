@@ -26,7 +26,8 @@ namespace Services
 
         public async Task<ProductDto> GetProductById(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var spec = new ProductSpecification(id);
+            var product = await _productRepository.GetEntityWithSpec(spec);
             if (product == null)
             {
                 return null;
