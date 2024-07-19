@@ -67,7 +67,7 @@ namespace Services
 
             // update order's total price
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
-            order.TotalPrice += orderDetail.Price * orderDetail.Quantity;
+            order.TotalPrice = order.OrderDetails.Aggregate(0m, (acc, oi) => acc + oi.Price * oi.Quantity);
             _unitOfWork.Repository<Order>().Update(order);
 
 
@@ -93,7 +93,7 @@ namespace Services
             //update order item
             orderDetail.Quantity = productDto.Quantity;
             orderDetail.GoldPrice = product.Gold.AskPrice;
-            orderDetail.Price = orderDetail.GoldPrice*100 + product.GemPrice;
+            orderDetail.Price = orderDetail.GoldPrice*100*productDto.GoldWeight + product.GemPrice;
             _unitOfWork.Repository<OrderDetail>().Update(orderDetail);
 
             //update order total price          
@@ -123,7 +123,7 @@ namespace Services
 
             //update order total price
             var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(new OrdersSpecification(orderId));
-            order.TotalPrice = order.OrderDetails.Aggregate(0m, (acc, oi) => acc + oi.Price * oi.Quantity);
+            order.TotalPrice -= orderDetail.Price * orderDetail.Quantity;
             _unitOfWork.Repository<Order>().Update(order);
 
             // save to db
